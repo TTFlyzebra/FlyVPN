@@ -12,12 +12,11 @@ cmake_minimum_required(VERSION 3.4.1)
 
 add_library( # Sets the name of the library.
         flyvpn
-
         # Sets the library as a shared library.
         SHARED
-
         # Provides a relative path to your source file(s).
-        flyvpn.cpp)
+        flyvpn.c
+        tun_dev.c)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
