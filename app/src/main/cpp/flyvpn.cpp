@@ -21,15 +21,6 @@
 
 #define OTUNSETIFF     (('T'<< 8) | 202)
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_flyzebra_flyvpn_MainActivity_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    LOGD("log by flycnzebra");
-    return env->NewStringUTF(hello.c_str());
-}
-
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
@@ -43,7 +34,6 @@ Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
     LOGD("start ioctl TUNSETIFF");
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags =  IFF_TUN | IFF_NO_PI;
-    strncpy(ifr.ifr_name, "/dev/tun", IFNAMSIZ);
     ret = ioctl(fd, TUNSETIFF, (void *) &ifr);
     LOGD("ioctl ret=%d",ret);
     if(ret<0) goto failed;
@@ -58,6 +48,6 @@ Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_flyzebra_flyvpn_MainActivity_closeTunDev(JNIEnv *env, jobject thiz, jint fd) {
-    LOGD("close dev tun fd=%d",fd);
+    LOGD("close /dev/tun fd=%d",fd);
     close(fd);
 }
