@@ -42,9 +42,11 @@ Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
     int ret;
     LOGD("start open /dev/tun....");
     if ((fd = open("/dev/tun", O_RDWR)) < 0)  goto failed;
+    LOGD("ioctl fd=%d",fd);
     LOGD("start ioctl TUNSETIFF....");
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags =  IFF_TUN | IFF_NO_PI;
+    strncpy(ifr.ifr_name, "/dev/tun", IFNAMSIZ);
     ret = ioctl(fd, TUNSETIFF, (void *) &ifr);
     LOGD("ioctl ret=%d",ret);
     if(ret<0) goto failed;
@@ -54,9 +56,11 @@ Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
     LOGD("open dev tun failed");
     close(fd);
     return -1;
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT void JNICALL
 Java_com_flyzebra_flyvpn_MainActivity_closeTunDev(JNIEnv *env, jobject thiz, jint fd) {
-    // TODO: implement closeTunDev()
+    LOGD("close dev tun fd=%d",fd);
     close(fd);
 }
