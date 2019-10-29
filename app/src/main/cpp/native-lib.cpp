@@ -5,11 +5,7 @@
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <syslog.h>
-#include <errno.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <linux/if.h>
@@ -40,20 +36,21 @@ Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
     struct ifreq ifr;
     int fd;
     int ret;
-    LOGD("start open /dev/tun....");
-    if ((fd = open("/dev/tun", O_RDWR)) < 0)  goto failed;
-    LOGD("ioctl fd=%d",fd);
-    LOGD("start ioctl TUNSETIFF....");
+    LOGD("start open /dev/tun");
+    fd = open("/dev/tun", O_RDWR);
+    LOGD("open /dev/tun fd=%d",fd);
+    if(fd<0) goto failed;
+    LOGD("start ioctl TUNSETIFF");
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags =  IFF_TUN | IFF_NO_PI;
     strncpy(ifr.ifr_name, "/dev/tun", IFNAMSIZ);
     ret = ioctl(fd, TUNSETIFF, (void *) &ifr);
     LOGD("ioctl ret=%d",ret);
     if(ret<0) goto failed;
-    LOGD("open dev tun success");
+    LOGD("init tun success");
     return fd;
     failed:
-    LOGD("open dev tun failed");
+    LOGD("init tun failed");
     close(fd);
     return -1;
 }
