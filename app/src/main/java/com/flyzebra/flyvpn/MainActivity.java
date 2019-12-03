@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                     DatagramSocket socket = null;
                     socket = new DatagramSocket();
                     FlyLog.d(socket.toString());
-                    String ssend = "Hello you can reciver!";
+                    String ssend = "[{\"messageType\":3,\"netType\":4,\"netTypeName\":\"wlan0\",\"sessionid\":110358574}]";
                     DatagramPacket sendpack = new DatagramPacket(ssend.getBytes(),
                             ssend.getBytes().length,
                             InetAddress.getByName("103.5.126.153"),
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     socket.send(sendpack);
                     socket.receive(sendpack);
                     String str = new String(sendpack.getData(), sendpack.getOffset(),sendpack.getLength());
-                    FlyLog.d(str);
+                    FlyLog.d(ByteTools.bytes2HexString(str.getBytes()));
                     socket.close();
                     FlyLog.d("UDP sokcet client is end!");
                 } catch (Exception e) {
