@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
+    public void testUDP(View view) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -30,22 +32,29 @@ public class MainActivity extends AppCompatActivity {
                     DatagramSocket socket = null;
                     socket = new DatagramSocket();
                     FlyLog.d(socket.toString());
-                    String ssend = "Hello you can reciver!";
-                    DatagramPacket sendpack = new DatagramPacket(ssend.getBytes(),
-                            ssend.getBytes().length,
+                    socket.setSoTimeout(3000);
+                    String ssend = "[{\"messageType\":3,\"netType\":4,\"netTypeName\":\"wlan0\",\"sessionid\":110358574}]";
+                    byte send[] = new byte[]{
+                            (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x03,
+                            (byte)0x06,(byte)0x12,(byte)0x29,(byte)0x87,
+                            (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x16,
+                            (byte)0x89,(byte)0x95,(byte)0xb6,(byte)0x37,
+                            (byte)0xc9,(byte)0xc4,(byte)0x93,(byte)0x38,
+                            (byte)0x00,(byte)0x34};
+                    DatagramPacket sendpack = new DatagramPacket(send,
+                            send.length,
                             InetAddress.getByName("103.5.126.153"),
                             5060);
                     socket.send(sendpack);
                     socket.receive(sendpack);
                     String str = new String(sendpack.getData(), sendpack.getOffset(),sendpack.getLength());
-                    FlyLog.d(str);
+                    FlyLog.d(ByteTools.bytes2HexString(str.getBytes()));
                     socket.close();
                     FlyLog.d("UDP sokcet client is end!");
                 } catch (Exception e) {
                     e.printStackTrace();
                     FlyLog.e(e.toString());
                 }
-
             }
         }).start();
     }
@@ -65,5 +74,4 @@ public class MainActivity extends AppCompatActivity {
     public native int openTunDev();
 
     public native void closeTunDev(int fd);
-
 }
