@@ -34,8 +34,15 @@ public class MainActivity extends AppCompatActivity {
                     FlyLog.d(socket.toString());
                     socket.setSoTimeout(3000);
                     String ssend = "[{\"messageType\":3,\"netType\":4,\"netTypeName\":\"wlan0\",\"sessionid\":110358574}]";
-                    DatagramPacket sendpack = new DatagramPacket(ssend.getBytes(),
-                            ssend.getBytes().length,
+                    byte send[] = new byte[]{
+                            (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x03,
+                            (byte)0x06,(byte)0x12,(byte)0x29,(byte)0x87,
+                            (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x16,
+                            (byte)0x89,(byte)0x95,(byte)0xb6,(byte)0x37,
+                            (byte)0xc9,(byte)0xc4,(byte)0x93,(byte)0x38,
+                            (byte)0x00,(byte)0x34};
+                    DatagramPacket sendpack = new DatagramPacket(send,
+                            send.length,
                             InetAddress.getByName("103.5.126.153"),
                             5060);
                     socket.send(sendpack);
