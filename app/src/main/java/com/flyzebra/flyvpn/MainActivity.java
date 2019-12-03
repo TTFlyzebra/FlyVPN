@@ -5,6 +5,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
 public class MainActivity extends AppCompatActivity {
     private int fd;
 
@@ -17,6 +21,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FlyLog.d("UDP sokcet client is run!");
+                    DatagramSocket socket = null;
+                    socket = new DatagramSocket();
+                    FlyLog.d(socket.toString());
+                    String ssend = "Hello you can reciver!";
+                    DatagramPacket sendpack = new DatagramPacket(ssend.getBytes(),
+                            ssend.getBytes().length,
+                            InetAddress.getByName("103.5.126.153"),
+                            5060);
+                    socket.send(sendpack);
+                    socket.receive(sendpack);
+                    String str = new String(sendpack.getData(), sendpack.getOffset(),sendpack.getLength());
+                    FlyLog.d(str);
+                    socket.close();
+                    FlyLog.d("UDP sokcet client is end!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FlyLog.e(e.toString());
+                }
+
+            }
+        }).start();
     }
 
     public void openTun(View view) {
