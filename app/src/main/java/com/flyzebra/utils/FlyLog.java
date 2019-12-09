@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static final String TAG = "flyzebra";
+    public static final String TAG = "FLYLOG";
     public static String[] filter = {
     };
 
@@ -68,15 +68,15 @@ public class FlyLog {
         stringBuilder
                 .append("[")
                 .append(thread.getName())
-                .append("][")
-                .append(thread.getId())
+//                .append("][")
+//                .append(thread.getId())
                 .append("](")
                 .append(caller.getFileName())
                 .append(":")
                 .append(caller.getLineNumber())
                 .append(")")
-                .append(caller.getMethodName())
-                .append("()")
+//                .append(caller.getMethodName())
+//                .append("()")
                 .append(">>>>")
                 .append(str);
 //        }
