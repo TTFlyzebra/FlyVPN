@@ -10,6 +10,7 @@ import android.net.Network;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
@@ -23,12 +24,15 @@ public class MainService extends Service {
     private RatdDaemonConnector mConnector;
     private static final String RATD_TAG = "RatdConnector";
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
     private static final int HEARTBEAT_TIME = 5000;
     private static final HandlerThread mHeartBeatThread = new HandlerThread("HeartBeatTask");
 
     static {
         mHeartBeatThread.start();
     }
+
 
     private static final Handler mHeartBeatHandler = new Handler(mHeartBeatThread.getLooper());
     private Runnable heartBeatTask = new Runnable() {
@@ -67,9 +71,20 @@ public class MainService extends Service {
                         }
                     }
                 }
-            } else {
-
             }
+
+            //发送广播
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent("intent.action.UPDATE_MP_STATUS_FOR_LINK_MANAGER");
+                    intent.putExtra("NETWORK_LINK_WIFI", 1);
+                    intent.putExtra("NETWORK_LINK_4G", 1);
+                    intent.putExtra("NETWORK_LINK_MCWILL", 1);
+                    sendBroadcast(intent);
+                }
+            });
+
         }
     };
 
