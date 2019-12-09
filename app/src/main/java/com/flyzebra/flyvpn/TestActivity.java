@@ -1,18 +1,21 @@
 package com.flyzebra.flyvpn;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.flyzebra.utils.ByteTools;
+import com.flyzebra.utils.FlyLog;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class TestActivity extends AppCompatActivity {
     private int fd;
 
-    // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("flyvpn");
     }
@@ -21,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    public void openService(View view){
+        startService(new Intent(this,MainService.class));
     }
 
     public void testUDP(View view) {
@@ -45,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
                             send.length,
                             InetAddress.getByName("103.5.126.153"),
                             5060);
+                    FlyLog.d("send data=%s", ByteTools.bytes2HexString(send));
                     socket.send(sendpack);
                     socket.receive(sendpack);
                     String str = new String(sendpack.getData(), sendpack.getOffset(),sendpack.getLength());
-                    FlyLog.d(ByteTools.bytes2HexString(str.getBytes()));
+                    FlyLog.d("recv data=%s", ByteTools.bytes2HexString(str.getBytes()));
                     socket.close();
                     FlyLog.d("UDP sokcet client is end!");
                 } catch (Exception e) {

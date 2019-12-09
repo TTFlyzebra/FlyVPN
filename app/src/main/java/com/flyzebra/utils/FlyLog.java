@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.utils;
 
 import android.util.Log;
 

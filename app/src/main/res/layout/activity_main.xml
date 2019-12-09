@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".TestActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open service"
+        android:onClick="openService"
+        tools:ignore="OnClick" />
 
     <Button
         android:layout_width="wrap_content"

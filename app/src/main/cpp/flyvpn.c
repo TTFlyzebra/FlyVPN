@@ -3,11 +3,11 @@
 
 
 JNIEXPORT jint JNICALL
-Java_com_flyzebra_flyvpn_MainActivity_openTunDev(JNIEnv *env, jobject thiz) {
+Java_com_flyzebra_flyvpn_TestActivity_openTunDev__(JNIEnv *env, jobject thiz) {
     return open_dev();
 }
 
 JNIEXPORT void JNICALL
-Java_com_flyzebra_flyvpn_MainActivity_closeTunDev(JNIEnv *env, jobject thiz, jint fd) {
+Java_com_flyzebra_flyvpn_TestActivity_closeTunDev__I(JNIEnv *env, jobject thiz, jint fd) {
     close_dev(fd);
 }
