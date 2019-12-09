@@ -54,6 +54,7 @@ public class MainService extends Service {
                         if(TextUtils.isEmpty(iface)) continue;
                         int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
                         if (netType > 0) {
+                            mConnector.sendMessage(String.format(MpcMessage.enableMpc, netType, iface, createSessionId()));
                             mConnector.sendMessage(String.format(MpcMessage.testLink, netType, iface, createSessionId()));
                         }
                     }
