@@ -17,15 +17,10 @@ public class MainService extends Service {
     private Thread mThread;
     private RatdDaemonConnector mConnector;
     private static final String RATD_TAG = "RatdConnector";
-    public String string = "[{\"messageType\":23,\"sessionid\":%s}]";
+
     private static final int HEARTBEAT_TIME = 5000;
-
-    private static final HandlerThread mHeartBeatThread = new HandlerThread("notify-thread");
-
-    static {
-        mHeartBeatThread.start();
-    }
-
+    private static final HandlerThread mHeartBeatThread = new HandlerThread("HeartBeatTask");
+    static {mHeartBeatThread.start();}
     private static final Handler mHeartBeatHandler = new Handler(mHeartBeatThread.getLooper());
     private Runnable heartBeatTask = new Runnable() {
         @Override
@@ -34,7 +29,7 @@ public class MainService extends Service {
             long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
             mHeartBeatHandler.postDelayed(this, delayedTime);
             if (mConnector != null) {
-                mConnector.sendMessage(String.format(string, createSessionId()));
+                mConnector.sendMessage(String.format(MpcMessage.heartBeat, createSessionId()));
             }
         }
     };

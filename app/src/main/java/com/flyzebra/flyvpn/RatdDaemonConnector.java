@@ -52,7 +52,7 @@ public class RatdDaemonConnector implements Runnable {
                 ByteBuffer byteBuffer = ByteBuffer.allocate(count);
                 byteBuffer.put(buffer,0,count);
                 String retString = new String(byteBuffer.array(),"UTF-8");
-                FlyLog.d("recv mpc: "+retString);
+                FlyLog.d("recv mpc:"+retString);
             }
         } catch (IOException ex) {
             FlyLog.d("Communications error: " + ex);
@@ -82,7 +82,6 @@ public class RatdDaemonConnector implements Runnable {
 
     public void sendMessage(String message) {
         FlyLog.d("send mpc:" + message);
-        final long startTime = SystemClock.elapsedRealtime();
         synchronized (mDaemonLock) {
             if (mOutputStream == null) {
                 FlyLog.d("mOutputStream = null");
@@ -94,7 +93,5 @@ public class RatdDaemonConnector implements Runnable {
                 }
             }
         }
-        final long endTime = SystemClock.elapsedRealtime();
-        FlyLog.d("send mpc: use time "+(endTime-startTime));
     }
 }
