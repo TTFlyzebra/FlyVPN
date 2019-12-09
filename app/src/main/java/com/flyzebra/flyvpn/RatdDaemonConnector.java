@@ -21,7 +21,11 @@ public class RatdDaemonConnector implements Runnable {
     private int BUFFER_SIZE = 4096;
 
     private static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
-    static {mSendMpcThread.start();}
+
+    static {
+        mSendMpcThread.start();
+    }
+
     private static final Handler mSendMpcHandler = new Handler(mSendMpcThread.getLooper());
 
     @Override
@@ -51,17 +55,27 @@ public class RatdDaemonConnector implements Runnable {
                 mOutputStream = socket.getOutputStream();
             }
             byte[] buffer = new byte[BUFFER_SIZE];
-            int start = 0;
             while (true) {
-                int count = inputStream.read(buffer, start, BUFFER_SIZE - start);
+                int count = inputStream.read(buffer, 0, BUFFER_SIZE);
                 if (count < 0) {
-                    FlyLog.d("got " + count + " reading with start = " + start);
                     break;
                 }
                 ByteBuffer byteBuffer = ByteBuffer.allocate(count);
-                byteBuffer.put(buffer,0,count);
-                String retString = new String(byteBuffer.array(),"UTF-8");
-                FlyLog.d("recv mpc:"+retString);
+                byteBuffer.put(buffer, 0, count);
+                String tempStr = new String(byteBuffer.array(), "UTF-8");
+                int start = -1;
+                do {
+                    start = tempStr.indexOf("}]");
+                    if (start != tempStr.length() - 2) {
+                        String retStr = tempStr.substring(0, start + 2);
+                        tempStr = tempStr.substring(start + 2);
+                        FlyLog.d("recv mpc:" + retStr);
+                    }else{
+                        FlyLog.d("recv mpc:" + tempStr);
+                        break;
+                    }
+                } while (start == -1);
+
             }
         } catch (IOException ex) {
             FlyLog.d("Communications error: " + ex);
