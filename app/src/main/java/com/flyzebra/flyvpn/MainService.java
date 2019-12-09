@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class MainService extends Service {
@@ -51,11 +53,17 @@ public class MainService extends Service {
                     LinkProperties linkProperties = cm.getLinkProperties(network);
                     if (linkProperties != null && mConnector != null) {
                         String iface = linkProperties.getInterfaceName();
-                        if(TextUtils.isEmpty(iface)) continue;
+                        if (TextUtils.isEmpty(iface)) continue;
                         int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
                         if (netType > 0) {
                             mConnector.sendMessage(String.format(MpcMessage.enableMpc, netType, iface, createSessionId()));
                             mConnector.sendMessage(String.format(MpcMessage.testLink, netType, iface, createSessionId()));
+                            List<LinkAddress> linkAddress = linkProperties.getLinkAddresses();
+                            if (linkAddress != null && !linkAddress.isEmpty()) {
+                                String ip = linkAddress.get(0).toString();
+                                ip = ip.substring(0, ip.indexOf("/"));
+                                mConnector.sendMessage(String.format(MpcMessage.addLink, netType, iface, ip, createSessionId()));
+                            }
                         }
                     }
                 }
