@@ -2,6 +2,8 @@ package com.flyzebra.flyvpn;
 
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.SystemClock;
 
 import com.flyzebra.utils.FlyLog;
@@ -18,11 +20,18 @@ public class RatdDaemonConnector implements Runnable {
     private final Object mDaemonLock = new Object();
     private int BUFFER_SIZE = 4096;
 
+    private static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
+    static {mSendMpcThread.start();}
+    private static final Handler mSendMpcHandler = new Handler(mSendMpcThread.getLooper());
+
     @Override
     public void run() {
         FlyLog.d("RatdDaemonConnector start! ");
         while (true) {
             try {
+                //初始化
+                mSendMpcHandler.removeCallbacksAndMessages(null);
+                //开始监听ratd并交互
                 listenToSocket();
             } catch (Exception e) {
                 FlyLog.e("Error in RatdDaemonConnector: " + e);
@@ -80,18 +89,24 @@ public class RatdDaemonConnector implements Runnable {
         }
     }
 
-    public void sendMessage(String message) {
-        FlyLog.d("send mpc:" + message);
-        synchronized (mDaemonLock) {
-            if (mOutputStream == null) {
-                FlyLog.d("mOutputStream = null");
-            } else {
-                try {
-                    mOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    FlyLog.d(e.toString());
+    public void sendMessage(final String message) {
+        mSendMpcHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                FlyLog.d("send mpc:" + message);
+                synchronized (mDaemonLock) {
+                    if (mOutputStream == null) {
+                        FlyLog.d("mOutputStream = null");
+                    } else {
+                        try {
+                            mOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
+                        } catch (IOException e) {
+                            FlyLog.d(e.toString());
+                        }
+                    }
                 }
             }
-        }
+        });
+
     }
 }
