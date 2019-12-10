@@ -38,6 +38,7 @@ public class MainService extends Service implements OnRecvMessage {
         ratdSocketTask.register(this);
         heartBeatTask = new HeartBeatTask(ratdSocketTask);
         detectLinkTask = new DetectLinkTask(getApplicationContext(), ratdSocketTask);
+
     }
 
     @Override
@@ -77,9 +78,7 @@ public class MainService extends Service implements OnRecvMessage {
                 break;
             case 0x4: //探测包响应          4
                 if (message.isResultOk()) {
-                    mpcController.addNetworkLink(message.netType == 4 ? mpcStatus.wifiLink
-                            : message.netType == 2 ? mpcStatus.mobileLink
-                            : message.netType == 1 ? mpcStatus.mcwillLink : null);
+                    mpcController.addNetworkLink(this,message.netType);
                 }
                 break;
             case 0x6: //删除子链路响应       6

@@ -1,5 +1,14 @@
 package com.flyzebra.flyvpn.data;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkAddress;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.text.TextUtils;
+
+import java.util.List;
+
 /**
  * ClassName: MpcStatus
  * Description:
@@ -37,16 +46,62 @@ public class MpcStatus {
         return MpcStatusHolder.sInstance;
     }
 
+    public NetworkLink getNetLink(int type) {
+        switch (type) {
+            case 1:
+                return mcwillLink;
+            case 2:
+                return mobileLink;
+            case 4:
+                return wifiLink;
+            default:
+                return null;
+        }
+    }
+
     private static class MpcStatusHolder {
         public static final MpcStatus sInstance = new MpcStatus();
     }
 
-    public void reset(){
+    public void init(Context context) {
         mpcInit = false;
         mpcEnable = false;
         mcwillLink.reset();
         mobileLink.reset();
         wifiLink.reset();
+
+        mcwillLink.type = 1;
+        mobileLink.type = 2;
+        wifiLink.type = 4;
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Network[] networks = cm.getAllNetworks();
+            for (Network network : networks) {
+                LinkProperties linkProperties = cm.getLinkProperties(network);
+                if (linkProperties != null) {
+                    String iface = linkProperties.getInterfaceName();
+                    if (TextUtils.isEmpty(iface)) continue;
+                    List<LinkAddress> linkAddress = linkProperties.getLinkAddresses();
+                    if (linkAddress != null && !linkAddress.isEmpty()) {
+                        String ip = linkAddress.get(0).toString();
+                        ip = ip.substring(0, ip.indexOf("/"));
+                        if (TextUtils.isEmpty(ip)) {
+                            if (iface.startsWith("wlan")) {
+                                wifiLink.name = iface;
+                                wifiLink.ip = ip;
+                            } else if (iface.startsWith("rmnet_data")) {
+                                mobileLink.name = iface;
+                                mobileLink.ip = ip;
+                            } else if (iface.startsWith("mcwill")) {
+                                mcwillLink.name = iface;
+                                mcwillLink.ip = ip;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
