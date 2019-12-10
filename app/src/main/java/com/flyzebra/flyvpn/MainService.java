@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.flyzebra.flyvpn.data.MpcStatus;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 
@@ -15,8 +16,9 @@ import com.flyzebra.flyvpn.task.RatdSocketTask;
  * Date: 19-12-10 上午9:21
  */
 public class MainService extends Service {
-    private RatdSocketTask mConnector;
+    private RatdSocketTask ratdSocketTask;
     private HeartBeatTask heartBeatTask;
+    private MpcStatus mpcStatus;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -26,8 +28,9 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mConnector = new RatdSocketTask();
-        heartBeatTask = new HeartBeatTask(mConnector);
+        mpcStatus = new MpcStatus();
+        ratdSocketTask = new RatdSocketTask();
+        heartBeatTask = new HeartBeatTask(ratdSocketTask);
     }
 
     @Override
