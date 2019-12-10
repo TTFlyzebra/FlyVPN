@@ -1,4 +1,6 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.task;
+
+import com.flyzebra.flyvpn.data.MpcMessage;
 
 /**
  * ClassName: OnRecvMessage
@@ -8,5 +10,5 @@ package com.flyzebra.flyvpn;
  * Date: 19-12-10 上午11:17
  */
 public interface OnRecvMessage {
-    void recv(String message);
+    void recv(MpcMessage message);
 }

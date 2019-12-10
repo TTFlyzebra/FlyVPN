@@ -48,8 +48,4 @@ public class MpcStatus {
         mobileLink.reset();
         wifiLink.reset();
     }
-
-
-
-
 }

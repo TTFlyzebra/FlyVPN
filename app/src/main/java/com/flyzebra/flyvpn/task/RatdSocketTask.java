@@ -7,8 +7,9 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
 
-import com.flyzebra.flyvpn.OnRecvMessage;
+import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.GsonTools;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class RatdSocketTask implements Runnable {
     private static final Handler mSendMpcHandler = new Handler(mSendMpcThread.getLooper());
 
 
-    public RatdSocketTask(){
+    public RatdSocketTask() {
         mThread = new Thread(this, RATD_TAG);
         mThread.setDaemon(true);
         mThread.start();
@@ -93,8 +94,10 @@ public class RatdSocketTask implements Runnable {
                     if (start != tempStr.length() - 2) {
                         String retStr = tempStr.substring(0, start + 2);
                         tempStr = tempStr.substring(start + 2);
+                        notifyRecvMessage(retStr);
                         FlyLog.d("recv mpc:" + retStr);
-                    }else{
+                    } else {
+                        notifyRecvMessage(tempStr);
                         FlyLog.d("recv mpc:" + tempStr);
                         break;
                     }
@@ -150,20 +153,20 @@ public class RatdSocketTask implements Runnable {
 
     private List<OnRecvMessage> onRecvMessageList = new ArrayList<>();
 
-    public void register(OnRecvMessage onRecvMessage){
+    public void register(OnRecvMessage onRecvMessage) {
         onRecvMessageList.add(onRecvMessage);
     }
 
-    public void unRegister(OnRecvMessage onRecvMessage){
+    public void unRegister(OnRecvMessage onRecvMessage) {
         onRecvMessageList.remove(onRecvMessage);
     }
 
-    private void notifyRecvMessage(final String message){
+    private void notifyRecvMessage(final String message) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                for(OnRecvMessage onRecvMessage:onRecvMessageList){
-                    onRecvMessage.recv(message);
+                for (OnRecvMessage onRecvMessage : onRecvMessageList) {
+                    onRecvMessage.recv(GsonTools.json2Object(message, MpcMessage.class));
                 }
             }
         });

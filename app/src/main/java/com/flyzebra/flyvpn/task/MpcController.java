@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.task;
 
 import com.flyzebra.flyvpn.data.NetworkLink;
 

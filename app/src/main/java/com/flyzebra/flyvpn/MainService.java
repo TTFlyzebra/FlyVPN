@@ -4,9 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.data.MpcStatus;
 import com.flyzebra.flyvpn.task.DetectLinkTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
+import com.flyzebra.flyvpn.task.OnRecvMessage;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.utils.FlyLog;
 
@@ -17,7 +19,7 @@ import com.flyzebra.utils.FlyLog;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午9:21
  */
-public class MainService extends Service implements OnRecvMessage{
+public class MainService extends Service implements OnRecvMessage {
     private RatdSocketTask ratdSocketTask;
     private HeartBeatTask heartBeatTask;
     private DetectLinkTask detectLinkTask;
@@ -53,7 +55,7 @@ public class MainService extends Service implements OnRecvMessage{
     }
 
     @Override
-    public void recv(String message) {
+    public void recv(MpcMessage message) {
 
     }
 }
