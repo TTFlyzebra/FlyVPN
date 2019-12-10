@@ -55,7 +55,7 @@ public class MpcController {
             @Override
             public void run() {
                 if (socketClient == null || !socketClient.sendMessage(String.format(MpcMessage.initMpc, MyTools.createSessionId()))) {
-                    mSendMpcHandler.postDelayed(this, 1000);
+                    mSendMpcHandler.postDelayed(this, 5000);
                 }
             }
         });
@@ -82,7 +82,7 @@ public class MpcController {
                     }
                 }
                 if (!flag) {
-                    mSendMpcHandler.postDelayed(this, 1000);
+                    mSendMpcHandler.postDelayed(this, 5000);
                 }
             }
         });

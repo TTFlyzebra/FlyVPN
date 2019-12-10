@@ -60,11 +60,7 @@ public class MainService extends Service implements OnRecvMessage {
         switch (message.messageType) {
             case 0x2: //增加子链路响应       2
                 mpcStatus.getNetLink(message.netType).isLink = message.isResultOk();
-                Intent intent = new Intent("intent.action.UPDATE_MP_STATUS_FOR_LINK_MANAGER");
-                intent.putExtra("NETWORK_LINK_WIFI", mpcStatus.wifiLink.isLink ? 1 : 0);
-                intent.putExtra("NETWORK_LINK_4G", mpcStatus.mobileLink.isLink ? 1 : 0);
-                intent.putExtra("NETWORK_LINK_MCWILL", mpcStatus.mcwillLink.isLink ? 1 : 0);
-                sendBroadcast(intent);
+                upLinkManager();
                 break;
             case 0x4: //探测包响应          4
                 if (message.isResultOk()) {
@@ -102,5 +98,13 @@ public class MainService extends Service implements OnRecvMessage {
                 mpcController.initMpc(null, null);
                 break;
         }
+    }
+
+    private void upLinkManager() {
+        Intent intent = new Intent("intent.action.UPDATE_MP_STATUS_FOR_LINK_MANAGER");
+        intent.putExtra("NETWORK_LINK_WIFI", mpcStatus.wifiLink.isLink ? 1 : 0);
+        intent.putExtra("NETWORK_LINK_4G", mpcStatus.mobileLink.isLink ? 1 : 0);
+        intent.putExtra("NETWORK_LINK_MCWILL", mpcStatus.mcwillLink.isLink ? 1 : 0);
+        sendBroadcast(intent);
     }
 }

@@ -23,6 +23,20 @@
             </intent-filter>
         </activity>
         <service android:name=".MainService"/>
+
+       <receiver android:name=".BootBroadcastReceiver">
+           <intent-filter>
+               <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+           </intent-filter>
+
+            <intent-filter>
+               <action android:name="android.intent.action.PACKAGE_ADDED" />
+               <action android:name="android.intent.action.PACKAGE_REMOVED" />
+               <action android:name="android.intent.action.PACKAGE_REPLACED" />
+               <data android:scheme="package" />
+           </intent-filter>
+       </receiver>
+
     </application>
 
 </manifest>
