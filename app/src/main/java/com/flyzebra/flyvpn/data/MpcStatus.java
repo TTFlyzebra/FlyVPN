@@ -39,6 +39,9 @@ public class MpcStatus {
     public NetworkLink wifiLink = new NetworkLink(4);
 
 
+    public NetworkLink defaultLink = new NetworkLink(-1);
+
+
     private MpcStatus() {
     }
 
@@ -55,7 +58,7 @@ public class MpcStatus {
             case 4:
                 return wifiLink;
             default:
-                return null;
+                return defaultLink;
         }
     }
 
