@@ -14,7 +14,14 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public class RatdDaemonConnector implements Runnable {
+/**
+ * ClassName: MpcMessage
+ * Description:
+ * Author: FlyZebra
+ * Email:flycnzebra@gmail.com
+ * Date: 19-12-10 上午9:00
+ */
+public class RatdSocketTask implements Runnable {
     private final static String SOCKET_NAME = "socket_ratd";
     private OutputStream mOutputStream;
     private final Object mDaemonLock = new Object();
@@ -30,7 +37,7 @@ public class RatdDaemonConnector implements Runnable {
 
     @Override
     public void run() {
-        FlyLog.d("RatdDaemonConnector start! ");
+        FlyLog.d("RatdSocketTask start! ");
         while (true) {
             try {
                 //初始化
@@ -38,7 +45,7 @@ public class RatdDaemonConnector implements Runnable {
                 //开始监听ratd并交互
                 listenToSocket();
             } catch (Exception e) {
-                FlyLog.e("Error in RatdDaemonConnector: " + e);
+                FlyLog.e("Error in RatdSocketTask: " + e);
                 SystemClock.sleep(5000);
             }
         }

@@ -13,6 +13,13 @@ import java.net.InetAddress;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * ClassName: MpcMessage
+ * Description:
+ * Author: FlyZebra
+ * Email:flycnzebra@gmail.com
+ * Date: 19-12-8 上午8:40
+ */
 public class TestActivity extends AppCompatActivity {
     private int fd;
 

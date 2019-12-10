@@ -19,9 +19,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * ClassName: MainService
+ * Description:
+ * Author: FlyZebra
+ * Email:flycnzebra@gmail.com
+ * Date: 19-12-10 上午9:21
+ */
 public class MainService extends Service {
     private Thread mThread;
-    private RatdDaemonConnector mConnector;
+    private RatdSocketTask mConnector;
     private static final String RATD_TAG = "RatdConnector";
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
@@ -108,7 +115,7 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mConnector = new RatdDaemonConnector();
+        mConnector = new RatdSocketTask();
         mThread = new Thread(mConnector, RATD_TAG);
         mThread.start();
         mHeartBeatHandler.postDelayed(heartBeatTask, SystemClock.uptimeMillis() % 5000);
