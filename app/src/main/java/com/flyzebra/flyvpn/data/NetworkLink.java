@@ -14,6 +14,7 @@ public class NetworkLink {
     public String token = "";
     public String rrt = "";
     public String band ="";
+    public boolean isLink = false;
 
     public void reset(){
         ip = "";

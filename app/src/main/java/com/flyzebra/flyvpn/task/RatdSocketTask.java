@@ -7,6 +7,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
 
+import com.flyzebra.flyvpn.MpcController;
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.utils.FlyLog;
 import com.flyzebra.utils.GsonTools;
@@ -36,16 +37,40 @@ public class RatdSocketTask implements Runnable {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
 
-    private static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
+    public static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
 
     static {
         mSendMpcThread.start();
     }
 
-    private static final Handler mSendMpcHandler = new Handler(mSendMpcThread.getLooper());
+
+    private List<OnRecvMessage> onRecvMessageList = new ArrayList<>();
+
+    public void register(OnRecvMessage onRecvMessage) {
+        onRecvMessageList.add(onRecvMessage);
+    }
+
+    public void unRegister(OnRecvMessage onRecvMessage) {
+        onRecvMessageList.remove(onRecvMessage);
+    }
+
+    private void notifyRecvMessage(final String message) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                for (OnRecvMessage onRecvMessage : onRecvMessageList) {
+                    List<MpcMessage> mpcMessages = GsonTools.json2ListObject(message, MpcMessage.class);
+                    if (mpcMessages != null && !mpcMessages.isEmpty()) {
+                        onRecvMessage.recv(mpcMessages.get(0));
+                    }
+                }
+            }
+        });
+    }
 
 
     public RatdSocketTask() {
+        MpcController.getInstance().init(this);
         mThread = new Thread(this, RATD_TAG);
         mThread.setDaemon(true);
         mThread.start();
@@ -56,8 +81,6 @@ public class RatdSocketTask implements Runnable {
         FlyLog.d("RatdSocketTask start! ");
         while (true) {
             try {
-                //初始化
-                mSendMpcHandler.removeCallbacksAndMessages(null);
                 //开始监听ratd并交互
                 listenToSocket();
             } catch (Exception e) {
@@ -77,11 +100,10 @@ public class RatdSocketTask implements Runnable {
             synchronized (mDaemonLock) {
                 mOutputStream = socket.getOutputStream();
             }
+            notifyRecvMessage(MpcMessage.socketConnect);
             byte[] buffer = new byte[BUFFER_SIZE];
             while (true) {
-                FlyLog.e("read 1");
                 int count = inputStream.read(buffer, 0, BUFFER_SIZE);
-                FlyLog.e("read 2");
                 if (count < 0) {
                     break;
                 }
@@ -130,45 +152,22 @@ public class RatdSocketTask implements Runnable {
         }
     }
 
-    public void sendMessage(final String message) {
-        mSendMpcHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                FlyLog.d("send mpc:" + message);
-                synchronized (mDaemonLock) {
-                    if (mOutputStream == null) {
-                        FlyLog.d("mOutputStream = null");
-                    } else {
-                        try {
-                            mOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
-                        } catch (IOException e) {
-                            FlyLog.d(e.toString());
-                        }
-                    }
+    public boolean sendMessage(final String message) {
+        FlyLog.d("send mpc:" + message);
+        synchronized (mDaemonLock) {
+            if (mOutputStream == null) {
+                FlyLog.d("mOutputStream = null");
+                return false;
+            } else {
+                try {
+                    mOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
+                } catch (IOException e) {
+                    FlyLog.d(e.toString());
+                    return false;
                 }
             }
-        });
-
+        }
+        return true;
     }
 
-    private List<OnRecvMessage> onRecvMessageList = new ArrayList<>();
-
-    public void register(OnRecvMessage onRecvMessage) {
-        onRecvMessageList.add(onRecvMessage);
-    }
-
-    public void unRegister(OnRecvMessage onRecvMessage) {
-        onRecvMessageList.remove(onRecvMessage);
-    }
-
-    private void notifyRecvMessage(final String message) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                for (OnRecvMessage onRecvMessage : onRecvMessageList) {
-                    onRecvMessage.recv(GsonTools.json2Object(message, MpcMessage.class));
-                }
-            }
-        });
-    }
 }

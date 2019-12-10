@@ -41,11 +41,12 @@ public class MpcStatus {
         public static final MpcStatus sInstance = new MpcStatus();
     }
 
-    public void init(){
+    public void reset(){
         mpcInit = false;
         mpcEnable = false;
         mcwillLink.reset();
         mobileLink.reset();
         wifiLink.reset();
     }
+
 }
