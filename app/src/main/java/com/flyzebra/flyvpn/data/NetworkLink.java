@@ -1,0 +1,17 @@
+package com.flyzebra.flyvpn.data;
+
+/**
+ * ClassName: NetworkLink
+ * Description:
+ * Author: FlyZebra
+ * Email:flycnzebra@gmail.com
+ * Date: 19-12-10 上午9:37
+ */
+public class NetworkLink {
+    public String ip = "";
+    public String name = "";
+    public int type =0;
+    public String token = "";
+    public String rrt = "";
+    public String band ="";
+}

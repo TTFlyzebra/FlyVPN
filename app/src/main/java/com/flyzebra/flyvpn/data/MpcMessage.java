@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.data;
 
 /**
  * ClassName: MpcMessage

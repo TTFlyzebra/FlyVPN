@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.data;
 
 /**
  * ClassName: MpcStatus
@@ -9,25 +9,25 @@ package com.flyzebra.flyvpn;
  */
 public class MpcStatus {
     /**
-     * 是否初始化成功
+     * 初始化
      */
     public Boolean mpcInit = false;
     /**
-     * 是否开启双流成功
+     * 开启双流
      */
     public Boolean mpcEnable = false;
     /**
-     * 是否添加mcwill链路成功
+     * mcwill链路
      */
-    public Boolean addMcwill = false;
+    public NetworkLink mcwillLink = new NetworkLink();
     /**
-     * 是否添加4G链路成功
+     * 4G链路
      */
-    public Boolean add4G = false;
+    public NetworkLink mobileLink = new NetworkLink();
     /**
-     * 是否添加Wifi链路成功
+     * Wifi链路
      */
-    public Boolean addWifi = false;
+    public NetworkLink wifiLink = new NetworkLink();
 
 
 

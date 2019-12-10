@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.task;
 
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
@@ -22,10 +22,13 @@ import java.nio.charset.StandardCharsets;
  * Date: 19-12-10 上午9:00
  */
 public class RatdSocketTask implements Runnable {
+    private Thread mThread;
     private final static String SOCKET_NAME = "socket_ratd";
     private OutputStream mOutputStream;
     private final Object mDaemonLock = new Object();
     private int BUFFER_SIZE = 4096;
+    private static final String RATD_TAG = "RatdConnector";
+
 
     private static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
 
@@ -34,6 +37,13 @@ public class RatdSocketTask implements Runnable {
     }
 
     private static final Handler mSendMpcHandler = new Handler(mSendMpcThread.getLooper());
+
+
+    public RatdSocketTask(){
+        mThread = new Thread(this, RATD_TAG);
+        mThread.setDaemon(true);
+        mThread.start();
+    }
 
     @Override
     public void run() {
