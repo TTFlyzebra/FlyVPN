@@ -16,6 +16,10 @@ public class NetworkLink {
     public String band ="";
     public boolean isLink = false;
 
+    public NetworkLink(int type){
+        this.type = type;
+    }
+
     public void reset(){
         ip = "";
         name = "";

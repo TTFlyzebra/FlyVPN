@@ -28,15 +28,15 @@ public class MpcStatus {
     /**
      * mcwill链路
      */
-    public NetworkLink mcwillLink = new NetworkLink();
+    public NetworkLink mcwillLink = new NetworkLink(1);
     /**
      * 4G链路
      */
-    public NetworkLink mobileLink = new NetworkLink();
+    public NetworkLink mobileLink = new NetworkLink(2);
     /**
      * Wifi链路
      */
-    public NetworkLink wifiLink = new NetworkLink();
+    public NetworkLink wifiLink = new NetworkLink(4);
 
 
     private MpcStatus() {

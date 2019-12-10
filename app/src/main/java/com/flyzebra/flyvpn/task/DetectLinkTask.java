@@ -22,7 +22,7 @@ import com.flyzebra.flyvpn.utils.MyTools;
 public class DetectLinkTask implements Runnable {
     private Context mContext;
     private RatdSocketTask ratdSocketTask;
-    private static final int HEARTBEAT_TIME = 5000;
+    private static final int HEARTBEAT_TIME = 30000;
     private static final HandlerThread mDetectLinkThread = new HandlerThread("DetectLinkTask");
 
     static {

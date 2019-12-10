@@ -116,7 +116,7 @@ public class MpcController {
                                 if (linkAddress != null && !linkAddress.isEmpty()) {
                                     String ip = linkAddress.get(0).toString();
                                     ip = ip.substring(0, ip.indexOf("/"));
-                                    if (TextUtils.isEmpty(ip)) {
+                                    if (!TextUtils.isEmpty(ip)) {
                                         socketClient.sendMessage(String.format(MpcMessage.addLink, netType, iface, ip, MyTools.createSessionId()));
                                     }
                                 }
