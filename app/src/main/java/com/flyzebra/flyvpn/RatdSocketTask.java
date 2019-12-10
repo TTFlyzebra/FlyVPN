@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * ClassName: MpcMessage
+ * ClassName: RatdSocketTask
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com

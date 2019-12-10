@@ -14,7 +14,7 @@ import java.net.InetAddress;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * ClassName: MpcMessage
+ * ClassName: TestActivity
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
