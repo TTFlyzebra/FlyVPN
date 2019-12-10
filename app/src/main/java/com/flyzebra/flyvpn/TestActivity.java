@@ -31,9 +31,12 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        moveTaskToBack(true);
+        startService(new Intent(this,MainService.class));
     }
 
     public void openService(View view){
+        moveTaskToBack(true);
         startService(new Intent(this,MainService.class));
     }
 

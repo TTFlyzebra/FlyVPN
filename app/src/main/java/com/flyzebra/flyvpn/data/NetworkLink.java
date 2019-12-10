@@ -14,4 +14,13 @@ public class NetworkLink {
     public String token = "";
     public String rrt = "";
     public String band ="";
+
+    public void reset(){
+        ip = "";
+        name = "";
+        type =0;
+        token = "";
+        rrt = "";
+        band ="";
+    }
 }

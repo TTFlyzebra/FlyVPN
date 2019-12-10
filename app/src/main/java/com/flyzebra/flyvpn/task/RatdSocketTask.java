@@ -4,8 +4,10 @@ import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.SystemClock;
 
+import com.flyzebra.flyvpn.OnRecvMessage;
 import com.flyzebra.utils.FlyLog;
 
 import java.io.IOException;
@@ -13,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName: RatdSocketTask
@@ -28,6 +32,7 @@ public class RatdSocketTask implements Runnable {
     private final Object mDaemonLock = new Object();
     private int BUFFER_SIZE = 4096;
     private static final String RATD_TAG = "RatdConnector";
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
 
     private static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
@@ -73,7 +78,9 @@ public class RatdSocketTask implements Runnable {
             }
             byte[] buffer = new byte[BUFFER_SIZE];
             while (true) {
+                FlyLog.e("read 1");
                 int count = inputStream.read(buffer, 0, BUFFER_SIZE);
+                FlyLog.e("read 2");
                 if (count < 0) {
                     break;
                 }
@@ -139,5 +146,26 @@ public class RatdSocketTask implements Runnable {
             }
         });
 
+    }
+
+    private List<OnRecvMessage> onRecvMessageList = new ArrayList<>();
+
+    public void register(OnRecvMessage onRecvMessage){
+        onRecvMessageList.add(onRecvMessage);
+    }
+
+    public void unRegister(OnRecvMessage onRecvMessage){
+        onRecvMessageList.remove(onRecvMessage);
+    }
+
+    private void notifyRecvMessage(final String message){
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                for(OnRecvMessage onRecvMessage:onRecvMessageList){
+                    onRecvMessage.recv(message);
+                }
+            }
+        });
     }
 }

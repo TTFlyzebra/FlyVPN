@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static final String TAG = "FLYLOG";
+    public static final String TAG = "MPCLOG";
     public static String[] filter = {
     };
 

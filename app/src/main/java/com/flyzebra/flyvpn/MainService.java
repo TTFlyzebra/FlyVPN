@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.flyzebra.flyvpn.data.MpcStatus;
+import com.flyzebra.flyvpn.task.DetectLinkTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
+import com.flyzebra.utils.FlyLog;
 
 /**
  * ClassName: MainService
@@ -18,6 +20,7 @@ import com.flyzebra.flyvpn.task.RatdSocketTask;
 public class MainService extends Service implements OnRecvMessage{
     private RatdSocketTask ratdSocketTask;
     private HeartBeatTask heartBeatTask;
+    private DetectLinkTask detectLinkTask;
     private MpcStatus mpcStatus;
 
     @Override
@@ -28,9 +31,11 @@ public class MainService extends Service implements OnRecvMessage{
     @Override
     public void onCreate() {
         super.onCreate();
-        mpcStatus = new MpcStatus();
+        MpcStatus.getInstance().init();
         ratdSocketTask = new RatdSocketTask();
+        ratdSocketTask.register(this);
         heartBeatTask = new HeartBeatTask(ratdSocketTask);
+        detectLinkTask = new DetectLinkTask(getApplicationContext(),ratdSocketTask);
     }
 
     @Override
@@ -40,7 +45,10 @@ public class MainService extends Service implements OnRecvMessage{
 
     @Override
     public void onDestroy() {
+        FlyLog.d("onDestroy");
+        ratdSocketTask.unRegister(this);
         heartBeatTask.cancel();
+        detectLinkTask.cancel();
         super.onDestroy();
     }
 

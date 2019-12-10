@@ -13,5 +13,18 @@ public class MpcMessage {
     public static final String enableMpc = "[{\"messageType\":17,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
     public static final String testLink = "[{\"messageType\":3,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
     public static final String addLink = "[{\"messageType\":1,\"netType\":%d,\"netTypeName\":\"%s\",\"ip\":\"%s\",\"token\":0,\"band\":0,\"rtt\":0\",\"sessionid\":%s}]";
+
+    public int messageType;
+    public int sessionid;
+    public long uid;
+    public String dns;
+    public String mag;
+    public String netType;
+    public String netTypeName;
+    public String ip;
+    public String token;
+    public String band;
+    public String rrt;
+
 }
 

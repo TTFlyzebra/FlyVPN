@@ -30,5 +30,26 @@ public class MpcStatus {
     public NetworkLink wifiLink = new NetworkLink();
 
 
+    private MpcStatus() {
+    }
+
+    public static MpcStatus getInstance() {
+        return MpcStatusHolder.sInstance;
+    }
+
+    private static class MpcStatusHolder {
+        public static final MpcStatus sInstance = new MpcStatus();
+    }
+
+    public void init(){
+        mpcInit = false;
+        mpcEnable = false;
+        mcwillLink.reset();
+        mobileLink.reset();
+        wifiLink.reset();
+    }
+
+
+
 
 }
