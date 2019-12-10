@@ -15,7 +15,7 @@ import com.flyzebra.flyvpn.task.RatdSocketTask;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午9:21
  */
-public class MainService extends Service {
+public class MainService extends Service implements OnRecvMessage{
     private RatdSocketTask ratdSocketTask;
     private HeartBeatTask heartBeatTask;
     private MpcStatus mpcStatus;
@@ -42,5 +42,10 @@ public class MainService extends Service {
     public void onDestroy() {
         heartBeatTask.cancel();
         super.onDestroy();
+    }
+
+    @Override
+    public void recv(String message) {
+
     }
 }

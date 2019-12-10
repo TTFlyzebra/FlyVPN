@@ -24,7 +24,6 @@ public class HeartBeatTask {
         mHeartBeatThread.start();
     }
 
-
     private static final Handler mHeartBeatHandler = new Handler(mHeartBeatThread.getLooper());
     private Runnable heartBeatTask = new Runnable() {
         @Override
