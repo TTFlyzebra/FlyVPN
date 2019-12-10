@@ -34,7 +34,6 @@ public class DetectLinkTask implements Runnable {
     public DetectLinkTask(Context context, RatdSocketTask ratdSocketTask) {
         this.mContext = context;
         this.ratdSocketTask = ratdSocketTask;
-        mDetectLinkHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
     }
 
     public void cancel() {
@@ -65,5 +64,9 @@ public class DetectLinkTask implements Runnable {
                 }
             }
         }
+    }
+
+    public void start() {
+        mDetectLinkHandler.post(this);
     }
 }

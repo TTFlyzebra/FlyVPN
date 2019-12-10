@@ -10,6 +10,7 @@ import com.flyzebra.flyvpn.task.DetectLinkTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
 import com.flyzebra.flyvpn.task.OnRecvMessage;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
+import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.utils.FlyLog;
 
 /**
@@ -36,6 +37,7 @@ public class MainService extends Service implements OnRecvMessage {
         MpcStatus.getInstance().init();
         ratdSocketTask = new RatdSocketTask();
         ratdSocketTask.register(this);
+        ratdSocketTask.sendMessage(String.format(MpcMessage.initMpc, MyTools.createSessionId()));
         heartBeatTask = new HeartBeatTask(ratdSocketTask);
         detectLinkTask = new DetectLinkTask(getApplicationContext(),ratdSocketTask);
     }
@@ -56,6 +58,25 @@ public class MainService extends Service implements OnRecvMessage {
 
     @Override
     public void recv(MpcMessage message) {
-
+        switch (message.messageType){
+            case 0x2: //增加子链路响应       2
+            case 0x4: //探测包响应          4
+            case 0x6: //删除子链路响应       6
+            case 0x8: //释放MP链路响应       8
+            case 0x0a: //MP建立链路响应     10
+            case 0x12: //使能双流响应       18
+            case 0x14: //关闭双流响应       20
+                break;
+            case 0x16: //初始化配置响应     22
+                if(message.result==0) {
+                    heartBeatTask.start();
+                    detectLinkTask.start();
+                }
+                break;
+            case 0x18: //心跳响应          24
+            case 0x1a: //异常状态上报       26
+            case 0x1b: //流量信息上报       27
+                break;
+        }
     }
 }

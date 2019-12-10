@@ -28,6 +28,9 @@ public class HeartBeatTask implements Runnable{
 
     public HeartBeatTask(RatdSocketTask ratdSocketTask){
         this.ratdSocketTask = ratdSocketTask;
+    }
+
+    public void start(){
         mHeartBeatHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
     }
 
