@@ -79,13 +79,14 @@ public class RatdSocketTask implements ITask, Runnable {
                 listenToSocket();
             } catch (Exception e) {
                 FlyLog.e("Error in RatdSocketTask: " + e);
+                notifyRecvMessage(MpcMessage.socketError);
                 SystemClock.sleep(5000);
             }
         }
         isRun.set(false);
     }
 
-    private void listenToSocket() throws IOException {
+    private void listenToSocket() throws Exception {
         LocalSocket socket = null;
         try {
             socket = new LocalSocket();

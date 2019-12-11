@@ -23,12 +23,7 @@ import xinwei.com.mpapp.aidl.IServiceAidl;
 
 public class MainService extends BaseMainService {
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    //对外接口
     private MyServiceImpl myService = null;
-    //是否初始化双流配置
-    //是否开启多流
-
-    //是否开启多流
     private MainReceiver mainReceiver;
     private IntentFilter mIntentFilter;
 

@@ -45,7 +45,9 @@ public class MpcMessage {
     public static final String detectLink = "[{\"messageType\":3,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
     public static final String switchMpcLog = "[{\"messageType\":25,\"sessionid\":%s,\"operation\":%d}]";
 
+    public static final String socketError= "[{\"messageType\":99}]";
     public static final String socketConnect = "[{\"messageType\":100}]";
+
 
     public int messageType = 0;
     public int sessionid;

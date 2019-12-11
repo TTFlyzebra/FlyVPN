@@ -129,7 +129,14 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x1b: //流量信息上报       27
                 break;
+            case 0x63:
+                mpcStatus.mpcEnable = false;
+                mpcStatus.resetNetworkLink(this);
+                MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                break;
             case 0x64:
+                mpcStatus.mpcEnable = false;
+                mpcStatus.resetNetworkLink(this);
                 tryOpenOrCloseMpc();
                 break;
         }
@@ -139,10 +146,10 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
         heartBeatTask.stop();
         detectLinkTask.stop();
+        mpcStatus.resetNetworkLink(this);
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
             if(!mpcStatus.mpcEnable){
-                mpcStatus.resetNetworkLink(this);
                 mpcController.startMpc();
             }
             mpcStatus.mpcEnable = true;
@@ -150,7 +157,6 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             FlyLog.e("mpc switch is close,mpapp not running...");
             if(mpcStatus.mpcEnable){
                 mpcController.stopMpc();
-                mpcStatus.resetNetworkLink(this);
             }
             mpcStatus.mpcEnable = false;
         }

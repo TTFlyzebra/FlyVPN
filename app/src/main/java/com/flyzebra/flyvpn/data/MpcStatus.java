@@ -67,10 +67,6 @@ public class MpcStatus {
         mobileLink.reset();
         wifiLink.reset();
 
-        mcwillLink.netType = 1;
-        mobileLink.netType = 2;
-        wifiLink.netType = 4;
-
         ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
@@ -83,7 +79,7 @@ public class MpcStatus {
                     if (linkAddress != null && !linkAddress.isEmpty()) {
                         String ip = linkAddress.get(0).toString();
                         ip = ip.substring(0, ip.indexOf("/"));
-                        if (TextUtils.isEmpty(ip)) {
+                        if (!TextUtils.isEmpty(ip)) {
                             if (iface.startsWith("wlan")) {
                                 wifiLink.netTypeName = iface;
                                 wifiLink.ip = ip;
