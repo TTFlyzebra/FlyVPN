@@ -68,7 +68,6 @@ public class MpcStatus {
 
     public void init(Context context) {
         mpcInit = false;
-        mpcEnable = false;
         mcwillLink.reset();
         mobileLink.reset();
         wifiLink.reset();

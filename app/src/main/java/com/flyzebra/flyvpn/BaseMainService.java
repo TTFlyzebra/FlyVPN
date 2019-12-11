@@ -86,15 +86,17 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x12: //使能双流响应       18
                 if (message.isResultOk()) {
+                    mpcStatus.mpcEnable = true;
                     detectLinkTask.start();
                 }
                 break;
             case 0x14: //关闭双流响应       20
-                detectLinkTask.stop();
                 if (isReStart.get()) {
-                    mpcController.initMpc();
-                } else {
-                    heartBeatTask.start();
+                    String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
+                    if("true".equals(switch_status)){
+                        mpcStatus.mpcEnable = true;
+                        mpcController.startMpc();
+                    }
                 }
                 isReStart.set(false);
                 break;
@@ -105,7 +107,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                     heartBeatTask.start();
                     mpcController.enableMpcDefault(this);
                 } else {
-                    mpcController.initMpc();
+                    tryOpenOrCloseMpc();
                 }
                 break;
             case 0x18: //心跳响应          24
@@ -115,31 +117,41 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 if (message.exceptionCode == -2) {
                     FlyLog.e("exceptionCode=2, restart mpc");
                     isReStart.set(true);
-                    detectLinkTask.stop();
                     mpcController.stopMpc();
+                    mpcStatus.mpcEnable = false;
                 } else if (message.exceptionCode == -3) {
                     isReStart.set(false);
-                    detectLinkTask.stop();
-                    mpcController.initMpc();
+                    String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
+                    if ("true".equals(switch_status)){
+                        tryOpenOrCloseMpc();
+                    }
                 }
                 break;
             case 0x1b: //流量信息上报       27
                 break;
             case 0x64:
-                switchMPC();
+                tryOpenOrCloseMpc();
                 break;
         }
     }
 
-    public void switchMPC() {
+    public void tryOpenOrCloseMpc() {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
         mpcStatus.init(this);
         heartBeatTask.stop();
         detectLinkTask.stop();
         if ("true".equals(switch_status)) {
-            mpcController.initMpc();
+            FlyLog.e("mpc switch is open,mpapp start run...");
+            if(!mpcStatus.mpcEnable){
+                mpcController.startMpc();
+            }
+            mpcStatus.mpcEnable = true;
         } else {
-            mpcController.stopMpc();
+            FlyLog.e("mpc switch is close,mpapp not running...");
+            if(mpcStatus.mpcEnable){
+                mpcController.stopMpc();
+            }
+            mpcStatus.mpcEnable = false;
         }
         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
     }

@@ -83,7 +83,7 @@ public class MpcController {
         this.socketClient = ratdSocketTask;
     }
 
-    public void initMpc() {
+    public void startMpc() {
         mSendMpcHandler.removeCallbacksAndMessages(null);
         mSendMpcHandler.post(new Runnable() {
             @Override

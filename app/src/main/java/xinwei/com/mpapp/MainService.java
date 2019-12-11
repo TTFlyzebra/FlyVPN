@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import com.flyzebra.flyvpn.BaseMainService;
 import com.flyzebra.flyvpn.utils.MyTools;
+import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
 
 import xinwei.com.mpapp.aidl.IServiceAidl;
@@ -19,7 +22,7 @@ import xinwei.com.mpapp.aidl.IServiceAidl;
  */
 
 public class MainService extends BaseMainService {
-    private static final String TAG = "BaseMainService";
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     //对外接口
     private MyServiceImpl myService = null;
     //是否初始化双流配置
@@ -46,6 +49,12 @@ public class MainService extends BaseMainService {
         registerReceiver(mainReceiver, mIntentFilter);
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        FlyLog.d("onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     /**
      * 广播接收器
      */
@@ -63,14 +72,16 @@ public class MainService extends BaseMainService {
                 switch (serviceType) {
                     case -1:
                         //重新初始化
-                        switchMPC();
+                        FlyLog.i("linkserver up settings");
+                        tryOpenOrCloseMpc();
                         break;
                     case 1:
                     case 2:
                     case 4:
                         break;
                     case 6:
-                        switchMPC();
+                        FlyLog.i("linkserver up settings");
+                        tryOpenOrCloseMpc();
                         break;
                     case 7:
                         //日志开关
@@ -100,11 +111,19 @@ public class MainService extends BaseMainService {
          */
         @Override
         public boolean openMultipleStreams(java.lang.String magip, int magport, java.lang.String dns, int uid, java.lang.String phone, java.lang.String pwd, java.lang.String token) throws android.os.RemoteException {
-            mpcStatus.init(MainService.this);
-            heartBeatTask.stop();
-            detectLinkTask.stop();
-            mpcController.stopMpc();
-            MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+            FlyLog.i("linkserver openMultipleStreams");
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                    SystemPropTools.set("persist.sys.net.support.multi", "true");
+                    if(!mpcStatus.mpcEnable){
+                        tryOpenOrCloseMpc();
+                    }else{
+                        FlyLog.e("mpapp is already running...");
+                    }
+                }
+            });
             return true;
         }
 
@@ -113,11 +132,19 @@ public class MainService extends BaseMainService {
          */
         @Override
         public boolean closeMultipleStreams() throws android.os.RemoteException {
-            mpcStatus.init(MainService.this);
-            heartBeatTask.stop();
-            detectLinkTask.stop();
-            mpcController.stopMpc();
-            MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+            FlyLog.i("linkserver closeMultipleStreams");
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                    SystemPropTools.set("persist.sys.net.support.multi", "false");
+                    if(mpcStatus.mpcEnable){
+                        tryOpenOrCloseMpc();
+                    }else{
+                        FlyLog.e("mpapp is already stop...");
+                    }
+                }
+            });
             return true;
         }
 
@@ -139,6 +166,7 @@ public class MainService extends BaseMainService {
     @Override
     public void onDestroy() {
         FlyLog.d("onDestroy");
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
 }
