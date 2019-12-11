@@ -75,7 +75,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 }
                 break;
             case 0x6: //删除子链路响应       6
-                //TODO:删除链路需要测试
+                //TODO:删除链路需要测试，此返回只打印不成功信息，不成功不更行重试操作
                 mpcStatus.getNetLink(message.netType).isLink = false;
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
@@ -133,11 +133,13 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x1b: //流量信息上报       27
                 break;
             case 0x63:
+                //跟RATD失去联系,RatdSocketTask自动发起重新连接操作
                 mpcStatus.mpcEnable = false;
                 mpcStatus.resetNetworkLink(this);
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:
+                //跟RATD建立通信成功
                 mpcStatus.mpcEnable = false;
                 mpcStatus.resetNetworkLink(this);
                 tryOpenOrCloseMpc();
