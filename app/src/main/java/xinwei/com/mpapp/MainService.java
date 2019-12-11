@@ -73,7 +73,7 @@ public class MainService extends BaseMainService {
                     case -1:
                         //重新初始化
                         FlyLog.i("linkserver up settings");
-                        tryOpenOrCloseMpc();
+//                        tryOpenOrCloseMpc();
                         break;
                     case 1:
                     case 2:
@@ -81,7 +81,7 @@ public class MainService extends BaseMainService {
                         break;
                     case 6:
                         FlyLog.i("linkserver up settings");
-                        tryOpenOrCloseMpc();
+//                        tryOpenOrCloseMpc();
                         break;
                     case 7:
                         //日志开关

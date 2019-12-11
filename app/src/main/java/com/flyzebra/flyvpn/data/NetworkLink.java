@@ -9,21 +9,21 @@ package com.flyzebra.flyvpn.data;
  */
 public class NetworkLink {
     public String ip = "";
-    public String name = "";
-    public int type =0;
+    public String netTypeName = "";
+    public int netType =0;
     public String token = "";
     public String rrt = "";
     public String band ="";
     public boolean isLink = false;
 
     public NetworkLink(int type){
-        this.type = type;
+        this.netType = type;
     }
 
     public void reset(){
         ip = "";
-        name = "";
-        type =0;
+        netTypeName = "";
+        netType =0;
         token = "";
         rrt = "";
         band ="";

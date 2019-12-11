@@ -15,14 +15,14 @@
         android:supportsRtl="true"
         android:persistent="false"
         android:theme="@style/AppTheme">
-<!--        <activity android:name=".TestActivity">-->
+<!--        <activity android:netTypeName=".TestActivity">-->
 <!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:netTypeName="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--                <category android:netTypeName="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
-<!--        <service android:name=".BaseMainService"/>-->
+<!--        <service android:netTypeName=".BaseMainService"/>-->
 
         <service android:name="xinwei.com.mpapp.MainService"
             android:enabled="true"
@@ -35,7 +35,7 @@
 
        <receiver android:name="xinwei.com.mpapp.BootBroadcastReceiver">
 <!--           <intent-filter>-->
-<!--               <action android:name="android.intent.action.BOOT_COMPLETED"></action>-->
+<!--               <action android:netTypeName="android.intent.action.BOOT_COMPLETED"></action>-->
 <!--           </intent-filter>-->
 
             <intent-filter>

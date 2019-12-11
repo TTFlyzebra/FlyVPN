@@ -94,7 +94,7 @@ public class Network implements Parcelable{
     //方便打印数据
     @Override
     public String toString() {
-        return "type : " + String.valueOf(type) + " , ip : " + ip + " , flag : " + String.valueOf(flag)+ " , level : " + String.valueOf(level);
+        return "netType : " + String.valueOf(type) + " , ip : " + ip + " , flag : " + String.valueOf(flag)+ " , level : " + String.valueOf(level);
     }
 
 }
