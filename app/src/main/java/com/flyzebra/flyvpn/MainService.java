@@ -125,7 +125,7 @@ public class MainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x1b: //流量信息上报       27
                 break;
-            case 0x63:
+            case 0x64:
                 switchMPC();
                 break;
         }

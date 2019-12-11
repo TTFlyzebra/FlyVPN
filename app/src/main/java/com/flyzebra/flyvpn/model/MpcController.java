@@ -60,6 +60,21 @@ public class MpcController {
         });
     }
 
+    public void switchMpcLog(final int optcode) {
+        mSendMpcHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = false;
+                if (socketClient != null) {
+                    flag = socketClient.sendMessage(String.format(MpcMessage.switchMpcLog, MyTools.createSessionId(),optcode));
+                }
+                if (!flag) {
+                    mSendMpcHandler.postDelayed(this, 2000);
+                }
+            }
+        });
+    }
+
     private static class MpcControllerHolder {
         public static final MpcController sInstance = new MpcController();
     }

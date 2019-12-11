@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MainService"/>
+<!--        <service android:name=".MainService"/>-->
 
         <service android:name="xinwei.com.mpapp.MainService"
             android:enabled="true"

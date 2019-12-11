@@ -71,7 +71,7 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
                         break;
                     case 7:
                         //日志开关
-//                        mpcService.setMpcLogFlag(optcode);
+                        mpcController.switchMpcLog(optcode);
                         break;
                 }
             } else if (action != null && action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {

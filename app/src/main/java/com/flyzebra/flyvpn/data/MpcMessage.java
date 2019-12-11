@@ -37,13 +37,15 @@ public class MpcMessage {
      public static final long WAIT_TIME=1000*10;//等待超时时间
      */
 
-    public static final String socketConnect = "[{\"messageType\":99}]";
     public static final String heartBeat = "[{\"messageType\":23,\"sessionid\":%s}]";
     public static final String initMpc = "[{\"messageType\":21,\"uid\":%d,\"dns\":\"%s\",\"mag\":\"%s\",\"sessionid\":%s}]";
     public static final String enableMpc = "[{\"messageType\":17,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
     public static final String disaBleMpc = "[{\"messageType\":19,\"sessionid\":%s}]";
     public static final String addLink = "[{\"messageType\":1,\"netType\":%d,\"netTypeName\":\"%s\",\"ip\":\"%s\",\"token\":0,\"band\":0,\"rtt\":0\",\"sessionid\":%s}]";
     public static final String detectLink = "[{\"messageType\":3,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
+    public static final String switchMpcLog = "[{\"messageType\":25,\"sessionid\":%s,\"operation\":%d}]";
+
+    public static final String socketConnect = "[{\"messageType\":100}]";
 
     public int messageType = 0;
     public int sessionid;
