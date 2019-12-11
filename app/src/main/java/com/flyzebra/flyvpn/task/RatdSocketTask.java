@@ -153,7 +153,7 @@ public class RatdSocketTask implements ITask, Runnable {
         FlyLog.d("send mpc:" + message);
         synchronized (mDaemonLock) {
             if (mOutputStream == null) {
-                FlyLog.d("mOutputStream = null");
+                FlyLog.e("ratd socket error! mOutputStream = null");
                 return false;
             } else {
                 try {
