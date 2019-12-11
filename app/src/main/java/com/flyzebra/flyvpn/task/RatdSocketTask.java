@@ -1,5 +1,6 @@
 package com.flyzebra.flyvpn.task;
 
+import android.content.Context;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import android.os.Handler;
@@ -7,8 +8,9 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
 
-import com.flyzebra.flyvpn.MpcController;
 import com.flyzebra.flyvpn.data.MpcMessage;
+import com.flyzebra.flyvpn.model.MpcController;
+import com.flyzebra.flyvpn.model.OnRecvMessage;
 import com.flyzebra.utils.FlyLog;
 import com.flyzebra.utils.GsonTools;
 
@@ -19,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * ClassName: RatdSocketTask
@@ -27,7 +30,7 @@ import java.util.List;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午9:00
  */
-public class RatdSocketTask implements Runnable {
+public class RatdSocketTask implements ITask, Runnable {
     private Thread mThread;
     private final static String SOCKET_NAME = "socket_ratd";
     private OutputStream mOutputStream;
@@ -35,6 +38,7 @@ public class RatdSocketTask implements Runnable {
     private int BUFFER_SIZE = 4096;
     private static final String RATD_TAG = "RatdConnector";
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private AtomicBoolean isRun = new AtomicBoolean(false);
 
 
     public static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
@@ -69,17 +73,15 @@ public class RatdSocketTask implements Runnable {
     }
 
 
-    public RatdSocketTask() {
+    public RatdSocketTask(Context context) {
         MpcController.getInstance().init(this);
-        mThread = new Thread(this, RATD_TAG);
-        mThread.setDaemon(true);
-        mThread.start();
     }
 
     @Override
     public void run() {
         FlyLog.d("RatdSocketTask start! ");
-        while (true) {
+        isRun.set(true);
+        while (isRun.get()) {
             try {
                 //开始监听ratd并交互
                 listenToSocket();
@@ -88,12 +90,14 @@ public class RatdSocketTask implements Runnable {
                 SystemClock.sleep(5000);
             }
         }
+        isRun.set(false);
     }
 
     private void listenToSocket() throws IOException {
         LocalSocket socket = null;
         try {
             socket = new LocalSocket();
+//            socket.setSoTimeout(6000);
             LocalSocketAddress address = new LocalSocketAddress(SOCKET_NAME, LocalSocketAddress.Namespace.RESERVED);
             socket.connect(address);
             InputStream inputStream = socket.getInputStream();
@@ -102,7 +106,7 @@ public class RatdSocketTask implements Runnable {
             }
             notifyRecvMessage(MpcMessage.socketConnect);
             byte[] buffer = new byte[BUFFER_SIZE];
-            while (true) {
+            while (isRun.get()) {
                 int count = inputStream.read(buffer, 0, BUFFER_SIZE);
                 if (count < 0) {
                     break;
@@ -126,7 +130,7 @@ public class RatdSocketTask implements Runnable {
                 } while (start == -1);
 
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             FlyLog.d("Communications error: " + ex);
             throw ex;
         } finally {
@@ -170,4 +174,19 @@ public class RatdSocketTask implements Runnable {
         return true;
     }
 
+    @Override
+    public void start(){
+        if(isRun.get()){
+            FlyLog.e("RatdSocketTask is Running...");
+            return;
+        }
+        mThread = new Thread(this, RATD_TAG);
+        mThread.setDaemon(true);
+        mThread.start();
+    }
+
+    @Override
+    public void stop() {
+        isRun.set(false);
+    }
 }

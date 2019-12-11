@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package com.flyzebra.flyvpn.model;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

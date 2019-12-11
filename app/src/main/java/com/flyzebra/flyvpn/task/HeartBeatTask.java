@@ -1,11 +1,15 @@
 package com.flyzebra.flyvpn.task;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.utils.MyTools;
+import com.flyzebra.utils.FlyLog;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * ClassName: HeartBeatTask
@@ -14,7 +18,7 @@ import com.flyzebra.flyvpn.utils.MyTools;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午10:01
  */
-public class HeartBeatTask implements Runnable{
+public class HeartBeatTask implements ITask,Runnable{
     private RatdSocketTask ratdSocketTask;
 
     private static final int HEARTBEAT_TIME = 5000;
@@ -25,16 +29,25 @@ public class HeartBeatTask implements Runnable{
     }
 
     private static final Handler mHeartBeatHandler = new Handler(mHeartBeatThread.getLooper());
+    private AtomicBoolean isRun = new AtomicBoolean(false);
 
-    public HeartBeatTask(RatdSocketTask ratdSocketTask){
+    public HeartBeatTask(Context context, RatdSocketTask ratdSocketTask){
         this.ratdSocketTask = ratdSocketTask;
     }
 
+    @Override
     public void start(){
+        if (isRun.get()) {
+            FlyLog.e("HeartBeatTask is Running...");
+            return;
+        }
+        isRun.set(true);
         mHeartBeatHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
     }
 
-    public void cancel(){
+    @Override
+    public void stop(){
+        isRun.set(false);
         mHeartBeatHandler.removeCallbacksAndMessages(null);
         ratdSocketTask = null;
     }

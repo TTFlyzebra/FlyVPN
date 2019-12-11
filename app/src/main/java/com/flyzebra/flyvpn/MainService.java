@@ -6,9 +6,10 @@ import android.os.IBinder;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.data.MpcStatus;
+import com.flyzebra.flyvpn.model.MpcController;
+import com.flyzebra.flyvpn.model.OnRecvMessage;
 import com.flyzebra.flyvpn.task.DetectLinkTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
-import com.flyzebra.flyvpn.task.OnRecvMessage;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.utils.FlyLog;
 
@@ -34,9 +35,12 @@ public class MainService extends Service implements OnRecvMessage {
     @Override
     public void onCreate() {
         super.onCreate();
-        ratdSocketTask = new RatdSocketTask();
+        ratdSocketTask = new RatdSocketTask(getApplicationContext());
+        ratdSocketTask.start();
         ratdSocketTask.register(this);
-        heartBeatTask = new HeartBeatTask(ratdSocketTask);
+
+        heartBeatTask = new HeartBeatTask(getApplicationContext(),ratdSocketTask);
+
         detectLinkTask = new DetectLinkTask(getApplicationContext(), ratdSocketTask);
 
     }
@@ -50,8 +54,9 @@ public class MainService extends Service implements OnRecvMessage {
     public void onDestroy() {
         FlyLog.d("onDestroy");
         ratdSocketTask.unRegister(this);
-        heartBeatTask.cancel();
-        detectLinkTask.cancel();
+        ratdSocketTask.stop();
+        heartBeatTask.stop();
+        detectLinkTask.stop();
         super.onDestroy();
     }
 
@@ -78,8 +83,8 @@ public class MainService extends Service implements OnRecvMessage {
                 }
                 break;
             case 0x14: //关闭双流响应       20
-                heartBeatTask.cancel();
-                detectLinkTask.cancel();
+                heartBeatTask.stop();
+                detectLinkTask.stop();
                 break;
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {

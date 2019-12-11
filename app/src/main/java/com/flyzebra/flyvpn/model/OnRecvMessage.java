@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn.task;
+package com.flyzebra.flyvpn.model;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 

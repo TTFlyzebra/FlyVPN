@@ -13,7 +13,6 @@ public class MpcMessage {
 
     /**
      * 业务类型
-
      public static final int MESSAGE_TYPE_5 = 0x1; //增加子链路           1
      public static final int MESSAGE_TYPE_6 = 0x2; //增加子链路响应       2
      public static final int MESSAGE_TYPE_9 = 0x3; //发送探测包请求       3
@@ -45,7 +44,7 @@ public class MpcMessage {
     public static final String detectLink = "[{\"messageType\":3,\"netType\":%d,\"netTypeName\":\"%s\",\"sessionid\":%s}]";
     public static final String addLink = "[{\"messageType\":1,\"netType\":%d,\"netTypeName\":\"%s\",\"ip\":\"%s\",\"token\":0,\"band\":0,\"rtt\":0\",\"sessionid\":%s}]";
 
-    public int messageType;
+    public int messageType = 0;
     public int sessionid;
     public long uid;
     public String dns;
@@ -56,6 +55,7 @@ public class MpcMessage {
     public String token;
     public String band;
     public String rrt;
+    public int exceptionCode = 0;
     public int result = -1;
 
     public boolean isResultOk(){
