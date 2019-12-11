@@ -12,6 +12,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import androidx.appcompat.app.AppCompatActivity;
+import xinwei.com.mpapp.MainService;
 
 /**
  * ClassName: TestActivity
@@ -32,12 +33,12 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         moveTaskToBack(true);
-        startService(new Intent(this,MainService.class));
+        startService(new Intent(this, MainService.class));
     }
 
     public void openService(View view){
         moveTaskToBack(true);
-        startService(new Intent(this,MainService.class));
+        startService(new Intent(this, MainService.class));
     }
 
     public void testUDP(View view) {

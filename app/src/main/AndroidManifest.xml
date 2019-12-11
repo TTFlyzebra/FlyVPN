@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <service android:name=".MainService"/>-->
+<!--        <service android:name=".BaseMainService"/>-->
 
         <service android:name="xinwei.com.mpapp.MainService"
             android:enabled="true"
@@ -33,7 +33,7 @@
 
         </service>
 
-       <receiver android:name=".BootBroadcastReceiver">
+       <receiver android:name="xinwei.com.mpapp.BootBroadcastReceiver">
 <!--           <intent-filter>-->
 <!--               <action android:name="android.intent.action.BOOT_COMPLETED"></action>-->
 <!--           </intent-filter>-->

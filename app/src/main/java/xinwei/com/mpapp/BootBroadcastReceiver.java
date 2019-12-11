@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn;
+package xinwei.com.mpapp;
 
 
 import android.content.BroadcastReceiver;

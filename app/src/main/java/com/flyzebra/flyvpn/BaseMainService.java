@@ -17,13 +17,13 @@ import com.flyzebra.utils.FlyLog;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 /**
- * ClassName: MainService
+ * ClassName: BaseMainService
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午9:21
  */
-public class MainService extends Service implements IRatdRecvMessage {
+public class BaseMainService extends Service implements IRatdRecvMessage {
     protected MpcController mpcController = MpcController.getInstance();
     protected MpcStatus mpcStatus = MpcStatus.getInstance();
     protected RatdSocketTask ratdSocketTask;
@@ -141,6 +141,7 @@ public class MainService extends Service implements IRatdRecvMessage {
         } else {
             mpcController.stopMpc();
         }
+        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
     }
 
 

@@ -7,6 +7,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
+import com.flyzebra.flyvpn.BaseMainService;
+import com.flyzebra.flyvpn.utils.MyTools;
+import com.flyzebra.utils.FlyLog;
+
 import xinwei.com.mpapp.aidl.IServiceAidl;
 
 
@@ -14,8 +18,8 @@ import xinwei.com.mpapp.aidl.IServiceAidl;
  * Created by JD on 2018/1/4.
  */
 
-public class MainService extends com.flyzebra.flyvpn.MainService {
-    private static final String TAG = "MainService";
+public class MainService extends BaseMainService {
+    private static final String TAG = "BaseMainService";
     //对外接口
     private MyServiceImpl myService = null;
     //是否初始化双流配置
@@ -28,6 +32,7 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
     @Override
     public void onCreate() {
         super.onCreate();
+        FlyLog.d("onCreate");
         myService = new MyServiceImpl();
         mainReceiver = new MainReceiver();
         mIntentFilter = new IntentFilter();
@@ -39,8 +44,6 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
         mIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
         mIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mainReceiver, mIntentFilter);
-
-        //reconnectTask.startTask();
     }
 
     /**
@@ -97,6 +100,11 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
          */
         @Override
         public boolean openMultipleStreams(java.lang.String magip, int magport, java.lang.String dns, int uid, java.lang.String phone, java.lang.String pwd, java.lang.String token) throws android.os.RemoteException {
+            mpcStatus.init(MainService.this);
+            heartBeatTask.stop();
+            detectLinkTask.stop();
+            mpcController.stopMpc();
+            MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
             return true;
         }
 
@@ -105,6 +113,11 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
          */
         @Override
         public boolean closeMultipleStreams() throws android.os.RemoteException {
+            mpcStatus.init(MainService.this);
+            heartBeatTask.stop();
+            detectLinkTask.stop();
+            mpcController.stopMpc();
+            MyTools.upLinkManager(MainService.this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
             return true;
         }
 
@@ -123,4 +136,9 @@ public class MainService extends com.flyzebra.flyvpn.MainService {
         return myService;
     }
 
+    @Override
+    public void onDestroy() {
+        FlyLog.d("onDestroy");
+        super.onDestroy();
+    }
 }

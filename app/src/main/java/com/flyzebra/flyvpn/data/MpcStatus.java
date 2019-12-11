@@ -77,7 +77,7 @@ public class MpcStatus {
         mobileLink.type = 2;
         wifiLink.type = 4;
 
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
             for (Network network : networks) {
