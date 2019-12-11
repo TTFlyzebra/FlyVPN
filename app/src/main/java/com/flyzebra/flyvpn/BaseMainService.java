@@ -75,6 +75,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 }
                 break;
             case 0x6: //删除子链路响应       6
+                //TODO:删除链路需要测试
                 mpcStatus.getNetLink(message.netType).isLink = false;
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
@@ -115,6 +116,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 //TODO:重启RATD
                 break;
             case 0x1a: //异常状态上报       26
+                //TODO:-2删除链路还是复位
                 if (message.exceptionCode == -2) {
                     FlyLog.e("exceptionCode=2, restart mpc");
                     isReStart.set(true);

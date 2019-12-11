@@ -33,6 +33,7 @@ import xinwei.com.mpapp.Constant;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午11:14
  */
+//TODO:维护链路信息--广播改变探测更新算法
 public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private final ConnectivityManager cm;
     private Context mContext;
@@ -42,6 +43,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private long lastRunTime = 0;
     private AtomicBoolean isRun = new AtomicBoolean(false);
 
+    //TODO：不同状态探测时长不一样的需求需要添加
     private Object lock = new Object();
     private static final int RUN_LIGHT = 5; //激活态亮屏 5秒探测
     private static final int RUN_NOLIGHT = 5; //激活态灭屏 5秒探测
