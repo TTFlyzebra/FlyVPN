@@ -14,6 +14,8 @@ import com.flyzebra.flyvpn.data.MpcStatus;
 import com.flyzebra.flyvpn.data.NetworkLink;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.flyvpn.utils.MyTools;
+import com.flyzebra.flyvpn.utils.SystemPropTools;
+import com.flyzebra.utils.FlyLog;
 
 import java.util.List;
 
@@ -50,11 +52,28 @@ public class MpcController {
         this.socketClient = ratdSocketTask;
     }
 
-    public void initMpc(String ip, String uid) {
+    public void initMpc() {
         mSendMpcHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (socketClient == null || !socketClient.sendMessage(String.format(MpcMessage.initMpc, MyTools.createSessionId()))) {
+                boolean flag = false;
+                if (socketClient != null) {
+                    String mag = SystemPropTools.get("persist.sys.mag.ip","210.12.248.82");;
+                    String dns = SystemPropTools.get("persist.sys.mag.dns","202.106.0.20");
+                    String strUid = (SystemPropTools.get("persist.radio.mcwill.pid","ffffffff")).replace(".","").trim();
+                    while (strUid.equals("ffffffff") || strUid.equals("00000000")){
+                        FlyLog.e("read system prop uid error, sleel 1000 millis and try again.");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        strUid = (SystemPropTools.get("persist.radio.mcwill.pid","ffffffff")).replace(".","").trim();
+                    }
+                    long uid = Long.parseLong(strUid, 16);
+                    flag = socketClient.sendMessage(String.format(MpcMessage.initMpc, uid, dns, mag, MyTools.createSessionId()));
+                }
+                if (!flag) {
                     mSendMpcHandler.postDelayed(this, 5000);
                 }
             }

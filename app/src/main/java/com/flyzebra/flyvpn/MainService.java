@@ -47,6 +47,7 @@ public class MainService extends Service implements OnRecvMessage {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        upLinkManager();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -91,7 +92,7 @@ public class MainService extends Service implements OnRecvMessage {
                     heartBeatTask.start();
                     mpcController.enableMpcDefault(this);
                 } else {
-                    mpcController.initMpc(null, null);
+                    mpcController.initMpc();
                 }
                 break;
             case 0x18: //心跳响应          24
@@ -100,7 +101,7 @@ public class MainService extends Service implements OnRecvMessage {
             case 0x1b: //流量信息上报       27
                 break;
             case 0x63:
-                mpcController.initMpc(null, null);
+                mpcController.initMpc();
                 break;
         }
     }
