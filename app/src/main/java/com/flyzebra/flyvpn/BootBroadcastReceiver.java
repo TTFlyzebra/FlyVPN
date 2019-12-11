@@ -16,14 +16,14 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //开机自启动
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            FlyLog.d( "recv broadcast(boot completed) start >>>>>>>>>>>");
+            FlyLog.d( "recvRatdMessage broadcast(boot completed) start >>>>>>>>>>>");
             startMyself(context);
         }
         //接收广播：安装更新后，自动启动自己。
         else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
             FlyLog.d(intent.getData()+"");
             if((intent.getData() + "").contains("com.flyzebra.flyvpn")){
-                FlyLog.d( "recv broadcast(boot package replaced) start >>>>>>>>>>>");
+                FlyLog.d( "recvRatdMessage broadcast(boot package replaced) start >>>>>>>>>>>");
                 startMyself(context);
             }
 

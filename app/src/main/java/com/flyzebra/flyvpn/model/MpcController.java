@@ -44,6 +44,26 @@ public class MpcController {
         return MpcController.MpcControllerHolder.sInstance;
     }
 
+    public void restartMPC() {
+        mSendMpcHandler.removeCallbacksAndMessages(null);
+        mSendMpcHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                stopMpc();
+                initMpc();
+            }
+        });
+    }
+
+    public void stopMpc() {
+        //断开所有连接
+        socketClient.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
+        socketClient.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
+        socketClient.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
+        //关闭所有双流
+        socketClient.sendMessage(String.format(MpcMessage.disaBleMpc, MyTools.createSessionId()));
+    }
+
     private static class MpcControllerHolder {
         public static final MpcController sInstance = new MpcController();
     }
@@ -53,6 +73,7 @@ public class MpcController {
     }
 
     public void initMpc() {
+        mSendMpcHandler.removeCallbacksAndMessages(null);
         mSendMpcHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -151,4 +172,5 @@ public class MpcController {
     public void delNetworkLink(NetworkLink networkLink) {
 
     }
+
 }

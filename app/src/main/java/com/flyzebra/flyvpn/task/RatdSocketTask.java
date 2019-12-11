@@ -4,13 +4,12 @@ import android.content.Context;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
+import com.flyzebra.flyvpn.model.IRatdRecvMessage;
 import com.flyzebra.flyvpn.model.MpcController;
-import com.flyzebra.flyvpn.model.OnRecvMessage;
 import com.flyzebra.utils.FlyLog;
 import com.flyzebra.utils.GsonTools;
 
@@ -41,20 +40,13 @@ public class RatdSocketTask implements ITask, Runnable {
     private AtomicBoolean isRun = new AtomicBoolean(false);
 
 
-    public static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
+    private List<IRatdRecvMessage> onRecvMessageList = new ArrayList<>();
 
-    static {
-        mSendMpcThread.start();
-    }
-
-
-    private List<OnRecvMessage> onRecvMessageList = new ArrayList<>();
-
-    public void register(OnRecvMessage onRecvMessage) {
+    public void register(IRatdRecvMessage onRecvMessage) {
         onRecvMessageList.add(onRecvMessage);
     }
 
-    public void unRegister(OnRecvMessage onRecvMessage) {
+    public void unRegister(IRatdRecvMessage onRecvMessage) {
         onRecvMessageList.remove(onRecvMessage);
     }
 
@@ -62,10 +54,10 @@ public class RatdSocketTask implements ITask, Runnable {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                for (OnRecvMessage onRecvMessage : onRecvMessageList) {
+                for (IRatdRecvMessage onRecvMessage : onRecvMessageList) {
                     List<MpcMessage> mpcMessages = GsonTools.json2ListObject(message, MpcMessage.class);
                     if (mpcMessages != null && !mpcMessages.isEmpty()) {
-                        onRecvMessage.recv(mpcMessages.get(0));
+                        onRecvMessage.recvRatdMessage(mpcMessages.get(0));
                     }
                 }
             }
@@ -121,10 +113,10 @@ public class RatdSocketTask implements ITask, Runnable {
                         String retStr = tempStr.substring(0, start + 2);
                         tempStr = tempStr.substring(start + 2);
                         notifyRecvMessage(retStr);
-                        FlyLog.d("recv mpc:" + retStr);
+                        FlyLog.d("recvRatdMessage mpc:" + retStr);
                     } else {
                         notifyRecvMessage(tempStr);
-                        FlyLog.d("recv mpc:" + tempStr);
+                        FlyLog.d("recvRatdMessage mpc:" + tempStr);
                         break;
                     }
                 } while (start == -1);
@@ -175,6 +167,11 @@ public class RatdSocketTask implements ITask, Runnable {
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void start(){
         if(isRun.get()){
             FlyLog.e("RatdSocketTask is Running...");
@@ -188,5 +185,12 @@ public class RatdSocketTask implements ITask, Runnable {
     @Override
     public void stop() {
         isRun.set(false);
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onDestory() {
+        isRun.set(false);
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

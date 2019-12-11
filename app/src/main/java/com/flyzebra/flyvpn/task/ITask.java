@@ -8,6 +8,8 @@ package com.flyzebra.flyvpn.task;
  * Date: 19-12-11 上午9:57
  */
 public interface ITask {
+    void onCreate();
     void start();
     void stop();
+    void onDestory();
 }

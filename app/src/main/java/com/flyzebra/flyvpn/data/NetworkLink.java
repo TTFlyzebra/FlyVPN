@@ -27,5 +27,6 @@ public class NetworkLink {
         token = "";
         rrt = "";
         band ="";
+        isLink = false;
     }
 }

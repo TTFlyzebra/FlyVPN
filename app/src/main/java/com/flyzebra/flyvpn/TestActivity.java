@@ -66,7 +66,7 @@ public class TestActivity extends AppCompatActivity {
                     socket.send(sendpack);
                     socket.receive(sendpack);
                     String str = new String(sendpack.getData(), sendpack.getOffset(),sendpack.getLength());
-                    FlyLog.d("recv data=%s", ByteTools.bytes2HexString(str.getBytes()));
+                    FlyLog.d("recvRatdMessage data=%s", ByteTools.bytes2HexString(str.getBytes()));
                     socket.close();
                     FlyLog.d("UDP sokcet client is end!");
                 } catch (Exception e) {

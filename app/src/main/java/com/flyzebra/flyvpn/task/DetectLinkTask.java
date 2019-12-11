@@ -10,7 +10,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
-import com.flyzebra.flyvpn.model.OnRecvMessage;
+import com.flyzebra.flyvpn.model.IRatdRecvMessage;
 import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.utils.FlyLog;
 
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午11:14
  */
-public class DetectLinkTask implements ITask,Runnable, OnRecvMessage {
+public class DetectLinkTask implements ITask,Runnable, IRatdRecvMessage {
     private final ConnectivityManager cm;
     private Context mContext;
     private RatdSocketTask ratdSocketTask;
@@ -74,6 +74,11 @@ public class DetectLinkTask implements ITask,Runnable, OnRecvMessage {
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void start() {
         if (isRun.get()) {
             FlyLog.e("DetectLinkTask is Running...");
@@ -81,19 +86,22 @@ public class DetectLinkTask implements ITask,Runnable, OnRecvMessage {
         }
         isRun.set(true);
         mDetectLinkHandler.post(this);
-        ratdSocketTask.register(this);
     }
 
     @Override
     public void stop() {
         isRun.set(false);
         mDetectLinkHandler.removeCallbacksAndMessages(null);
-        ratdSocketTask.unRegister(this);
+    }
+
+
+    public void onDestory(){
+        ratdSocketTask.register(this);
         ratdSocketTask = null;
     }
 
     @Override
-    public void recv(MpcMessage message) {
+    public void recvRatdMessage(MpcMessage message) {
         if (message.messageType == 0x1A) {
             switch (message.exceptionCode) {
                 case -5:

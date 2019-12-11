@@ -36,6 +36,11 @@ public class HeartBeatTask implements ITask,Runnable{
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void start(){
         if (isRun.get()) {
             FlyLog.e("HeartBeatTask is Running...");
@@ -49,8 +54,14 @@ public class HeartBeatTask implements ITask,Runnable{
     public void stop(){
         isRun.set(false);
         mHeartBeatHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onDestory() {
+        mHeartBeatHandler.removeCallbacksAndMessages(null);
         ratdSocketTask = null;
     }
+
 
     @Override
     public void run() {
