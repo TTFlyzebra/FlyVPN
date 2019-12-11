@@ -18,10 +18,6 @@ import java.util.List;
  */
 public class MpcStatus {
     /**
-     * 初始化
-     */
-    public Boolean mpcInit = false;
-    /**
      * 开启双流
      */
     public Boolean mpcEnable = false;
@@ -66,8 +62,7 @@ public class MpcStatus {
         public static final MpcStatus sInstance = new MpcStatus();
     }
 
-    public void init(Context context) {
-        mpcInit = false;
+    public void resetNetworkLink(Context context) {
         mcwillLink.reset();
         mobileLink.reset();
         wifiLink.reset();

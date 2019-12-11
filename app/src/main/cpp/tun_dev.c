@@ -41,13 +41,13 @@ int open_dev(){
     ret = ioctl(fd, TUNSETIFF, (void *) &ifr);
     LOGD("ioctl ret=%d",ret);
     if(ret<0) goto failed;
-    LOGD("init tun success");
+    LOGD("resetNetworkLink tun success");
 
     setIP(ifr.ifr_name);
 
     return fd;
     failed:
-    LOGD("init tun failed");
+    LOGD("resetNetworkLink tun failed");
     close(fd);
 }
 
