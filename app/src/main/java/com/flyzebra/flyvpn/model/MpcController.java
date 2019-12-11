@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class MpcController {
 
-    public static final HandlerThread mSendMpcThread = new HandlerThread("SendToMpcTask");
+    public static final HandlerThread mSendMpcThread = new HandlerThread("SendSockThread");
 
     static {
         mSendMpcThread.start();
@@ -44,24 +44,20 @@ public class MpcController {
         return MpcController.MpcControllerHolder.sInstance;
     }
 
-    public void restartMPC() {
+    public void stopMpc() {
         mSendMpcHandler.removeCallbacksAndMessages(null);
         mSendMpcHandler.post(new Runnable() {
             @Override
             public void run() {
-                stopMpc();
-                initMpc();
+                boolean flag = false;
+                if (socketClient != null) {
+                    flag = socketClient.sendMessage(String.format(MpcMessage.disaBleMpc, MyTools.createSessionId()));
+                }
+                if (!flag) {
+                    mSendMpcHandler.postDelayed(this, 2000);
+                }
             }
         });
-    }
-
-    public void stopMpc() {
-        //断开所有连接
-        socketClient.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
-        socketClient.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
-        socketClient.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
-        //关闭所有双流
-        socketClient.sendMessage(String.format(MpcMessage.disaBleMpc, MyTools.createSessionId()));
     }
 
     private static class MpcControllerHolder {

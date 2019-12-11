@@ -35,7 +35,7 @@ public class RatdSocketTask implements ITask, Runnable {
     private OutputStream mOutputStream;
     private final Object mDaemonLock = new Object();
     private int BUFFER_SIZE = 4096;
-    private static final String RATD_TAG = "RatdConnector";
+    private static final String RATD_TAG = "RatdSocketTask";
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private AtomicBoolean isRun = new AtomicBoolean(false);
 

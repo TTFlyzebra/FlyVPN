@@ -22,7 +22,7 @@ public class HeartBeatTask implements ITask,Runnable{
     private RatdSocketTask ratdSocketTask;
 
     private static final int HEARTBEAT_TIME = 5000;
-    private static final HandlerThread mHeartBeatThread = new HandlerThread("HeartBeatTask");
+    private static final HandlerThread mHeartBeatThread = new HandlerThread("HeartBeat_Task");
 
     static {
         mHeartBeatThread.start();
