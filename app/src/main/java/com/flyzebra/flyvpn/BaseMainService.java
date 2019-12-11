@@ -94,11 +94,12 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 if (isReStart.get()) {
                     String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
                     if("true".equals(switch_status)){
+                        mpcStatus.resetNetworkLink(this);
                         mpcStatus.mpcEnable = true;
                         mpcController.startMpc();
                     }
+                    isReStart.set(false);
                 }
-                isReStart.set(false);
                 break;
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {
