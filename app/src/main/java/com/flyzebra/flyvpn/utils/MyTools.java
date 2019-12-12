@@ -2,17 +2,9 @@ package com.flyzebra.flyvpn.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.LinkAddress;
-import android.net.LinkProperties;
-import android.net.Network;
-import android.text.TextUtils;
-
-import com.flyzebra.flyvpn.data.NetworkLink;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -47,35 +39,4 @@ public class MyTools {
         context.sendBroadcast(intent);
     }
 
-
-    public static void setNetWorkLinks(Context context, NetworkLink wifi,NetworkLink mobile,NetworkLink mcwill){
-        ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Network[] networks = cm.getAllNetworks();
-            for (Network network : networks) {
-                LinkProperties linkProperties = cm.getLinkProperties(network);
-                if (linkProperties != null) {
-                    String iface = linkProperties.getInterfaceName();
-                    if (TextUtils.isEmpty(iface)) continue;
-                    List<LinkAddress> linkAddress = linkProperties.getLinkAddresses();
-                    if (linkAddress != null && !linkAddress.isEmpty()) {
-                        String ip = linkAddress.get(0).toString();
-                        ip = ip.substring(0, ip.indexOf("/"));
-                        if (!TextUtils.isEmpty(ip)) {
-                            if (iface.startsWith("wlan")) {
-                                wifi.netTypeName = iface;
-                                wifi.ip = ip;
-                            } else if (iface.startsWith("rmnet_data")) {
-                                mobile.netTypeName = iface;
-                                mobile.ip = ip;
-                            } else if (iface.startsWith("mcwill")) {
-                                mcwill.netTypeName = iface;
-                                mcwill.ip = ip;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 }

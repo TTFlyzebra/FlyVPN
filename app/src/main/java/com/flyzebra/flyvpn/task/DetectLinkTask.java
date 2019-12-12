@@ -62,6 +62,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         this.mContext = context;
         this.ratdSocketTask = ratdSocketTask;
         cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        onCreate();
     }
 
     @Override
