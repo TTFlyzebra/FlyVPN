@@ -15,6 +15,8 @@ import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
 
+import xinwei.com.mpapp.Constant;
+
 /**
  * ClassName: BaseMainService
  * Description:
@@ -121,7 +123,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 if (message.exceptionCode == -2) {
                     FlyLog.e("exceptionCode=2, delete link netType="+message.netType);
                     mpcStatus.getNetLink(message.netType).isLink = false;
-                    mpcController.delNetworkLink(message.netType,2);
+                    mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
 //                    mpcController.stopMpc();
 //                    mpcStatus.mpcEnable = false;
                 } else if (message.exceptionCode == -3) {

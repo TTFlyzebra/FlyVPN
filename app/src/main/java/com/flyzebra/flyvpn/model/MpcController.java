@@ -119,14 +119,17 @@ public class MpcController {
             public void run() {
                 boolean flag = false;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    LinkProperties linkProperties = cm.getLinkProperties(cm.getActiveNetwork());
-                    if (linkProperties != null) {
-                        String iface = linkProperties.getInterfaceName();
-                        if (!TextUtils.isEmpty(iface)) {
-                            int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
-                            if (netType > 0) {
-                                if (socketClient != null) {
-                                    flag = socketClient.sendMessage(String.format(MpcMessage.enableMpc, netType, iface, MyTools.createSessionId()));
+                    Network networks[] = cm.getAllNetworks();
+                    for (Network network : networks) {
+                        LinkProperties linkProperties = cm.getLinkProperties(network);
+                        if (linkProperties != null) {
+                            String iface = linkProperties.getInterfaceName();
+                            if (!TextUtils.isEmpty(iface)) {
+                                int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
+                                if (netType > 0) {
+                                    if (socketClient != null) {
+                                        flag = socketClient.sendMessage(String.format(MpcMessage.enableMpc, netType, iface, MyTools.createSessionId()));
+                                    }
                                 }
                             }
                         }
@@ -180,8 +183,15 @@ public class MpcController {
         });
     }
 
-    public void delNetworkLink(int netType, int delCause) {
-
+    public void delNetworkLink(final int netType, final int delCause) {
+        mSendMpcHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (socketClient != null) {
+                    socketClient.sendMessage(String.format(MpcMessage.deleteLink,netType,delCause, MyTools.createSessionId()));
+                }
+            }
+        });
     }
 
 }
