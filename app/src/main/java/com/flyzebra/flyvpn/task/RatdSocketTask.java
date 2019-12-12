@@ -114,10 +114,10 @@ public class RatdSocketTask implements ITask, Runnable {
                         String retStr = tempStr.substring(0, start + 2);
                         tempStr = tempStr.substring(start + 2);
                         notifyRecvMessage(retStr);
-                        FlyLog.d("recvRatdMessage mpc:" + retStr);
+                        FlyLog.d("recv mpc:" + retStr);
                     } else {
                         notifyRecvMessage(tempStr);
-                        FlyLog.d("recvRatdMessage mpc:" + tempStr);
+                        FlyLog.d("recv mpc:" + tempStr);
                         break;
                     }
                 } while (start == -1);

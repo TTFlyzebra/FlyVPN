@@ -95,8 +95,8 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x14: //关闭双流响应       20
                 //TODO:关闭双流后要怎么响应，需要关闭心路和探测吗
                 mpcStatus.disbleAllLink(this);
-                heartBeatTask.stop();
-                detectLinkTask.stop();
+//                heartBeatTask.stop();
+//                detectLinkTask.stop();
 //                String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
 //                if ("true".equals(switch_status)) {
 //                    mpcStatus.disbleAllLink(this);
@@ -108,7 +108,6 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 if (message.isResultOk()) {
                     mpcStatus.disbleAllLink(this);
                     MyTools.upLinkManager(this, false, false, false);
-                    heartBeatTask.start();
                     mpcController.enableMpcDefault(this);
                 } else {
                     //TODO:是否需要更换MAG
@@ -153,18 +152,19 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
 
     public void tryOpenOrCloseMpc() {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-        heartBeatTask.stop();
-        detectLinkTask.stop();
         mpcStatus.disbleAllLink(this);
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
             if (!mpcStatus.mpcEnable) {
+                heartBeatTask.start();
                 mpcController.startMpc();
             }
             mpcStatus.mpcEnable = true;
         } else {
             FlyLog.e("mpc switch is close,mpapp not running...");
             if (mpcStatus.mpcEnable) {
+                heartBeatTask.stop();
+                detectLinkTask.stop();
                 mpcController.stopMpc();
             }
             mpcStatus.mpcEnable = false;

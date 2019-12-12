@@ -125,18 +125,18 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 }
             }
 
-            //对没有加入链接但是已经查找到的网络进行探测操作
-            if (!mpcStatus.wifiLink.isLink && findWifi) {
-                FlyLog.e("find wifi network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
+            //对已经加入链接但是没有查找到的网络进行删除链路操作
+            if (mpcStatus.wifiLink.isLink && !findWifi) {
+                FlyLog.e("find wifi network lost, delete it");
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
-            if (!mpcStatus.mobileLink.isLink && findMobile) {
-                FlyLog.e("find 4g network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
+            if (mpcStatus.mobileLink.isLink && !findMobile) {
+                FlyLog.e("find 4G network lost, delete it");
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
-            if (!mpcStatus.mcwillLink.isLink && findMcwill) {
-                FlyLog.e("find mcwill network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
+            if (mpcStatus.mcwillLink.isLink && !findMcwill) {
+                FlyLog.e("find mcwill network lost, delete it");
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
 
             //对没有加入链接但是已经查找到的网络进行探测操作
@@ -183,15 +183,15 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
             }
             //对没有加入链接但是已经查找到的网络进行探测操作
             if (!mpcStatus.wifiLink.isLink && findWifi) {
-                FlyLog.e("find add wifi network, detect it");
+                FlyLog.e("find wifi network add, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
             }
             if (!mpcStatus.mobileLink.isLink && findMobile) {
-                FlyLog.e("find add 4g network, detect it");
+                FlyLog.e("find 4g network add, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
             }
             if (!mpcStatus.mcwillLink.isLink && findMcwill) {
-                FlyLog.e("find add mcwill network, detect it");
+                FlyLog.e("find mcwill network add, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
             }
 
@@ -268,6 +268,11 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            try{
+                FlyLog.d("recv intent "+ intent.toUri(0));
+            }catch (Exception e){
+                FlyLog.d(e.toString());
+            }
             String action = intent.getAction();
             if (action != null && action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 //网络变化立刻发起探测
