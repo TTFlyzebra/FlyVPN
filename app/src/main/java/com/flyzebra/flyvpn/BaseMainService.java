@@ -39,7 +39,10 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     @Override
     public void onCreate() {
         super.onCreate();
-        FlyLog.e("+++++onCreate, mpapp is start!+++++");
+        FlyLog.e("+++++++++++++++++++++++++++++++++++");
+        FlyLog.e("+++++version 1.0----2019.12.12+++++");
+        FlyLog.e("+++++++++++++++++++++++++++++++++++");
+        FlyLog.d("+++++onCreate, mpapp is start!+++++");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
         ratdSocketTask.start();
         ratdSocketTask.register(this);
@@ -55,7 +58,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
 
     @Override
     public void onDestroy() {
-        FlyLog.e("+++++onDestroy, mpApp is Stop!+++++");
+        FlyLog.d("+++++onDestroy, mpApp is Stop!+++++");
         heartBeatTask.onDestory();
         detectLinkTask.onDestory();
         ratdSocketTask.unRegister(this);

@@ -86,7 +86,7 @@ public class FlyLog {
                 .append(")")
 //                .append(caller.getMethodName())
 //                .append("()")
-                .append(">>>>")
+//                .append(">>>>")
                 .append(str);
 //        }
         return stringBuilder.toString();
