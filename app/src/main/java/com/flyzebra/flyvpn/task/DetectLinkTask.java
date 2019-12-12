@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.os.Handler;
@@ -16,12 +15,10 @@ import android.text.TextUtils;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.data.MpcStatus;
-import com.flyzebra.flyvpn.data.NetworkLink;
 import com.flyzebra.flyvpn.model.IRatdRecvMessage;
 import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.utils.FlyLog;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import xinwei.com.mpapp.Constant;
@@ -33,7 +30,7 @@ import xinwei.com.mpapp.Constant;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-10 上午11:14
  */
-//TODO:维护链路信息--广播改变探测更新算法
+//TODO:维护链路信息--探测算法(探测算法，获取当前可用网络并发起探测，对比已链接的网络，对已经链接但在当前网络不存在的链接网络进行关闭链接处理  )
 public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private final ConnectivityManager cm;
     private Context mContext;
@@ -89,44 +86,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 }
             }
         }
-    }
-
-    private boolean upAllNetwork() {
-        NetworkLink wifiLink ;
-        NetworkLink mobileLink ;
-        NetworkLink mcwillLink ;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Network[] networks = cm.getAllNetworks();
-            for (Network network : networks) {
-                LinkProperties linkProperties = cm.getLinkProperties(network);
-                if (linkProperties != null && ratdSocketTask != null) {
-                    String iface = linkProperties.getInterfaceName();
-                    if (TextUtils.isEmpty(iface)) continue;
-                    int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
-                    if (netType > 0) {
-                        //探测该网络
-                        ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, netType, iface, MyTools.createSessionId()));
-                        List<LinkAddress> linkAddress = linkProperties.getLinkAddresses();
-                        if (linkAddress != null && !linkAddress.isEmpty()) {
-                            String ip = linkAddress.get(0).toString();
-                            ip = ip.substring(0, ip.indexOf("/"));
-                            if (TextUtils.isEmpty(ip)) {
-                                switch (netType) {
-                                    case 4:
-                                        break;
-                                    case 2:
-                                        break;
-                                    case 1:
-                                        break;
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     @Override
@@ -187,7 +146,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        upAllNetwork();
                     }
                 });
             } else if (action != null && action.equals(Constant.ACTION_MCWILL_DATA_STATE_CHANGE)) {
@@ -195,7 +153,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        upAllNetwork();
                     }
                 });
             } else if (action != null && action.equals(Intent.ACTION_SCREEN_ON)) {

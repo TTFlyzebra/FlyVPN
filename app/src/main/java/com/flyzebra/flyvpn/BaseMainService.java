@@ -37,7 +37,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     @Override
     public void onCreate() {
         super.onCreate();
-        FlyLog.d("mpapp service oncrate!");
+        FlyLog.e("+++++onCreate, mpapp is start!+++++");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
         ratdSocketTask.start();
         ratdSocketTask.register(this);
@@ -53,7 +53,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
 
     @Override
     public void onDestroy() {
-        FlyLog.d("onDestroy");
+        FlyLog.e("+++++onDestroy, mpApp is Stop!+++++");
         heartBeatTask.onDestory();
         detectLinkTask.onDestory();
         ratdSocketTask.unRegister(this);
@@ -92,19 +92,19 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x14: //关闭双流响应       20
                 //TODO:关闭双流后要怎么响应，需要关闭心路和探测吗
-                mpcStatus.resetNetworkLink(this);
+                mpcStatus.disbleAllLink(this);
                 heartBeatTask.stop();
                 detectLinkTask.stop();
 //                String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
 //                if ("true".equals(switch_status)) {
-//                    mpcStatus.resetNetworkLink(this);
+//                    mpcStatus.disbleAllLink(this);
 //                    mpcStatus.mpcEnable = true;
 //                    mpcController.startMpc();
 //                }
                 break;
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {
-                    mpcStatus.resetNetworkLink(this);
+                    mpcStatus.disbleAllLink(this);
                     MyTools.upLinkManager(this, false, false, false);
                     heartBeatTask.start();
                     mpcController.enableMpcDefault(this);
@@ -121,7 +121,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 if (message.exceptionCode == -2) {
                     FlyLog.e("exceptionCode=2, delete link netType="+message.netType);
                     mpcStatus.getNetLink(message.netType).isLink = false;
-                    mpcController.delNetworkLink(mpcStatus.getNetLink(message.netType));
+                    mpcController.delNetworkLink(message.netType,2);
 //                    mpcController.stopMpc();
 //                    mpcStatus.mpcEnable = false;
                 } else if (message.exceptionCode == -3) {
@@ -136,14 +136,14 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x63:
                 //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
                 mpcStatus.mpcEnable = false;
-                mpcStatus.resetNetworkLink(this);
+                mpcStatus.disbleAllLink(this);
                 detectLinkTask.stop();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:
                 //跟RATD建立通信成功
                 mpcStatus.mpcEnable = false;
-                mpcStatus.resetNetworkLink(this);
+                mpcStatus.disbleAllLink(this);
                 tryOpenOrCloseMpc();
                 break;
         }
@@ -153,7 +153,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
         heartBeatTask.stop();
         detectLinkTask.stop();
-        mpcStatus.resetNetworkLink(this);
+        mpcStatus.disbleAllLink(this);
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
             if (!mpcStatus.mpcEnable) {

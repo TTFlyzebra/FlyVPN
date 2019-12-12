@@ -20,13 +20,4 @@ public class NetworkLink {
         this.netType = type;
     }
 
-    public void reset(){
-        ip = "";
-        netTypeName = "";
-        netType =0;
-        token = "";
-        rrt = "";
-        band ="";
-        isLink = false;
-    }
 }

@@ -147,8 +147,8 @@ public class MpcController {
 
     }
 
-    public void addNetworkLink(Context context, final int type) {
-        NetworkLink networkLink = MpcStatus.getInstance().getNetLink(type);
+    public void addNetworkLink(Context context, final int netType) {
+        NetworkLink networkLink = MpcStatus.getInstance().getNetLink(netType);
         if (socketClient == null || networkLink == null || networkLink.isLink) return;
         final ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         mSendMpcHandler.post(new Runnable() {
@@ -161,14 +161,14 @@ public class MpcController {
                         if (linkProperties != null) {
                             String iface = linkProperties.getInterfaceName();
                             if (TextUtils.isEmpty(iface)) continue;
-                            int netType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
-                            if (netType == type) {
+                            int tempNetType = iface.startsWith("wlan") ? 4 : iface.startsWith("rmnet_data") ? 2 : iface.startsWith("mcwill") ? 1 : -1;
+                            if (tempNetType == netType) {
                                 List<LinkAddress> linkAddress = linkProperties.getLinkAddresses();
                                 if (linkAddress != null && !linkAddress.isEmpty()) {
                                     String ip = linkAddress.get(0).toString();
                                     ip = ip.substring(0, ip.indexOf("/"));
                                     if (!TextUtils.isEmpty(ip)) {
-                                        socketClient.sendMessage(String.format(MpcMessage.addLink, netType, iface, ip, MyTools.createSessionId()));
+                                        socketClient.sendMessage(String.format(MpcMessage.addLink, tempNetType, iface, ip, MyTools.createSessionId()));
                                     }
                                 }
                                 break;
@@ -180,7 +180,7 @@ public class MpcController {
         });
     }
 
-    public void delNetworkLink(NetworkLink networkLink) {
+    public void delNetworkLink(int netType, int delCause) {
 
     }
 
