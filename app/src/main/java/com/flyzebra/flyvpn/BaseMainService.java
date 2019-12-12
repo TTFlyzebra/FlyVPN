@@ -160,16 +160,16 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             if (!mpcStatus.mpcEnable) {
                 heartBeatTask.start();
                 mpcController.startMpc();
+                mpcStatus.mpcEnable = true;
             }
-            mpcStatus.mpcEnable = true;
         } else {
             FlyLog.e("mpc switch is close,mpapp not running...");
             if (mpcStatus.mpcEnable) {
                 heartBeatTask.stop();
                 detectLinkTask.stop();
                 mpcController.stopMpc();
+                mpcStatus.mpcEnable = false;
             }
-            mpcStatus.mpcEnable = false;
         }
         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
     }
