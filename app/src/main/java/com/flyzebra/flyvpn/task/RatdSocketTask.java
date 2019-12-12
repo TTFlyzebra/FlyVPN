@@ -80,7 +80,7 @@ public class RatdSocketTask implements ITask, Runnable {
             } catch (Exception e) {
                 FlyLog.e("Error in RatdSocketTask: " + e);
                 notifyRecvMessage(MpcMessage.socketError);
-                SystemClock.sleep(5000);
+                SystemClock.sleep(2000);
             }
         }
         isRun.set(false);

@@ -44,6 +44,15 @@ public class FlyLog {
         Log.v(TAG, buildLogString(logString, args));
     }
 
+    public static void w(String logString, Object... args) {
+        for (String aFilter : filter) {
+            if (logString.indexOf(aFilter) == 0) {
+                return;
+            }
+        }
+        Log.w(TAG, buildLogString(logString, args));
+    }
+
     public static void e(String logString, Object... args) {
         for (String aFilter : filter) {
             if (logString.indexOf(aFilter) == 0) {

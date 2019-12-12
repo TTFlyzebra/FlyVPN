@@ -15,7 +15,6 @@ import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * ClassName: BaseMainService
  * Description:
@@ -29,7 +28,6 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     protected RatdSocketTask ratdSocketTask;
     protected HeartBeatTask heartBeatTask;
     protected DetectLinkTask detectLinkTask;
-    protected AtomicBoolean isReStart = new AtomicBoolean(false);
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -39,6 +37,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     @Override
     public void onCreate() {
         super.onCreate();
+        FlyLog.d("mpapp service oncrate!");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
         ratdSocketTask.start();
         ratdSocketTask.register(this);
@@ -80,10 +79,10 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x8: //释放MP链路响应       8
-                //TODO:
+                //TODO:需要确认需求和测试
                 break;
             case 0x0a: //MP建立链路响应     10
-                //TODO:
+                //TODO:需要确认需求和测试
                 break;
             case 0x12: //使能双流响应       18
                 if (message.isResultOk()) {
@@ -92,15 +91,16 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 }
                 break;
             case 0x14: //关闭双流响应       20
-                if (isReStart.get()) {
-                    String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-                    if("true".equals(switch_status)){
-                        mpcStatus.resetNetworkLink(this);
-                        mpcStatus.mpcEnable = true;
-                        mpcController.startMpc();
-                    }
-                    isReStart.set(false);
-                }
+                //TODO:关闭双流后要怎么响应，需要关闭心路和探测吗
+                mpcStatus.resetNetworkLink(this);
+                heartBeatTask.stop();
+                detectLinkTask.stop();
+//                String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
+//                if ("true".equals(switch_status)) {
+//                    mpcStatus.resetNetworkLink(this);
+//                    mpcStatus.mpcEnable = true;
+//                    mpcController.startMpc();
+//                }
                 break;
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {
@@ -109,6 +109,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                     heartBeatTask.start();
                     mpcController.enableMpcDefault(this);
                 } else {
+                    //TODO:是否需要更换MAG
                     tryOpenOrCloseMpc();
                 }
                 break;
@@ -118,14 +119,14 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x1a: //异常状态上报       26
                 //TODO:-2删除链路还是复位
                 if (message.exceptionCode == -2) {
-                    FlyLog.e("exceptionCode=2, restart mpc");
-                    isReStart.set(true);
-                    mpcController.stopMpc();
-                    mpcStatus.mpcEnable = false;
+                    FlyLog.e("exceptionCode=2, delete link netType="+message.netType);
+                    mpcStatus.getNetLink(message.netType).isLink = false;
+                    mpcController.delNetworkLink(mpcStatus.getNetLink(message.netType));
+//                    mpcController.stopMpc();
+//                    mpcStatus.mpcEnable = false;
                 } else if (message.exceptionCode == -3) {
-                    isReStart.set(false);
                     String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-                    if ("true".equals(switch_status)){
+                    if ("true".equals(switch_status)) {
                         tryOpenOrCloseMpc();
                     }
                 }
@@ -133,9 +134,10 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x1b: //流量信息上报       27
                 break;
             case 0x63:
-                //跟RATD失去联系,RatdSocketTask自动发起重新连接操作
+                //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
                 mpcStatus.mpcEnable = false;
                 mpcStatus.resetNetworkLink(this);
+                detectLinkTask.stop();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:
@@ -154,13 +156,13 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         mpcStatus.resetNetworkLink(this);
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
-            if(!mpcStatus.mpcEnable){
+            if (!mpcStatus.mpcEnable) {
                 mpcController.startMpc();
             }
             mpcStatus.mpcEnable = true;
         } else {
             FlyLog.e("mpc switch is close,mpapp not running...");
-            if(mpcStatus.mpcEnable){
+            if (mpcStatus.mpcEnable) {
                 mpcController.stopMpc();
             }
             mpcStatus.mpcEnable = false;

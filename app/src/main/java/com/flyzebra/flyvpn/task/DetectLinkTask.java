@@ -70,7 +70,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
     @Override
     public void run() {
-        long curretTime = SystemClock.uptimeMillis() % HEARTBEAT_TIME;
+        long curretTime = (SystemClock.uptimeMillis()-2500) % HEARTBEAT_TIME;
         long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
         mDetectLinkHandler.postDelayed(this, delayedTime);
         lastRunTime = curretTime;
@@ -91,7 +91,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         }
     }
 
-    private void upAllNetwork() {
+    private boolean upAllNetwork() {
         NetworkLink wifiLink ;
         NetworkLink mobileLink ;
         NetworkLink mcwillLink ;
@@ -126,6 +126,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 }
             }
         }
+        return false;
     }
 
     @Override
