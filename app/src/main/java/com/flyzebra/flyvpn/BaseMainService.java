@@ -138,7 +138,6 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
                 mpcStatus.mpcEnable = false;
                 mpcStatus.disbleAllLink(this);
-                detectLinkTask.stop();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:

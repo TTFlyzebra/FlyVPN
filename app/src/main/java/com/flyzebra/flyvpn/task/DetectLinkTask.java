@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
@@ -66,6 +67,29 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     }
 
     @Override
+    public void onCreate() {
+        mReceiver = new MyReceiver();
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mIntentFilter.addAction(Constant.ACTION_MCWILL_DATA_STATE_CHANGE);
+        mIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+//        mIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        mIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        mContext.registerReceiver(mReceiver, mIntentFilter);
+    }
+
+    @Override
+    public void start() {
+        if (isRun.get()) {
+            FlyLog.e("DetectLinkTask is Running...");
+            return;
+        }
+        isRun.set(true);
+        mDetectLinkHandler.post(this);
+    }
+
+    @Override
     public void run() {
         long curretTime = (SystemClock.uptimeMillis() - 2500) % HEARTBEAT_TIME;
         long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
@@ -93,6 +117,19 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 detectAllNetwork();
                 break;
         }
+    }
+
+    @Override
+    public void stop() {
+        isRun.set(false);
+        mDetectLinkHandler.removeCallbacksAndMessages(null);
+    }
+
+
+    public void onDestory() {
+        ratdSocketTask.register(this);
+        ratdSocketTask = null;
+        mContext.unregisterReceiver(mReceiver);
     }
 
     /**
@@ -211,39 +248,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         }
     }
 
-    @Override
-    public void onCreate() {
-        mReceiver = new MyReceiver();
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        mIntentFilter.addAction(Constant.ACTION_MCWILL_DATA_STATE_CHANGE);
-        mIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
-        mIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        mContext.registerReceiver(mReceiver, mIntentFilter);
-    }
-
-    @Override
-    public void start() {
-        if (isRun.get()) {
-            FlyLog.e("DetectLinkTask is Running...");
-            return;
-        }
-        isRun.set(true);
-        mDetectLinkHandler.post(this);
-    }
-
-    @Override
-    public void stop() {
-        isRun.set(false);
-        mDetectLinkHandler.removeCallbacksAndMessages(null);
-    }
-
-
-    public void onDestory() {
-        ratdSocketTask.register(this);
-        ratdSocketTask = null;
-        mContext.unregisterReceiver(mReceiver);
-    }
 
     @Override
     public void recvRatdMessage(MpcMessage message) {
@@ -255,12 +259,16 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 case -6:
                     isRatd_run = false;
                     break;
-                default:
-                    isRatd_run = true;
-                    break;
             }
         }
     }
+
+    private Runnable changeNetworkTask = new Runnable() {
+        @Override
+        public void run() {
+            detectChangeNetwork();
+        }
+    };
 
     /**
      * 广播接收器
@@ -268,32 +276,31 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            try{
-                FlyLog.d("recv intent "+ intent.toUri(0));
-            }catch (Exception e){
+            try {
+                FlyLog.d("recv intent " + intent.toUri(0));
+            } catch (Exception e) {
                 FlyLog.d(e.toString());
             }
             String action = intent.getAction();
-            if (action != null && action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                //网络变化立刻发起探测
-                mDetectLinkHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        detectChangeNetwork();
-                    }
-                });
-            } else if (action != null && action.equals(Constant.ACTION_MCWILL_DATA_STATE_CHANGE)) {
-                //网络变化立刻发起探测
-                mDetectLinkHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        detectChangeNetwork();
-                    }
-                });
-            } else if (action != null && action.equals(Intent.ACTION_SCREEN_ON)) {
-                isScreen_on = true;
-            } else if (action != null && action.equals(Intent.ACTION_SCREEN_OFF)) {
-                isScreen_on = false;
+            if (action != null) {
+                switch (action) {
+                    case ConnectivityManager.CONNECTIVITY_ACTION:
+                    case Constant.ACTION_MCWILL_DATA_STATE_CHANGE:
+                    case WifiManager.WIFI_STATE_CHANGED_ACTION:
+//                    case WifiManager.NETWORK_STATE_CHANGED_ACTION:
+                        //网络变化立刻发起探测
+                        if (isRun.get()) {
+                            mDetectLinkHandler.removeCallbacks(changeNetworkTask);
+                            mDetectLinkHandler.post(changeNetworkTask);
+                        }
+                        break;
+                    case Intent.ACTION_SCREEN_ON:
+                        isScreen_on = true;
+                        break;
+                    case Intent.ACTION_SCREEN_OFF:
+                        isScreen_on = false;
+                        break;
+                }
             }
 
         }
