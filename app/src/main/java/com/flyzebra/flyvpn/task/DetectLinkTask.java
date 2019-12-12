@@ -40,12 +40,13 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private AtomicBoolean isRun = new AtomicBoolean(false);
 
     //TODO：不同状态探测时长不一样的需求需要添加
-    private Object lock = new Object();
     private static final int RUN_LIGHT = 5; //激活态亮屏 5秒探测
-    private static final int RUN_NOLIGHT = 5; //激活态灭屏 5秒探测
+    private static final int RUN_NOLIGHT = 10; //激活态灭屏 5秒探测
     private static final int NORUN_LIGHT = 60; //空闲态亮屏 60秒探测
     private static final int NORUN_NOLIGHT = 300; //空闲态灭屏 300秒探测
-    private int status = RUN_LIGHT;
+    private int detect_status = RUN_LIGHT;
+    private boolean isScreen_on = false;
+    private boolean isRatd_run = true;
 
     private MyReceiver mReceiver;
     private IntentFilter mIntentFilter;
@@ -68,14 +69,36 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         long curretTime = (SystemClock.uptimeMillis() - 2500) % HEARTBEAT_TIME;
         long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
         mDetectLinkHandler.postDelayed(this, delayedTime);
-        lastRunTime = curretTime;
-        detectAllNetwork();
+        //探测需求，时间间隔5,60,300
+        upDetectStatus();
+        switch (detect_status) {
+            case NORUN_LIGHT:
+                if ((SystemClock.uptimeMillis() - lastRunTime) > 55001) {
+                    detectAllNetwork();
+                } else {
+                    FlyLog.d("status -5, screen on, 60s one detect");
+                }
+                break;
+            case NORUN_NOLIGHT:
+                if ((SystemClock.uptimeMillis() - lastRunTime) > 305001) {
+                    detectAllNetwork();
+                } else {
+                    FlyLog.d("status -5, screen off, 300s one detect");
+                }
+                break;
+            case RUN_LIGHT:
+            case RUN_NOLIGHT:
+            default:
+                detectAllNetwork();
+                break;
+        }
     }
 
     /**
      * 检测已经存在的网络并发起定时探测
      */
     private void detectAllNetwork() {
+        lastRunTime = SystemClock.uptimeMillis();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
             boolean findWifi = false;
@@ -87,7 +110,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 if (linkProperties != null && ratdSocketTask != null) {
                     String iface = linkProperties.getInterfaceName();
                     if (TextUtils.isEmpty(iface)) continue;
-                    int netType = 0;
                     switch (iface) {
                         case "wlan0":
                             findWifi = true;
@@ -103,15 +125,15 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
             }
 
             //对没有加入链接但是已经查找到的网络进行探测操作
-            if (!mpcStatus.wifiLink.isLink&&findWifi) {
+            if (!mpcStatus.wifiLink.isLink && findWifi) {
                 FlyLog.e("find add wifi network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
             }
-            if (!mpcStatus.mobileLink.isLink&&findMobile) {
+            if (!mpcStatus.mobileLink.isLink && findMobile) {
                 FlyLog.e("find add 4g network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
             }
-            if (!mpcStatus.mcwillLink.isLink&&findMcwill) {
+            if (!mpcStatus.mcwillLink.isLink && findMcwill) {
                 FlyLog.e("find add mcwill network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
             }
@@ -132,7 +154,8 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     /**
      * 当检测到网络变化时立即对新网络发起探测，立即将不存在的网络移出链路
      */
-    private void detectNewNetwork() {
+    private void detectChangeNetwork() {
+        FlyLog.e("network is change");
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
             boolean findWifi = false;
@@ -158,31 +181,31 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 }
             }
             //对没有加入链接但是已经查找到的网络进行探测操作
-            if (!mpcStatus.wifiLink.isLink&&findWifi) {
+            if (!mpcStatus.wifiLink.isLink && findWifi) {
                 FlyLog.e("find add wifi network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
             }
-            if (!mpcStatus.mobileLink.isLink&&findMobile) {
+            if (!mpcStatus.mobileLink.isLink && findMobile) {
                 FlyLog.e("find add 4g network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
             }
-            if (!mpcStatus.mcwillLink.isLink&&findMcwill) {
+            if (!mpcStatus.mcwillLink.isLink && findMcwill) {
                 FlyLog.e("find add mcwill network, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
             }
 
             //对已经加入链接但是没有查找到的网络进行删除链路操作
-            if(mpcStatus.wifiLink.isLink&&!findWifi){
+            if (mpcStatus.wifiLink.isLink && !findWifi) {
                 FlyLog.e("find wifi network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink,4,Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
-            if(mpcStatus.mobileLink.isLink&&!findMobile){
+            if (mpcStatus.mobileLink.isLink && !findMobile) {
                 FlyLog.e("find 4G network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink,2,Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
-            if(mpcStatus.mcwillLink.isLink&&!findMcwill){
+            if (mpcStatus.mcwillLink.isLink && !findMcwill) {
                 FlyLog.e("find mcwill network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink,1,Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
         }
     }
@@ -226,8 +249,13 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         if (message.messageType == 0x1A) {
             switch (message.exceptionCode) {
                 case -5:
+                    isRatd_run = true;
                     break;
                 case -6:
+                    isRatd_run = false;
+                    break;
+                default:
+                    isRatd_run = true;
                     break;
             }
         }
@@ -245,7 +273,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 mDetectLinkHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        detectNewNetwork();
+                        detectChangeNetwork();
                     }
                 });
             } else if (action != null && action.equals(Constant.ACTION_MCWILL_DATA_STATE_CHANGE)) {
@@ -253,12 +281,23 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 mDetectLinkHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        detectNewNetwork();
+                        detectChangeNetwork();
                     }
                 });
             } else if (action != null && action.equals(Intent.ACTION_SCREEN_ON)) {
+                isScreen_on = true;
             } else if (action != null && action.equals(Intent.ACTION_SCREEN_OFF)) {
+                isScreen_on = false;
             }
+
+        }
+    }
+
+    private void upDetectStatus() {
+        if (isScreen_on) {
+            detect_status = isRatd_run ? RUN_LIGHT : NORUN_LIGHT;
+        } else {
+            detect_status = isRatd_run ? RUN_NOLIGHT : NORUN_NOLIGHT;
         }
     }
 }
