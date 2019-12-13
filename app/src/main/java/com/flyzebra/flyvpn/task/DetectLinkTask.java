@@ -107,7 +107,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 }
                 break;
             case NORUN_NOLIGHT:
-                if ((SystemClock.uptimeMillis() - lastRunTime) > 305001) {
+                if ((SystemClock.uptimeMillis() - lastRunTime) > 295001) {
                     detectAllNetwork();
                 } else {
                     FlyLog.d("status -6, screen off, 300s one detect");
