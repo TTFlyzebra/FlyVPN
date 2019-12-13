@@ -69,6 +69,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     @Override
     public void onCreate() {
         mReceiver = new MyReceiver();
+        ratdSocketTask.register(this);
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         mIntentFilter.addAction(Constant.ACTION_MCWILL_DATA_STATE_CHANGE);
@@ -132,7 +133,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
 
     public void onDestory() {
-        ratdSocketTask.register(this);
+        ratdSocketTask.unRegister(this);
         ratdSocketTask = null;
         mContext.unregisterReceiver(mReceiver);
     }
