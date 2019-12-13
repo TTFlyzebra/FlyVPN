@@ -45,7 +45,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private static final int NORUN_LIGHT = 60; //空闲态亮屏 60秒探测
     private static final int NORUN_NOLIGHT = 300; //空闲态灭屏 300秒探测
     private int detect_status = RUN_LIGHT;
-    private boolean isScreen_on = false;
+    private boolean isScreen_on = true;
     private boolean isRatd_run = true;
 
     private MyReceiver mReceiver;
