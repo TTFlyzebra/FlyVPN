@@ -103,14 +103,14 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                 if ((SystemClock.uptimeMillis() - lastRunTime) > 55001) {
                     detectAllNetwork();
                 } else {
-                    FlyLog.d("status -5, screen on, 60s one detect");
+                    FlyLog.d("status -6, screen on, 60s one detect");
                 }
                 break;
             case NORUN_NOLIGHT:
                 if ((SystemClock.uptimeMillis() - lastRunTime) > 305001) {
                     detectAllNetwork();
                 } else {
-                    FlyLog.d("status -5, screen off, 300s one detect");
+                    FlyLog.d("status -6, screen off, 300s one detect");
                 }
                 break;
             case RUN_LIGHT:
