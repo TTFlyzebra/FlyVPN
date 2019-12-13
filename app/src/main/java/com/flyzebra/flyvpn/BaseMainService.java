@@ -9,6 +9,7 @@ import com.flyzebra.flyvpn.data.MpcStatus;
 import com.flyzebra.flyvpn.model.IRatdRecvMessage;
 import com.flyzebra.flyvpn.model.MpcController;
 import com.flyzebra.flyvpn.task.DetectLinkTask;
+import com.flyzebra.flyvpn.task.EnableMpcTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.flyvpn.utils.MyTools;
@@ -29,6 +30,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     protected MpcStatus mpcStatus = MpcStatus.getInstance();
     protected RatdSocketTask ratdSocketTask;
     protected HeartBeatTask heartBeatTask;
+    protected EnableMpcTask enableMpcTask;
     protected DetectLinkTask detectLinkTask;
 
     @Override
@@ -47,6 +49,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         ratdSocketTask.start();
         ratdSocketTask.register(this);
         heartBeatTask = new HeartBeatTask(getApplicationContext(), ratdSocketTask);
+        enableMpcTask = new EnableMpcTask(getApplicationContext(),ratdSocketTask);
         detectLinkTask = new DetectLinkTask(getApplicationContext(), ratdSocketTask);
     }
 
@@ -60,6 +63,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     public void onDestroy() {
         FlyLog.d("+++++onDestroy, mpApp is Stop!+++++");
         heartBeatTask.onDestory();
+        enableMpcTask.onDestory();
         detectLinkTask.onDestory();
         ratdSocketTask.unRegister(this);
         ratdSocketTask.onDestory();
@@ -111,8 +115,8 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {
                     mpcStatus.disbleAllLink();
+                    enableMpcTask.start();
                     MyTools.upLinkManager(this, false, false, false);
-                    mpcController.enableMpcDefault(this);
                 } else {
                     //TODO:是否需要更换MAG
                     tryOpenOrCloseMpc();
@@ -167,6 +171,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             FlyLog.e("mpc switch is close,mpapp not running...");
             if (mpcStatus.mpcEnable) {
                 heartBeatTask.stop();
+                enableMpcTask.stop();
                 detectLinkTask.stop();
                 mpcController.stopMpc();
                 mpcStatus.mpcEnable = false;

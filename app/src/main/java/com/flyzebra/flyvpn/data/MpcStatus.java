@@ -30,7 +30,7 @@ public class MpcStatus {
     public NetworkLink wifiLink = new NetworkLink(4);
 
 
-    public NetworkLink defaultLink = new NetworkLink(-1);
+    private NetworkLink defaultLink = new NetworkLink(-1);
 
 
     private MpcStatus() {
@@ -54,7 +54,7 @@ public class MpcStatus {
     }
 
     private static class MpcStatusHolder {
-        public static final MpcStatus sInstance = new MpcStatus();
+        private static final MpcStatus sInstance = new MpcStatus();
     }
 
     public void disbleAllLink() {
