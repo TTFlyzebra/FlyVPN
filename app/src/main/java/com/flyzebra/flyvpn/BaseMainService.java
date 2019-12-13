@@ -49,7 +49,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         ratdSocketTask.start();
         ratdSocketTask.register(this);
         heartBeatTask = new HeartBeatTask(getApplicationContext(), ratdSocketTask);
-        enableMpcTask = new EnableMpcTask(getApplicationContext(),ratdSocketTask);
+        enableMpcTask = new EnableMpcTask(getApplicationContext(), ratdSocketTask);
         detectLinkTask = new DetectLinkTask(getApplicationContext(), ratdSocketTask);
     }
 
@@ -80,6 +80,8 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x4: //探测包响应          4
                 if (message.isResultOk()) {
                     mpcController.addNetworkLink(this, message.netType);
+                } else if (message.result == 7) {
+                    mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DETECT_TIMEOUT);
                 }
                 break;
             case 0x6: //删除子链路响应       6
@@ -128,9 +130,9 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x1a: //异常状态上报       26
                 //TODO:-2删除链路还是复位
                 if (message.exceptionCode == -2) {
-                    FlyLog.e("exceptionCode=2, delete link netType="+message.netType);
-                    mpcStatus.getNetLink(message.netType).isLink = false;
+                    FlyLog.e("exceptionCode=2, delete link netType=" + message.netType);
                     mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
+                    mpcStatus.getNetLink(message.netType).isLink = false;
 //                    mpcController.stopMpc();
 //                    mpcStatus.mpcEnable = false;
                 } else if (message.exceptionCode == -3) {

@@ -184,6 +184,8 @@ public class MpcController {
     }
 
     public void delNetworkLink(final int netType, final int delCause) {
+        NetworkLink networkLink = MpcStatus.getInstance().getNetLink(netType);
+        if (socketClient == null || networkLink == null || !networkLink.isLink) return;
         mSendMpcHandler.post(new Runnable() {
             @Override
             public void run() {
