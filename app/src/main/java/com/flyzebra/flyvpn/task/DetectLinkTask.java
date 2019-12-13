@@ -8,8 +8,10 @@ import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
@@ -33,6 +35,7 @@ import xinwei.com.mpapp.Constant;
 //TODO:维护链路信息--探测算法(探测算法，获取当前可用网络并发起探测，对比已链接的网络，对已经链接但在当前网络不存在的链接网络进行关闭链接处理  )
 public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private final ConnectivityManager cm;
+    private final PowerManager pm;
     private Context mContext;
     private RatdSocketTask ratdSocketTask;
     private static final int HEARTBEAT_TIME = 5000;
@@ -62,6 +65,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         this.mContext = context;
         this.ratdSocketTask = ratdSocketTask;
         cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         onCreate();
     }
 
@@ -74,8 +78,8 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         mIntentFilter.addAction(Constant.ACTION_MCWILL_DATA_STATE_CHANGE);
         mIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 //        mIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
-        mIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+//        mIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
+//        mIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         mContext.registerReceiver(mReceiver, mIntentFilter);
     }
 
@@ -95,7 +99,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     public void run() {
         long curretTime = (SystemClock.uptimeMillis() - 2500) % HEARTBEAT_TIME;
         long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
-        mDetectLinkHandler.postDelayed(this, Math.min(delayedTime,HEARTBEAT_TIME));
+        mDetectLinkHandler.postDelayed(this, Math.min(delayedTime, HEARTBEAT_TIME));
         //探测需求，时间间隔5,60,300
         upDetectStatus();
         switch (detect_status) {
@@ -123,7 +127,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
     @Override
     public void stop() {
-        if(isRun.get()){
+        if (isRun.get()) {
             isRun.set(false);
             FlyLog.e("DetectLinkTask stop...");
         }
@@ -299,12 +303,12 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                             mDetectLinkHandler.post(changeNetworkTask);
                         }
                         break;
-                    case Intent.ACTION_SCREEN_ON:
-                        isScreen_on = true;
-                        break;
-                    case Intent.ACTION_SCREEN_OFF:
-                        isScreen_on = false;
-                        break;
+//                    case Intent.ACTION_SCREEN_ON:
+//                        isScreen_on = true;
+//                        break;
+//                    case Intent.ACTION_SCREEN_OFF:
+//                        isScreen_on = false;
+//                        break;
                 }
             }
 
@@ -312,7 +316,13 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     }
 
     private void upDetectStatus() {
-        if (isScreen_on) {
+        boolean isOpen = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            isOpen = pm.isInteractive();
+        } else {
+            isOpen = pm.isScreenOn();
+        }
+        if (isOpen) {
             detect_status = isRatd_run ? RUN_LIGHT : NORUN_LIGHT;
         } else {
             detect_status = isRatd_run ? RUN_NOLIGHT : NORUN_NOLIGHT;
