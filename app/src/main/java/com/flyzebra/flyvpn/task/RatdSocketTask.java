@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RatdSocketTask implements ITask, Runnable {
     private Thread mThread;
     private final static String SOCKET_NAME = "socket_ratd";
+    private final static int R_CONNET_TIME = 2000; //SOCKET断掉重连时间间隔
     private OutputStream mOutputStream;
     private final Object mDaemonLock = new Object();
     private int BUFFER_SIZE = 4096;
@@ -80,7 +81,7 @@ public class RatdSocketTask implements ITask, Runnable {
             } catch (Exception e) {
                 FlyLog.e("Error in RatdSocketTask: " + e);
                 notifyRecvMessage(MpcMessage.socketError);
-                SystemClock.sleep(2000);
+                SystemClock.sleep(R_CONNET_TIME);
             }
         }
         isRun.set(false);

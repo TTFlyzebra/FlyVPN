@@ -40,7 +40,6 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     private long lastRunTime = 0;
     private AtomicBoolean isRun = new AtomicBoolean(false);
 
-    //TODO：不同状态探测时长不一样的需求需要添加
     private static final int RUN_LIGHT = 5; //激活态亮屏 5秒探测
     private static final int RUN_NOLIGHT = 10; //激活态灭屏 5秒探测
     private static final int NORUN_LIGHT = 60; //空闲态亮屏 60秒探测
@@ -96,7 +95,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
     public void run() {
         long curretTime = (SystemClock.uptimeMillis() - 2500) % HEARTBEAT_TIME;
         long delayedTime = curretTime == 0 ? HEARTBEAT_TIME : HEARTBEAT_TIME - curretTime;
-        mDetectLinkHandler.postDelayed(this, delayedTime);
+        mDetectLinkHandler.postDelayed(this, Math.min(delayedTime,HEARTBEAT_TIME));
         //探测需求，时间间隔5,60,300
         upDetectStatus();
         switch (detect_status) {
