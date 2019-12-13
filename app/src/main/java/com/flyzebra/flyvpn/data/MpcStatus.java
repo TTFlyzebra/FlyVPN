@@ -1,7 +1,5 @@
 package com.flyzebra.flyvpn.data;
 
-import android.content.Context;
-
 /**
  * ClassName: MpcStatus
  * Description:
@@ -59,7 +57,7 @@ public class MpcStatus {
         public static final MpcStatus sInstance = new MpcStatus();
     }
 
-    public void disbleAllLink(Context context) {
+    public void disbleAllLink() {
         mcwillLink.isLink = false;
         mobileLink.isLink = false;
         wifiLink.isLink = false;

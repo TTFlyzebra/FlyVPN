@@ -90,14 +90,15 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 //TODO:需要确认需求和测试
                 break;
             case 0x12: //使能双流响应       18
+                //TODO:使能不成功不会发起探测
                 if (message.isResultOk()) {
                     mpcStatus.mpcEnable = true;
                     detectLinkTask.start();
                 }
                 break;
             case 0x14: //关闭双流响应       20
-                //TODO:关闭双流后要怎么响应，需要关闭心路和探测吗
-                mpcStatus.disbleAllLink(this);
+                //TODO:关闭双流后要怎么响应，需要关闭心跳和探测吗
+                mpcStatus.disbleAllLink();
 //                heartBeatTask.stop();
 //                detectLinkTask.stop();
 //                String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
@@ -109,7 +110,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x16: //初始化配置响应     22
                 if (message.isResultOk()) {
-                    mpcStatus.disbleAllLink(this);
+                    mpcStatus.disbleAllLink();
                     MyTools.upLinkManager(this, false, false, false);
                     mpcController.enableMpcDefault(this);
                 } else {
@@ -140,13 +141,13 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x63:
                 //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
                 mpcStatus.mpcEnable = false;
-                mpcStatus.disbleAllLink(this);
+                mpcStatus.disbleAllLink();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:
                 //跟RATD建立通信成功
                 mpcStatus.mpcEnable = false;
-                mpcStatus.disbleAllLink(this);
+                mpcStatus.disbleAllLink();
                 tryOpenOrCloseMpc();
                 break;
         }
@@ -154,7 +155,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
 
     public void tryOpenOrCloseMpc() {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-        mpcStatus.disbleAllLink(this);
+        mpcStatus.disbleAllLink();
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
             if (!mpcStatus.mpcEnable) {

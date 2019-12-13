@@ -84,6 +84,8 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
         if (isRun.get()) {
             FlyLog.e("DetectLinkTask is Running...");
             return;
+        } else {
+            FlyLog.e("DetectLinkTask start...");
         }
         isRun.set(true);
         mDetectLinkHandler.post(this);
@@ -121,7 +123,10 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
     @Override
     public void stop() {
-        isRun.set(false);
+        if(isRun.get()){
+            isRun.set(false);
+            FlyLog.e("DetectLinkTask stop...");
+        }
         mDetectLinkHandler.removeCallbacksAndMessages(null);
     }
 

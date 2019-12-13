@@ -45,6 +45,8 @@ public class HeartBeatTask implements ITask,Runnable{
         if (isRun.get()) {
             FlyLog.e("HeartBeatTask is Running...");
             return;
+        }else{
+            FlyLog.e("HeartBeatTask start...");
         }
         isRun.set(true);
         mHeartBeatHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
@@ -52,7 +54,10 @@ public class HeartBeatTask implements ITask,Runnable{
 
     @Override
     public void stop(){
-        isRun.set(false);
+        if(isRun.get()){
+            isRun.set(false);
+            FlyLog.e("HeartBeatTask stop...");
+        }
         mHeartBeatHandler.removeCallbacksAndMessages(null);
     }
 
