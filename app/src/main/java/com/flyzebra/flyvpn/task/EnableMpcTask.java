@@ -54,7 +54,7 @@ public class EnableMpcTask implements ITask,Runnable, IRatdRecvMessage {
             FlyLog.e("EnableMpcTask start...");
         }
         isRun.set(true);
-        mEnableMpcHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
+        mEnableMpcHandler.post(this);
     }
 
     @Override

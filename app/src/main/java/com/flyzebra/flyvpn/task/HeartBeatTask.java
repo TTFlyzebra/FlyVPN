@@ -49,7 +49,7 @@ public class HeartBeatTask implements ITask,Runnable{
             FlyLog.e("HeartBeatTask start...");
         }
         isRun.set(true);
-        mHeartBeatHandler.postDelayed(this, SystemClock.uptimeMillis() % 5000);
+        mHeartBeatHandler.postDelayed(this, SystemClock.uptimeMillis() % HEARTBEAT_TIME);
     }
 
     @Override
