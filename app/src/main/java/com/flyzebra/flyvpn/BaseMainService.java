@@ -42,7 +42,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     public void onCreate() {
         super.onCreate();
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
-        FlyLog.e("+++++version 1.0----2019.12.12+++++");
+        FlyLog.e("+++++version 1.01---2019.12.12+++++");
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
         FlyLog.d("+++++onCreate, mpapp is start!+++++");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
@@ -129,7 +129,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x1a: //异常状态上报       26
                 //TODO:-2删除链路还是复位
-                if (message.exceptionCode == -2) {
+                if (message.exceptionCode == -2||message.exceptionCode== -1) {
                     FlyLog.e("exceptionCode=2, delete link netType=" + message.netType);
                     mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
                     mpcStatus.getNetLink(message.netType).isLink = false;
