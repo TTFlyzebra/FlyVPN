@@ -130,7 +130,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x1a: //异常状态上报       26
                 //TODO:-2删除链路还是复位
                 if (message.exceptionCode == -2||message.exceptionCode== -1) {
-                    FlyLog.e("exceptionCode=2, delete link netType=" + message.netType);
+                    FlyLog.e("exceptionCode=%d, delete link netType=%d",message.exceptionCode,message.netType);
                     mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
                     mpcStatus.getNetLink(message.netType).isLink = false;
 //                    mpcController.stopMpc();
