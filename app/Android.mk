@@ -17,7 +17,7 @@ LOCAL_AAPT_FLAGS :=  --auto-add-overlay \
 
 LOCAL_MANIFEST_FILE := src/main/AndroidManifest.xml
 
-#LOCAL_OVERRIDES_PACKAGES := mpApp
+LOCAL_OVERRIDES_PACKAGES := mpApp
 #LOCAL_PRIVILEGED_MODULE := true
 LOCAL_PACKAGE_NAME := NewMpApp
 LOCAL_CERTIFICATE := platform
