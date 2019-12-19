@@ -6,16 +6,16 @@ LOCAL_STATIC_JAVA_LIBRARIES :=  gson-2.8.5 \
 								android-support-v4 \
 								android-support-v7-appcompat \
 
-LOCAL_SRC_FILES := $(call all-java-files-under, $(LOCAL_PATH)/src/main/java) \
-                   $(call all-Iaidl-files-under, $(LOCAL_PATH)/src/main/aidl) \
+LOCAL_SRC_FILES := $(call all-java-files-under, $(LOCAL_PATH)/app/src/main/java) \
+                   $(call all-Iaidl-files-under, $(LOCAL_PATH)/app/src/main/aidl) \
 
-LOCAL_RESOURCE_DIR = $(LOCAL_PATH)/src/main/res \
+LOCAL_RESOURCE_DIR = $(LOCAL_PATH)/app/src/main/res \
 					 frameworks/support/v7/appcompat/res \
 
 LOCAL_AAPT_FLAGS :=  --auto-add-overlay \
 					 --extra-packages android.support.v7.appcompat \
 
-LOCAL_MANIFEST_FILE := src/main/AndroidManifest.xml
+LOCAL_MANIFEST_FILE := $(LOCAL_PATH)/app/src/main/AndroidManifest.xml
 
 LOCAL_OVERRIDES_PACKAGES := mpApp
 #LOCAL_PRIVILEGED_MODULE := true
