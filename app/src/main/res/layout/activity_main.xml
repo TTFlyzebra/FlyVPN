@@ -4,34 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".TestActivity">
+    android:orientation="vertical">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open service"
+        android:text="@string/openService"
         android:onClick="openService"
         tools:ignore="OnClick" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test udp"
+        android:text="@string/testUDP"
         android:onClick="testUDP"
         tools:ignore="OnClick" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="open tun"
+        android:text="@string/openTun"
         android:onClick="openTun"
         tools:ignore="OnClick" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="close tun"
+        android:text="@string/closeTun"
         android:onClick="closeTun"
         tools:ignore="OnClick" />
 

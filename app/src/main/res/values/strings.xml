@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FlyVPN</string>
+    <string name="openService">open service</string>
+    <string name="testUDP">test udp</string>
+    <string name="openTun">open tun</string>
+    <string name="closeTun">close tun</string>
 </resources>
