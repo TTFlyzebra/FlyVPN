@@ -17,10 +17,10 @@ LOCAL_AAPT_FLAGS := \
         --auto-add-overlay \
         --extra-packages android.support.v7.appcompat \
 
-LOCAL_SRC_FILES := $(call all-java-files-under, app/src/main/java) \
-                   $(call all-Iaidl-files-under, app/src/main/aidl) \
+LOCAL_SRC_FILES := $(call all-java-files-under, src) \
+                   $(call all-Iaidl-files-under, src) \
 
-LOCAL_MANIFEST_FILE := app/src/main/AndroidManifest.xml
+#LOCAL_MANIFEST_FILE := AndroidManifest.xml
 
 LOCAL_OVERRIDES_PACKAGES := mpApp
 LOCAL_PACKAGE_NAME := NewMpApp
