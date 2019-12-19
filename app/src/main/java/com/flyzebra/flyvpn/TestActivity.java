@@ -13,6 +13,7 @@ import java.net.InetAddress;
 
 import androidx.appcompat.app.AppCompatActivity;
 import xinwei.com.mpapp.MainService;
+import xinwei.com.mpapp.R;
 
 /**
  * ClassName: TestActivity
