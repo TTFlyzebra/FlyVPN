@@ -11,7 +11,8 @@ LOCAL_STATIC_JAVA_LIBRARIES :=  gson-2.8.5 \
 								android-support-v4 \
 								android-support-v7-appcompat \
 
-LOCAL_SRC_FILES := $(call all-java-files-under, src/main/java)
+LOCAL_SRC_FILES := $(call all-java-files-under, src/main/java) \
+                   $(call all-Iaidl-files-under, src/main/aidl) \
 
 LOCAL_RESOURCE_DIR = $(LOCAL_PATH)/src/main/res \
 					 frameworks/support/v7/appcompat/res \
