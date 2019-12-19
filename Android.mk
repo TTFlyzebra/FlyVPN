@@ -15,7 +15,7 @@ LOCAL_RESOURCE_DIR = $(LOCAL_PATH)/app/src/main/res \
 LOCAL_AAPT_FLAGS :=  --auto-add-overlay \
 					 --extra-packages android.support.v7.appcompat \
 
-LOCAL_MANIFEST_FILE := $(LOCAL_PATH)/app/src/main/AndroidManifest.xml
+LOCAL_MANIFEST_FILE := app/src/main/AndroidManifest.xml
 
 LOCAL_OVERRIDES_PACKAGES := mpApp
 #LOCAL_PRIVILEGED_MODULE := true
@@ -26,6 +26,6 @@ LOCAL_PROGUARD_ENABLED := disabled
 include $(BUILD_PACKAGE)
 
 include $(CLEAR_VARS)
-LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES :=  gson-2.8.5:libs/gson-2.8.5.jar
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES :=  gson-2.8.5:app/libs/gson-2.8.5.jar
 
 include $(BUILD_MULTI_PREBUILT)
