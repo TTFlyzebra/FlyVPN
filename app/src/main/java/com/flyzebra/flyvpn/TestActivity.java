@@ -1,5 +1,6 @@
 package com.flyzebra.flyvpn;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import androidx.appcompat.app.AppCompatActivity;
 import xinwei.com.mpapp.MainService;
 import xinwei.com.mpapp.R;
 
@@ -22,7 +22,7 @@ import xinwei.com.mpapp.R;
  * Email:flycnzebra@gmail.com
  * Date: 19-12-8 上午8:40
  */
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends Activity {
     private int fd;
 
     static {
