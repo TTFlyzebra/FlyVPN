@@ -42,7 +42,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     public void onCreate() {
         super.onCreate();
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
-        FlyLog.e("+++++version 1.01---2019.12.12+++++");
+        FlyLog.e("+++++version 1.01---2019.12.20+++++");
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
         FlyLog.d("+++++onCreate, mpapp is start!+++++");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
