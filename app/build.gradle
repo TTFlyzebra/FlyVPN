@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 def getCreateTime() {
-    def createTime = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00")).trim()
+    def createTime = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00")).trim()
     return createTime
 }
 
