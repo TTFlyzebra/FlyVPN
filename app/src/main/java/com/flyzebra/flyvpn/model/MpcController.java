@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.text.TextUtils;
@@ -118,7 +119,7 @@ public class MpcController {
             @Override
             public void run() {
                 boolean flag = false;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Network networks[] = cm.getAllNetworks();
                     for (Network network : networks) {
                         LinkProperties linkProperties = cm.getLinkProperties(network);
