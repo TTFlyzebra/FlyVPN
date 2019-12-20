@@ -85,6 +85,7 @@ public class RatdSocketTask implements ITask, Runnable {
             }
         }
         isRun.set(false);
+        FlyLog.e("RatdSocketTask stop...");
     }
 
     private void listenToSocket() throws Exception {
@@ -186,7 +187,9 @@ public class RatdSocketTask implements ITask, Runnable {
 
     @Override
     public void stop() {
-        isRun.set(false);
+        if(isRun.get()){
+            isRun.set(false);
+        }
         mHandler.removeCallbacksAndMessages(null);
     }
 
