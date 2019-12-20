@@ -23,7 +23,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode gitCommitCount.toInteger()
-        versionName "v1.0."+gitSHA
+        versionName "v1.0."+gitSHA+"."+createTime
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
