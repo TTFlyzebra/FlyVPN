@@ -162,6 +162,7 @@ public class MainService extends BaseMainService {
     public void onDestroy() {
         FlyLog.d("onDestroy");
         mHandler.removeCallbacksAndMessages(null);
+        unregisterReceiver(mainReceiver);
         super.onDestroy();
     }
 }
