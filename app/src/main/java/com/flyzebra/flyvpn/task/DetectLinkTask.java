@@ -264,6 +264,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
             case 0x12: //使能双流响应成功后及时发送探测包
                 if (message.isResultOk()) {
                     lastRunTime = 0;
+                    isRatd_run = true;
                 }
                 break;
             case 0x1A:
