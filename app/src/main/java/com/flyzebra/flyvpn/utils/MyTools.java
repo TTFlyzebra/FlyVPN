@@ -2,6 +2,7 @@ package com.flyzebra.flyvpn.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Process;
 import android.os.UserHandle;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ import java.util.Random;
  */
 public class MyTools {
     private static UserHandle userHandle = null;
+
     static {
         try {
             Class clazz = Class.forName("android.os.UserHandle");
@@ -52,9 +54,9 @@ public class MyTools {
         intent.putExtra("NETWORK_LINK_WIFI", wifi ? 1 : 0);
         intent.putExtra("NETWORK_LINK_4G", mobile ? 1 : 0);
         intent.putExtra("NETWORK_LINK_MCWILL", mcwill ? 1 : 0);
-        if(userHandle!=null){
-            context.sendBroadcastAsUser(intent,userHandle);
-        }else{
+        if (userHandle != null && Process.myPid() == Process.SYSTEM_UID) {
+            context.sendBroadcastAsUser(intent, userHandle);
+        } else {
             context.sendBroadcast(intent);
         }
     }
