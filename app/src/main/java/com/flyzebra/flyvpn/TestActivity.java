@@ -1,6 +1,7 @@
 package com.flyzebra.flyvpn;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import xinwei.com.mpapp.MainService;
 import xinwei.com.mpapp.R;
 
 /**
@@ -33,13 +33,13 @@ public class TestActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        moveTaskToBack(true);
-        startService(new Intent(this, MainService.class));
     }
 
     public void openService(View view){
-        moveTaskToBack(true);
-        startService(new Intent(this, MainService.class));
+        Intent intent = new Intent();
+        ComponentName cn = new ComponentName("xinwei.com.mpapp", "xinwei.com.mpapp.MainService");
+        intent.setComponent(cn);
+        startService(intent);
     }
 
     public void testUDP(View view) {

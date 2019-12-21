@@ -14,14 +14,16 @@
         android:supportsRtl="true"
         android:persistent="true"
         android:theme="@android:style/Theme.Black">
-<!--        <activity android:netTypeName=".TestActivity">-->
-<!--            <intent-filter>-->
-<!--                <action android:netTypeName="android.intent.action.MAIN" />-->
 
-<!--                <category android:netTypeName="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--        <service android:netTypeName=".BaseMainService"/>-->
+        <activity android:name="com.flyzebra.flyvpn.TestActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+            </intent-filter>
+        </activity>
 
         <service android:name="xinwei.com.mpapp.MainService"
             android:enabled="true"
