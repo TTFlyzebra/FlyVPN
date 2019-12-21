@@ -54,7 +54,7 @@ public class MyTools {
         intent.putExtra("NETWORK_LINK_WIFI", wifi ? 1 : 0);
         intent.putExtra("NETWORK_LINK_4G", mobile ? 1 : 0);
         intent.putExtra("NETWORK_LINK_MCWILL", mcwill ? 1 : 0);
-        if (userHandle != null && Process.myPid() == Process.SYSTEM_UID) {
+        if (userHandle != null && Process.myUid() == Process.SYSTEM_UID) {
             context.sendBroadcastAsUser(intent, userHandle);
         } else {
             context.sendBroadcast(intent);
