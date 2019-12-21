@@ -260,15 +260,22 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
     @Override
     public void recvRatdMessage(MpcMessage message) {
-        if (message.messageType == 0x1A) {
-            switch (message.exceptionCode) {
-                case -5:
-                    isRatd_run = true;
-                    break;
-                case -6:
-                    isRatd_run = false;
-                    break;
-            }
+        switch (message.messageType) {
+            case 0x12: //使能双流响应成功后及时发送探测包
+                if (message.isResultOk()) {
+                    lastRunTime = 0;
+                }
+                break;
+            case 0x1A:
+                switch (message.exceptionCode) {
+                    case -5:
+                        isRatd_run = true;
+                        break;
+                    case -6:
+                        isRatd_run = false;
+                        break;
+                }
+                break;
         }
     }
 
