@@ -74,20 +74,51 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     public void recvRatdMessage(MpcMessage message) {
         switch (message.messageType) {
             case 0x2: //增加子链路响应       2
-                mpcStatus.getNetLink(message.netType).isLink = message.isResultOk();
-                MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                switch (message.result) {
+                    case 0:
+                        mpcStatus.getNetLink(message.netType).isLink = message.isResultOk();
+                        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                        break;
+                    case Constant.ADD_LINK_RESULT_CODE_USER_NOT_EXIST:
+                    case Constant.ADD_LINK_RESULT_CODE_MP_NOT_START:
+                    case Constant.ADD_LINK_RESULT_CODE_DHCP_FAIL:
+                    case Constant.ADD_LINK_RESULT_CODE_NETTY_ERROR:
+                        tryOpenOrCloseMpc();
+                        break;
+                    case Constant.ADD_LINK_RESULT_CODE_NORMAL_ERROR:
+                    case Constant.ADD_LINK_RESULT_CODE_PARAM_ERROR:
+                        break;
+                }
                 break;
             case 0x4: //探测包响应          4
-                if (message.isResultOk()) {
-                    mpcController.addNetworkLink(this, message.netType);
-                } else if (message.result == 7) {
-                    mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DETECT_TIMEOUT);
+                switch (message.result) {
+                    case 0:
+                        if(mpcStatus.mpcEnable){
+                            mpcController.addNetworkLink(this, message.netType);
+                        }else{
+                            enableMpcTask.addNetworkTask(message.netType);
+                        }
+                        break;
+                    case Constant.DETECT_LINK_RESULT_CODE_USER_NOT_EXIST:
+                    case Constant.DETECT_LINK_RESULT_CODE_MP_NOT_START:
+                    case Constant.DETECT_LINK_RESULT_CODE_DSN_EXCEPTION:
+                        tryOpenOrCloseMpc();
+                        break;
+                    case Constant.DETECT_LINK_RESULT_CODE_NORMAL_ERROR:
+                    case Constant.DETECT_LINK_RESULT_CODE_PARAM_ERROR:
+                    case Constant.DETECT_LINK_RESULT_CODE_TIME_OUT:
+                        mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DETECT_TIMEOUT);
+                        break;
                 }
                 break;
             case 0x6: //删除子链路响应       6
-                //TODO:删除链路需要测试，此返回只打印不成功信息，不成功不更行重试操作
-                mpcStatus.getNetLink(message.netType).isLink = false;
-                MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                switch (message.result) {
+                    case 0:
+                    default:
+                        mpcStatus.getNetLink(message.netType).isLink = false;
+                        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                        break;
+                }
                 break;
             case 0x8: //释放MP链路响应       8
                 //TODO:需要确认需求和测试
@@ -96,32 +127,30 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 //TODO:需要确认需求和测试
                 break;
             case 0x12: //使能双流响应       18
-                //TODO:使能不成功不会发起探测
-                if (message.isResultOk()) {
-                    mpcStatus.mpcEnable = true;
-                    detectLinkTask.start();
+                switch (message.result) {
+                    case 0:
+                        mpcStatus.mpcEnable = true;
+                        break;
                 }
                 break;
             case 0x14: //关闭双流响应       20
-                //TODO:关闭双流后要怎么响应，需要关闭心跳和探测吗
-                mpcStatus.disbleAllLink();
-//                heartBeatTask.stop();
-//                detectLinkTask.stop();
-//                String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-//                if ("true".equals(switch_status)) {
-//                    mpcStatus.disbleAllLink(this);
-//                    mpcStatus.mpcEnable = true;
-//                    mpcController.startMpc();
-//                }
+                switch (message.result) {
+                    case 0:
+                        mpcStatus.disbleAllLink();
+                        enableMpcTask.stop();
+                        heartBeatTask.stop();
+                        detectLinkTask.stop();
+                        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+                        break;
+                }
                 break;
             case 0x16: //初始化配置响应     22
-                if (message.isResultOk()) {
-                    mpcStatus.disbleAllLink();
-                    enableMpcTask.start();
-                    MyTools.upLinkManager(this, false, false, false);
-                } else {
-                    //TODO:是否需要更换MAG
-                    tryOpenOrCloseMpc();
+                switch (message.result) {
+                    case 0:
+                        break;
+                    default:
+                        tryOpenOrCloseMpc();
+                        break;
                 }
                 break;
             case 0x18: //心跳响应          24
@@ -129,31 +158,27 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x1a: //异常状态上报       26
                 //TODO:-2删除链路还是复位
-                if (message.exceptionCode == -2||message.exceptionCode== -1) {
-                    FlyLog.e("exceptionCode=%d, delete link netType=%d",message.exceptionCode,message.netType);
-                    mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
-                    mpcStatus.getNetLink(message.netType).isLink = false;
-//                    mpcController.stopMpc();
-//                    mpcStatus.mpcEnable = false;
-                } else if (message.exceptionCode == -3) {
-                    String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
-                    if ("true".equals(switch_status)) {
+                switch (message.exceptionCode) {
+                    case Constant.EXCEPTION_CODE_1:
+                    case Constant.EXCEPTION_CODE_2:
+                        FlyLog.e("exceptionCode=%d, delete link netType=%d", message.exceptionCode, message.netType);
+                        mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DEVICE_EXCEPTION);
+                        mpcStatus.getNetLink(message.netType).isLink = false;
+                        break;
+                    case Constant.EXCEPTION_CODE_3:
                         tryOpenOrCloseMpc();
-                    }
+                        break;
                 }
                 break;
             case 0x1b: //流量信息上报       27
                 break;
             case 0x63:
                 //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
-                mpcStatus.mpcEnable = false;
                 mpcStatus.disbleAllLink();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
             case 0x64:
                 //跟RATD建立通信成功
-                mpcStatus.mpcEnable = false;
-                mpcStatus.disbleAllLink();
                 tryOpenOrCloseMpc();
                 break;
         }
@@ -161,23 +186,19 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
 
     public void tryOpenOrCloseMpc() {
         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
+        enableMpcTask.stop();
+        heartBeatTask.stop();
+        detectLinkTask.stop();
         mpcStatus.disbleAllLink();
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
-            if (!mpcStatus.mpcEnable) {
-                heartBeatTask.start();
-                mpcController.startMpc();
-                mpcStatus.mpcEnable = true;
-            }
+            heartBeatTask.start();
+            detectLinkTask.start();
+            enableMpcTask.start();
+            mpcController.startMpc();
         } else {
             FlyLog.e("mpc switch is close,mpapp not running...");
-            if (mpcStatus.mpcEnable) {
-                heartBeatTask.stop();
-                enableMpcTask.stop();
-                detectLinkTask.stop();
-                mpcController.stopMpc();
-                mpcStatus.mpcEnable = false;
-            }
+            mpcController.stopMpc();
         }
         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
     }
