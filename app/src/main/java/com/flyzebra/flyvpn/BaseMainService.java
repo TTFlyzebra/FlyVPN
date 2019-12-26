@@ -136,10 +136,11 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x14: //关闭双流响应       20
                 switch (message.result) {
                     case 0:
-                        mpcStatus.disbleAllLink();
                         enableMpcTask.stop();
                         heartBeatTask.stop();
                         detectLinkTask.stop();
+                        mpcStatus.disbleAllLink();
+                        mpcStatus.mpcEnable = false;
                         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                         break;
                 }
