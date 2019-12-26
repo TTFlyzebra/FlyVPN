@@ -85,6 +85,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
     @Override
     public void start() {
+        isRatd_run = true;
         if (isRun.get()) {
             FlyLog.e("DetectLinkTask is Running...");
             return;

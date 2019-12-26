@@ -42,7 +42,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     public void onCreate() {
         super.onCreate();
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
-        FlyLog.e("+++++version 1.01---2019.12.20+++++");
+        FlyLog.e("+++++version 1.02---2019.12.26+++++");
         FlyLog.e("+++++++++++++++++++++++++++++++++++");
         FlyLog.d("+++++onCreate, mpapp is start!+++++");
         ratdSocketTask = new RatdSocketTask(getApplicationContext());
@@ -166,7 +166,10 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                         mpcStatus.getNetLink(message.netType).isLink = false;
                         break;
                     case Constant.EXCEPTION_CODE_3:
-                        tryOpenOrCloseMpc();
+                        String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
+                        if ("true".equals(switch_status)) {
+                            tryOpenOrCloseMpc();
+                        }
                         break;
                 }
                 break;
@@ -190,6 +193,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         heartBeatTask.stop();
         detectLinkTask.stop();
         mpcStatus.disbleAllLink();
+        mpcStatus.mpcEnable = false;
         if ("true".equals(switch_status)) {
             FlyLog.e("mpc switch is open,mpapp start run...");
             heartBeatTask.start();

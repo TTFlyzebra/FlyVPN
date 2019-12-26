@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EnableMpcTask implements ITask, Runnable, IRatdRecvMessage {
     private RatdSocketTask ratdSocketTask;
     private Context mContext;
-    private static final int ENABLEMPC_TIME = 1000;
+    private static final int ENABLEMPC_TIME = 2000;
     private ArrayBlockingQueue<Integer> networkList = new ArrayBlockingQueue<Integer>(4);
     private static final HandlerThread mEnableMpcThread = new HandlerThread("EnableMpc_Task");
 
@@ -81,12 +81,12 @@ public class EnableMpcTask implements ITask, Runnable, IRatdRecvMessage {
     public void run() {
         long curretTime = SystemClock.uptimeMillis() % ENABLEMPC_TIME;
         long delayedTime = curretTime == 0 ? ENABLEMPC_TIME : ENABLEMPC_TIME - curretTime;
-        mEnableMpcHandler.postDelayed(this, delayedTime);
+        mEnableMpcHandler.postDelayed(this, Math.max(delayedTime,ENABLEMPC_TIME-500));
         //发送使能双流
         if (ratdSocketTask != null) {
             try {
-                int netType = networkList.poll(ENABLEMPC_TIME*3, TimeUnit.MILLISECONDS);
-                if(isRun.get()) {
+                int netType = networkList.poll();
+                if (isRun.get()) {
                     if (netType == 4 || netType == 2 || netType == 1) {
                         String iface = netType == 4 ? "wlan0" : netType == 2 ? "rmnet_data0" : "mcwill";
                         ratdSocketTask.sendMessage(String.format(MpcMessage.enableMpc, netType, iface, MyTools.createSessionId()));
@@ -95,7 +95,7 @@ public class EnableMpcTask implements ITask, Runnable, IRatdRecvMessage {
                     }
                 }
             } catch (Exception e) {
-                FlyLog.e("EnableMpcTask throw Exception:"+e);
+                FlyLog.e("EnableMpcTask throw Exception:" + e);
             }
         }
     }
@@ -103,19 +103,15 @@ public class EnableMpcTask implements ITask, Runnable, IRatdRecvMessage {
     @Override
     public void recvRatdMessage(MpcMessage message) {
         //使能双流返回成功结束线程
-        if (message.messageType == 0x12 && message.result==0) {
+        if (message.messageType == 0x12 && message.result == 0) {
             networkList.clear();
             stop();
         }
     }
 
     public void addNetworkTask(int netType) {
-        while (networkList.size()>3){
-            try {
-                networkList.take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (networkList.size() > 3) {
+            networkList.poll();
         }
         networkList.offer(netType);
     }
