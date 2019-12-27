@@ -120,8 +120,8 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_DHCP_FAIL:
                     case Constant.DETECT_LINK_RESULT_CODE_NETTY_ERROR:
-                        if (mpcStatus.mpcEnable) {
-                            delayTryOpenOrCloseMpc(DELAY_TIME);
+                        if (!mpcStatus.mpcEnable) {
+                            enableMpcTask.addNetworkTask(message.netType);
                         }
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_NORMAL_ERROR:
