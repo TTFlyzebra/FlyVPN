@@ -136,6 +136,10 @@ public class MainService extends BaseMainService {
                     if(mpcStatus.mpcEnable){
                         tryOpenOrCloseMpc();
                     }else{
+                        enableMpcTask.stop();
+                        heartBeatTask.stop();
+                        detectLinkTask.stop();
+                        mpcStatus.disbleAllLink();
                         FlyLog.e("mpapp is already stop...");
                     }
                 }
