@@ -165,7 +165,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                     case 0:
                         break;
                     default:
-                        tryOpenOrCloseMpc();
+                        delayTryOpenOrCloseMpc(1000);
                         break;
                 }
                 break;
@@ -184,8 +184,16 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                     case Constant.EXCEPTION_CODE_3:
                         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
                         if ("true".equals(switch_status)) {
-                            delayTryOpenOrCloseMpc(1000);
+                            tryOpenOrCloseMpc();
                         }
+                        break;
+                    case Constant.EXCEPTION_CODE_4:
+                        enableMpcTask.stop();
+                        heartBeatTask.stop();
+                        detectLinkTask.stop();
+                        mpcStatus.disbleAllLink();
+                        mpcStatus.mpcEnable = false;
+                        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                         break;
                 }
                 break;
