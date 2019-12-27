@@ -2,7 +2,9 @@ package com.flyzebra.flyvpn;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.data.MpcStatus;
@@ -32,6 +34,8 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
     protected HeartBeatTask heartBeatTask;
     protected EnableMpcTask enableMpcTask;
     protected DetectLinkTask detectLinkTask;
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    protected long DELAY_TIME = 5000;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -80,10 +84,16 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                         break;
                     case Constant.ADD_LINK_RESULT_CODE_USER_NOT_EXIST:
+                        if(mpcStatus.mpcEnable){
+                            delayTryOpenOrCloseMpc(DELAY_TIME);
+                        }else{
+                            enableMpcTask.addNetworkTask(message.netType);
+                        }
+                        break;
                     case Constant.ADD_LINK_RESULT_CODE_MP_NOT_START:
                     case Constant.ADD_LINK_RESULT_CODE_DHCP_FAIL:
                     case Constant.ADD_LINK_RESULT_CODE_NETTY_ERROR:
-                        tryOpenOrCloseMpc();
+                        delayTryOpenOrCloseMpc(DELAY_TIME);
                         break;
                     case Constant.ADD_LINK_RESULT_CODE_NORMAL_ERROR:
                     case Constant.ADD_LINK_RESULT_CODE_PARAM_ERROR:
@@ -100,9 +110,14 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                         }
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_USER_NOT_EXIST:
+                        if(mpcStatus.mpcEnable){
+                            delayTryOpenOrCloseMpc(DELAY_TIME);
+                        }else{
+                            enableMpcTask.addNetworkTask(message.netType);
+                        }
                     case Constant.DETECT_LINK_RESULT_CODE_MP_NOT_START:
                     case Constant.DETECT_LINK_RESULT_CODE_DSN_EXCEPTION:
-                        tryOpenOrCloseMpc();
+                        delayTryOpenOrCloseMpc(DELAY_TIME);
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_NORMAL_ERROR:
                     case Constant.DETECT_LINK_RESULT_CODE_PARAM_ERROR:
@@ -169,7 +184,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                     case Constant.EXCEPTION_CODE_3:
                         String switch_status = SystemPropTools.get("persist.sys.net.support.multi", "true");
                         if ("true".equals(switch_status)) {
-                            tryOpenOrCloseMpc();
+                            delayTryOpenOrCloseMpc(1000);
                         }
                         break;
                 }
@@ -206,6 +221,24 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             mpcController.stopMpc();
         }
         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+    }
+
+    private Runnable delayOpenTask = new Runnable() {
+        @Override
+        public void run() {
+            tryOpenOrCloseMpc();
+        }
+    };
+
+    public void delayTryOpenOrCloseMpc(long millis){
+        enableMpcTask.stop();
+        heartBeatTask.stop();
+        detectLinkTask.stop();
+        mpcStatus.disbleAllLink();
+        mpcStatus.mpcEnable = false;
+        MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
+        mHandler.removeCallbacks(delayOpenTask);
+        mHandler.postDelayed(delayOpenTask,millis);
     }
 
 

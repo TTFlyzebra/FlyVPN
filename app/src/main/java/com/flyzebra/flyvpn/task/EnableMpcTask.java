@@ -95,7 +95,7 @@ public class EnableMpcTask implements ITask, Runnable, IRatdRecvMessage {
                     }
                 }
             } catch (Exception e) {
-                FlyLog.e("EnableMpcTask throw Exception:" + e);
+//                FlyLog.e("EnableMpcTask throw Exception:" + e);
             }
         }
     }
