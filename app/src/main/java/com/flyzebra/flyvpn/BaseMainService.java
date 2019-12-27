@@ -193,6 +193,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                 break;
             case 0x63:
                 //跟RATD失去联系,RatdSocketTask自动发起重新连接操作，初始化所有状态，关闭探测
+                FlyLog.d("ratd socket disconnet, reset all netwrok!");
                 mpcStatus.disbleAllLink();
                 MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                 break;
@@ -215,7 +216,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             heartBeatTask.start();
             detectLinkTask.start();
             enableMpcTask.start();
-            mpcController.startMpc();
+            mpcController.initMpc();
         } else {
             FlyLog.e("mpc switch is close,mpapp not running...");
             mpcController.stopMpc();
