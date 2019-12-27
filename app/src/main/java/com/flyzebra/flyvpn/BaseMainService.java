@@ -84,9 +84,9 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
                         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
                         break;
                     case Constant.ADD_LINK_RESULT_CODE_USER_NOT_EXIST:
-                        if(mpcStatus.mpcEnable){
+                        if (mpcStatus.mpcEnable) {
                             delayTryOpenOrCloseMpc(DELAY_TIME);
-                        }else{
+                        } else {
                             enableMpcTask.addNetworkTask(message.netType);
                         }
                         break;
@@ -103,26 +103,35 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
             case 0x4: //探测包响应          4
                 switch (message.result) {
                     case 0:
-                        if(mpcStatus.mpcEnable){
+                        if (mpcStatus.mpcEnable) {
                             mpcController.addNetworkLink(this, message.netType);
-                        }else{
+                        } else {
                             enableMpcTask.addNetworkTask(message.netType);
                         }
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_USER_NOT_EXIST:
-                        if(mpcStatus.mpcEnable){
-                            delayTryOpenOrCloseMpc(DELAY_TIME);
-                        }else{
-                            enableMpcTask.addNetworkTask(message.netType);
-                        }
                     case Constant.DETECT_LINK_RESULT_CODE_MP_NOT_START:
                     case Constant.DETECT_LINK_RESULT_CODE_DSN_EXCEPTION:
-                        delayTryOpenOrCloseMpc(DELAY_TIME);
+                        if (mpcStatus.mpcEnable) {
+                            delayTryOpenOrCloseMpc(DELAY_TIME);
+                        } else {
+                            enableMpcTask.addNetworkTask(message.netType);
+                        }
+                        break;
+                    case Constant.DETECT_LINK_RESULT_CODE_DHCP_FAIL:
+                    case Constant.DETECT_LINK_RESULT_CODE_NETTY_ERROR:
+                        if (mpcStatus.mpcEnable) {
+                            delayTryOpenOrCloseMpc(DELAY_TIME);
+                        }
                         break;
                     case Constant.DETECT_LINK_RESULT_CODE_NORMAL_ERROR:
                     case Constant.DETECT_LINK_RESULT_CODE_PARAM_ERROR:
                     case Constant.DETECT_LINK_RESULT_CODE_TIME_OUT:
-                        mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DETECT_TIMEOUT);
+                        if (mpcStatus.mpcEnable) {
+                            mpcController.delNetworkLink(message.netType, Constant.DELETE_LINK_CAUSE_DETECT_TIMEOUT);
+                        } else {
+                            enableMpcTask.addNetworkTask(message.netType);
+                        }
                         break;
                 }
                 break;
@@ -239,7 +248,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         }
     };
 
-    public void delayTryOpenOrCloseMpc(long millis){
+    public void delayTryOpenOrCloseMpc(long millis) {
         enableMpcTask.stop();
         heartBeatTask.stop();
         detectLinkTask.stop();
@@ -247,7 +256,7 @@ public class BaseMainService extends Service implements IRatdRecvMessage {
         mpcStatus.mpcEnable = false;
         MyTools.upLinkManager(this, mpcStatus.wifiLink.isLink, mpcStatus.mobileLink.isLink, mpcStatus.mcwillLink.isLink);
         mHandler.removeCallbacks(delayOpenTask);
-        mHandler.postDelayed(delayOpenTask,millis);
+        mHandler.postDelayed(delayOpenTask, millis);
     }
 
 

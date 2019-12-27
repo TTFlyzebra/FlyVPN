@@ -128,8 +128,8 @@ public class Constant {
     public static final int DETECT_LINK_RESULT_CODE_PARAM_ERROR     = 2;
     public static final int DETECT_LINK_RESULT_CODE_USER_NOT_EXIST  = 3;
     public static final int DETECT_LINK_RESULT_CODE_MP_NOT_START    = 4;
-    //public static final int DETECT_LINK_RESULT_CODE_DHCP_FAIL  = 5;
-    //public static final int DETECT_LINK_RESULT_CODE_NETTY_ERROR  = 6;
+    public static final int DETECT_LINK_RESULT_CODE_DHCP_FAIL  = 5;
+    public static final int DETECT_LINK_RESULT_CODE_NETTY_ERROR  = 6;
     public static final int DETECT_LINK_RESULT_CODE_TIME_OUT        = 7;
     public static final int DETECT_LINK_RESULT_CODE_DSN_EXCEPTION   = 8;
 

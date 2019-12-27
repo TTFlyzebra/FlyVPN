@@ -63,7 +63,7 @@ public class TestActivity extends Activity {
                     DatagramPacket sendpack = new DatagramPacket(send,
                             send.length,
                             InetAddress.getByName("103.5.126.153"),
-                            5060);
+                            5086);
                     FlyLog.d("send data=%s", ByteTools.bytes2HexString(send));
                     socket.send(sendpack);
                     socket.receive(sendpack);
