@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flyzebra.linkmanager.LinkManager;
+import com.flyzebra.linkmanager.MainActivity;
+import com.flyzebra.linkmanager.R;
 
 import java.lang.reflect.Field;
 
-import xinwei.com.mpapp.R;
 
 /**
  * //=============Dragon Be Here!============
@@ -71,7 +71,7 @@ public class FloatWindow extends LinearLayout {
         closeView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), LinkManager.class);
+                Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

@@ -11,8 +11,8 @@ import android.os.Looper;
 
 import com.flyzebra.flyvpn.BaseMainService;
 import com.flyzebra.flyvpn.utils.MyTools;
-import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.SystemPropTools;
 
 import xinwei.com.mpapp.aidl.IServiceAidl;
 

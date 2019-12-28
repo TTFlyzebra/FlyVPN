@@ -10,10 +10,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.TextView;
 
+import com.flyzebra.linkmanager.R;
 import com.flyzebra.utils.FlyLog;
 
 import androidx.core.content.ContextCompat;
-import xinwei.com.mpapp.R;
 
 
 /**

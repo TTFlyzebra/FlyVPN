@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">FlyMPAPP</string>
-    <string name="LinkManager">LinkManager</string>
+    <string name="app_name">LinkManager</string>
     <string name="ck_mpserver">开关多流</string>
     <string name="openService">open service</string>
     <string name="testUDP">test udp</string>

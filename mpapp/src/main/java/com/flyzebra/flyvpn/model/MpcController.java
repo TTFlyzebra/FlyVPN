@@ -15,8 +15,8 @@ import com.flyzebra.flyvpn.data.MpcStatus;
 import com.flyzebra.flyvpn.data.NetworkLink;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.flyvpn.utils.MyTools;
-import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.SystemPropTools;
 
 import java.util.List;
 

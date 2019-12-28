@@ -1,4 +1,4 @@
-package com.flyzebra.flyvpn.utils;
+package com.flyzebra.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 /**

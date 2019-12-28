@@ -15,8 +15,8 @@ import com.flyzebra.flyvpn.task.EnableMpcTask;
 import com.flyzebra.flyvpn.task.HeartBeatTask;
 import com.flyzebra.flyvpn.task.RatdSocketTask;
 import com.flyzebra.flyvpn.utils.MyTools;
-import com.flyzebra.flyvpn.utils.SystemPropTools;
 import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.SystemPropTools;
 
 import xinwei.com.mpapp.Constant;
 
