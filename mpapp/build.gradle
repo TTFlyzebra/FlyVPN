@@ -36,14 +36,14 @@ android {
         release {
             keyAlias 'platform'
             keyPassword 'platformCootf'
-            storeFile file('../sign/platform.jks')
+            storeFile file('../cootelsign/platform.jks')
             storePassword 'platformCootf'
         }
 
         debug {
             keyAlias 'platform'
             keyPassword 'platformCootf'
-            storeFile file('../sign/platform.jks')
+            storeFile file('../cootelsign/platform.jks')
             storePassword 'platformCootf'
         }
     }
