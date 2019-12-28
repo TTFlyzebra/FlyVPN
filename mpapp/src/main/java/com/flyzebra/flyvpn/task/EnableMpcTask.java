@@ -7,12 +7,10 @@ import android.os.SystemClock;
 
 import com.flyzebra.flyvpn.data.MpcMessage;
 import com.flyzebra.flyvpn.model.IRatdRecvMessage;
-import com.flyzebra.flyvpn.model.MpcController;
 import com.flyzebra.flyvpn.utils.MyTools;
 import com.flyzebra.utils.FlyLog;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
