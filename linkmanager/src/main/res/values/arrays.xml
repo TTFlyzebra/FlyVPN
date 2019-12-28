@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="orderNet">
+        <item>tun</item>
+        <item>M网</item>
+        <item>WiFi</item>
+        <item>G网</item>
+    </string-array>
+</resources>

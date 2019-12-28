@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FEFAF9"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="该页面所有时间的单位为秒，均只能输入整型数据"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="重置"
+            android:background="@drawable/my_button"
+            android:textSize="10sp"/>
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp"
+            android:layout_centerVertical="true"
+            android:text="提交"
+            android:background="@drawable/my_button"
+            android:textSize="10sp"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/item_param_sheet"/>
+    </ScrollView>
+</LinearLayout>

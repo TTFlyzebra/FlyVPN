@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">FlyMPAPP</string>
+    <string name="LinkManager">LinkManager</string>
+    <string name="ck_mpserver">开关多流</string>
+    <string name="openService">open service</string>
+    <string name="testUDP">test udp</string>
+    <string name="openTun">open tun</string>
+    <string name="closeTun">close tun</string>
+    <string name="link_watcher">链路监控状态</string>
+    <string name="param_sheet">参数表</string>
+    <string name="fault_diagnosis">错误诊断</string>
+    <string name="is_open_float_window">开启悬浮窗</string>
+    <string name="rc_ctrl">开启QA环境</string>
+    <string name="is_open_mp_service">开启多流服务</string>
+    <string name="link_one">链路1</string>
+    <string name="link_two">链路2</string>
+    <string name="link_three">链路3</string>
+
+    <string name="link_name">链路名称</string>
+    <string name="link_signal_level">信号质量</string>
+    <string name="link_packet_loss">丢包率</string>
+    <string name="link_state">连接状态</string>
+    <string name="link_cost_weight">权重</string>
+    <string name="link_penalty_time">惩罚时间</string>
+    <string name="link_ping_count">测速次数</string>
+    <string name="link_latest_ping_time">最近测速时间</string>
+    <array name="link_info_array">
+        <item>链路名称</item>
+        <item>信号等级</item>
+        <item>丢包率</item>
+        <item>ping延时</item>
+        <item>连接状态</item>
+        <item>权重</item>
+        <item>wifi连接方式</item>
+        <item>测速次数</item>
+        <item>最近测速时间</item>
+        <item>MP状态</item>
+
+        <item>链路名称</item>
+        <item>信号等级</item>
+        <item>丢包率</item>
+        <item>ping延时</item>
+        <item>数据开关状态</item>
+        <item>权重</item>
+        <item>惩罚时间</item>
+        <item>测速次数</item>
+        <item>最近测速时间</item>
+        <item>MP状态</item>
+
+        <item>链路名称</item>
+        <item>信号等级</item>
+        <item>丢包率</item>
+        <item>ping延时</item>
+        <item>数据开关状态</item>
+        <item>权重</item>
+        <item>惩罚时间</item>
+        <item>测速次数</item>
+        <item>最近测速时间</item>
+        <item>MP状态</item>
+
+    </array>
+</resources>

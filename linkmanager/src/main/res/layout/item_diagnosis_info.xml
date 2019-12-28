@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FEFAF9"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#E4E4E4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="属性" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#808080"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="值"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="初始化结果"/>
+
+        <TextView
+            android:id="@+id/tv_initConfig_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网使能双流结果"/>
+
+        <TextView
+            android:id="@+id/tv_m_enabledouble_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi使能双流结果"/>
+
+        <TextView
+            android:id="@+id/tv_wlan_enabledouble_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网使能双流结果"/>
+
+        <TextView
+            android:id="@+id/tv_g_enabledouble_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网探测结果"/>
+
+        <TextView
+            android:id="@+id/tv_m_detect_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi探测结果"/>
+
+        <TextView
+            android:id="@+id/tv_wlan_detect_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网探测结果"/>
+
+        <TextView
+            android:id="@+id/tv_g_detect_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网探测失败次数"/>
+
+        <TextView
+            android:id="@+id/tv_m_detect_failurecount"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi网探测失败次数"/>
+
+        <TextView
+            android:id="@+id/tv_wlan_detect_failurecount"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网探测失败次数"/>
+
+        <TextView
+            android:id="@+id/tv_g_detect_failurecount"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网链路删除结果"/>
+
+        <TextView
+            android:id="@+id/tv_m_delet_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi链路删除结果"/>
+
+        <TextView
+            android:id="@+id/tv_wlan_delet_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网链路删除结果"/>
+
+        <TextView
+            android:id="@+id/tv_g_delet_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网链路添加结果"/>
+
+        <TextView
+            android:id="@+id/tv_add_m_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi链路添加结果"/>
+
+        <TextView
+            android:id="@+id/tv_add_wifi_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网链路添加结果"/>
+
+        <TextView
+            android:id="@+id/tv_add_g_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网MP异常状态上报"/>
+
+        <TextView
+            android:id="@+id/tv_m_mpexception_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="WiFi的MP异常状态上报"/>
+
+        <TextView
+            android:id="@+id/tv_wlan_mpexception_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="G网MP异常状态上报"/>
+
+        <TextView
+            android:id="@+id/tv_g_mpexception_result"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="--"/>
+
+        <View style="@style/DivideLineVertical"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="Ping链路"/>
+
+        <EditText
+            android:id="@+id/et_ping_network"
+            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:background="@null"
+            android:textSize="18sp"
+            android:hint="8.8.8.8"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:entries="@array/orderNet"/>
+        <Button
+            android:id="@+id/btn_ping"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="Ping"/>
+
+        <View style="@style/DivideLineHorizontal"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </LinearLayout>
+    <View style="@style/DivideLineHorizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="端口测试"/>
+
+        <EditText
+            android:id="@+id/et_fill_in_ip_address"
+            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:background="@null"
+            android:textSize="18sp"
+            android:hint="ip地址"/>
+
+        <EditText
+            android:id="@+id/et_fill_in_port"
+            android:layout_height="match_parent"
+            android:layout_width="90dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:background="@null"
+            android:textSize="18sp"
+            android:hint="端口"/>
+
+        <Button
+            android:id="@+id/btn_send_port_test"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="发送"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_ping_result"
+        style="@style/NetworkInfoName"
+        android:hint="ping或port的结果："/>
+
+</LinearLayout>

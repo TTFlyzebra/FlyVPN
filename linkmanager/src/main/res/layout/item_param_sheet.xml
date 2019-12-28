@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#FEFAF9"
+              android:orientation="vertical">
+
+    <include layout="@layout/item_mp_environment"/>
+    <include layout="@layout/item_mcwill_param_sheet"/>
+    <include layout="@layout/item_wifi_param_sheet"/>
+    <include layout="@layout/item_sim_param_sheet"/>
+
+</LinearLayout>

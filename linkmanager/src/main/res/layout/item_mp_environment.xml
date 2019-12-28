@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#FEFAF9"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="多流MAG环境IP"/>
+
+        <EditText
+            android:id="@+id/et_mp_magip_value"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="多流MAG环境IP"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="多流MAG环境DNS"/>
+
+        <EditText
+            android:id="@+id/et_mp_magDns_value"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="多流MAG环境DNS"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="多流MAG环境DNS2"/>
+
+        <EditText
+            android:id="@+id/et_mp_magDns2_value"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="多流MAG环境DNS"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="MPC Log开关"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"/>
+
+        <Switch
+            android:id="@+id/mpc_log_switch"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+    <View style="@style/DivideLineHorizontal"/>
+
+</LinearLayout>

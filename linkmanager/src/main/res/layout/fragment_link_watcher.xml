@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FEFAF9"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_float_window"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="@string/is_open_float_window"
+            android:textSize="10sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_rc_ctrl"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="@string/rc_ctrl"
+            android:textSize="10sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_mp_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="@string/is_open_mp_service"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/tv_current_link"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="当前："
+            android:textColor="@color/colorBlack"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/tv_device_moving_state"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="设备移动状态："
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/tv_device_data_state"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="普通DATA"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"
+            android:textSize="10sp"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#E4E4E4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="属性"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#808080"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="值"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#808080"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="是否桌面显示"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#808080"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#808080"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#808080"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="#808080"/>
+
+    </RelativeLayout>
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_link_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

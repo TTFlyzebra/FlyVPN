@@ -1,0 +1,124 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#FEFAF9"
+              android:layout_marginTop="10dp"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网信号等级阀值"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_level_pass_value"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网信号等级阀值"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+        <View
+            style="@style/DivideLineHorizontal"
+            android:layout_gravity="top"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网丢包率阀值"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_rate_pass_value"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网丢包率阀值"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="手动设置M网丢包率"/>
+
+        <EditText
+            android:id="@+id/et_manual_mcwill_packet_loss"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="手动设置M网丢包率"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网去抖动时间"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_shake_time"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网去抖动时间"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网定期测速间隔(秒)"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_detect_period"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网定期测速间隔(秒)"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网权重"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_cost_weight"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网权重"/>
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp">
+
+        <TextView
+            style="@style/NetworkInfoName"
+            android:text="M网惩罚时间"/>
+
+        <EditText
+            android:id="@+id/et_mcwill_forbid_time"
+            style="@style/NetworkInfoValueStyle"
+            android:hint="M网惩罚时间"/>
+
+        <View style="@style/DivideLineHorizontal"/>
+        <View style="@style/DivideLineVertical"/>
+    </FrameLayout>
+
+</LinearLayout>
