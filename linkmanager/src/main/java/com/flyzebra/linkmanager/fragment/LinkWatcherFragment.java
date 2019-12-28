@@ -140,20 +140,18 @@ public class LinkWatcherFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                HermesEventBus.getDefault().post(new QaModeEvent(isChecked));
-                if(isChecked){
-                    FlyLog.d("closeMultipleStreams");
-                    ((MainActivity)getActivity()).closeMultipleStreams();
-                }else{
-                    FlyLog.d("openMultipleStreams");
-                    ((MainActivity)getActivity()).openMultipleStreams();
-                }
+
             }
         });
 
         mCbMpSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if(isChecked){
+                    ((MainActivity)getActivity()).openMultipleStreams();
+                }else{
+                    ((MainActivity)getActivity()).closeMultipleStreams();
+                }
             }
         });
     }

@@ -25,7 +25,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import xinwei.com.mpapp.aidl.IServiceAidl;
 
-public class MainActivity extends AppCompatActivity implements FlyTableView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements FlyTableView.OnItemClickListener, ViewPager.OnPageChangeListener {
     private String titles[] = new String[]{"链路监控状态", "参数表", "错误诊断"};
     private List<Fragment> mFMlist = new ArrayList<>();
     private MyPagerAdpter myPagerAdpter;
@@ -70,25 +70,11 @@ public class MainActivity extends AppCompatActivity implements FlyTableView.OnIt
 
         myPagerAdpter = new MyPagerAdpter(getSupportFragmentManager(),1);
         mViewPager.setAdapter(myPagerAdpter);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mFlyTableView.setFocusPos(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        mViewPager.addOnPageChangeListener(this);
 
         mFlyTableView.setTitles(titles);
         mFlyTableView.setFocusPos(0);
+        mFlyTableView.setOnItemClickListener(this);
 
     }
 
@@ -103,6 +89,21 @@ public class MainActivity extends AppCompatActivity implements FlyTableView.OnIt
         pos = Math.max(pos,0);
         pos = Math.min(pos,mFMlist.size()-1);
         mViewPager.setCurrentItem(pos);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mFlyTableView.setFocusPos(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     private class MyPagerAdpter extends FragmentStatePagerAdapter{

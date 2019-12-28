@@ -1,6 +1,8 @@
 package com.flyzebra.linkmanager.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +10,13 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.flyzebra.linkmanager.R;
-import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.SystemPropTools;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import androidx.fragment.app.Fragment;
 
@@ -20,7 +26,7 @@ import androidx.fragment.app.Fragment;
  * @DESC: ____ 参数表
  * @Time: ____ created at-2018-09-20 14:41
  */
-public class ParamSheetFragment extends Fragment implements View.OnClickListener ,CompoundButton.OnCheckedChangeListener{
+public class ParamSheetFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = ParamSheetFragment.class.getSimpleName();
     private Button mBtnSubmit;
     private Button mBtnReset;
@@ -50,6 +56,9 @@ public class ParamSheetFragment extends Fragment implements View.OnClickListener
     private EditText mEtMpMagDns;
     private EditText mEtMpMagDns2;
     private Switch mMpcLogSwitch;
+    private String mSetMAG;
+    private String mSetDNS1;
+    private String mSetDNS2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,22 +100,35 @@ public class ParamSheetFragment extends Fragment implements View.OnClickListener
         mEtSimForbidTime = (EditText) view.findViewById(R.id.et_sim_forbid_time);
         mEtMpMagIp = (EditText) view.findViewById(R.id.et_mp_magip_value);
         mEtMpMagDns = (EditText) view.findViewById(R.id.et_mp_magDns_value);
-        mEtMpMagDns2 = (EditText)view.findViewById(R.id.et_mp_magDns2_value);
+        mEtMpMagDns2 = (EditText) view.findViewById(R.id.et_mp_magDns2_value);
         mMpcLogSwitch = (Switch) view.findViewById(R.id.mpc_log_switch);
-//        mMpcLogSwitch.setChecked(LinkConfig.getInstance().getMpcLog());
-        setMagText();
+        mMpcLogSwitch.setChecked(SystemPropTools.getBoolen("persist.sys.mag.log",false));
+        mSetMAG = SystemPropTools.get("persist.sys.mag.ip","210.12.248.82");;
+        mSetDNS1 = SystemPropTools.get("persist.sys.mag.dns","202.106.0.20");
+        mSetDNS2 = SystemPropTools.get("persist.sys.mag.dns2","8.8.8.8");
+        mEtMpMagIp.setHint(mSetMAG);
+        mEtMpMagIp.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String text = ((EditText)v).getText().toString();
+                    if(!TextUtils.isEmpty(text)){
+                        if(!isIpString(text)){
+                            Toast.makeText(getActivity(),"无效的IP地址",Toast.LENGTH_SHORT).show();
+                            ((EditText)v).setText("");
+                        }
+                    }
+                }
+            }
+        });
+        mEtMpMagDns.setHint(mSetDNS1);
+        mEtMpMagDns2.setHint(mSetDNS2);
     }
 
-    private void setMagText(){
-//        mEtMpMagIp.setHint(LinkConfig.getInstance().getMagIp());
-//        mEtMpMagDns.setHint(LinkConfig.getInstance().getMagDns());
-//        mEtMpMagDns2.setHint(LinkConfig.getInstance().getMagDns2());
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        setMagText();
     }
 
     private void initListener() {
@@ -117,97 +139,47 @@ public class ParamSheetFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        FlyLog.d("Mpc Log Switch onCheckedChanged...isChecked="+isChecked);
-//        Intent intent = new Intent("ACTION_MAIN_SERVICE_RESP_UI_OPT");
-//        intent.putExtra("KEY_OPT_NET_TYPE",7);
-//        if(isChecked){
-//            intent.putExtra("KEY_OPT_CODE",1);
-//            LinkConfig.getInstance().setMpcLog(true);
-//            SysPropUtils.set("persist.sys.mag.log","true");
-//        }else{
-//            intent.putExtra("KEY_OPT_CODE",0);
-//            LinkConfig.getInstance().setMpcLog(false);
-//            SysPropUtils.set("persist.sys.mag.log","false");
-//        }
-//        this.getActivity().sendBroadcast(intent);
+        Intent intent = new Intent("ACTION_MAIN_SERVICE_RESP_UI_OPT");
+        intent.putExtra("KEY_OPT_NET_TYPE",7);
+        if(isChecked){
+            intent.putExtra("KEY_OPT_CODE",1);
+            SystemPropTools.set("persist.sys.mag.log","true");
+        }else{
+            intent.putExtra("KEY_OPT_CODE",0);
+            SystemPropTools.set("persist.sys.mag.log","false");
+        }
+        this.getActivity().sendBroadcast(intent);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                submit();
-                break;
+                String newMAG = mEtMpMagIp.getText().toString();
+                String newDNS1 = mEtMpMagIp.getText().toString();
+                String newDNS2 = mEtMpMagIp.getText().toString();
+                SystemPropTools.set("persist.sys.mag.ip",newMAG);
+                SystemPropTools.set("persist.sys.mag.dns",newDNS1);
+                SystemPropTools.set("persist.sys.mag.dns2",newDNS2);
+                mEtMpMagIp.setHint(mEtMpMagIp.getText().toString());
+                mEtMpMagDns.setHint(mEtMpMagIp.getText().toString());
+                mEtMpMagDns2.setHint(mEtMpMagIp.getText().toString());
             case R.id.btn_reset:
-                break;
-            default:
+                mEtMpMagIp.setText("");
+                mEtMpMagDns.setText("");
+                mEtMpMagDns2.setText("");
                 break;
         }
     }
 
-    private void submit() {
-        FlyLog.d("submit enter...");
+    boolean isIpString(String arg0){
+        boolean is=true;
         try {
-            /*//手动设置M网丢包率阀值
-            String mcwillRatePassValue = mEtMcwillRatePassValue.getText().toString().trim();
-            int mcwillPingPassRate = "".equals(mcwillRatePassValue) ? -1 : Integer.parseInt(mcwillRatePassValue);
-            LinkConfig.getInstance().setMcwillRatePassValue(mcwillPingPassRate);
-            FlyLog.d("mcwill ping pass rate = " + LinkConfig.getInstance().getMcwillPingDelayPassValue());
-            //手动设置M网丢包率
-            String manualMcwillPacketLoss = mEtManualMcwillPacketLoss.getText().toString().trim();
-            int mcwillPacketLoss = "".equals(manualMcwillPacketLoss) ? -1 : Integer.parseInt(manualMcwillPacketLoss);
-            LinkConfig.getInstance().setManualMcwillPing(mcwillPacketLoss);
-            FlyLog.d("manual mcwill ping packet loss = " + LinkConfig.getInstance().getManualMcwillPingDelay());
-            //手动设置M网定时测速间隔,默认60秒而非-1
-            String manualMcwillDetectPeriod = mEtMcwillDetectPeriod.getText().toString().trim();
-            int mcwillDetectPeriod = "".equals(manualMcwillDetectPeriod) ? (60 * 1000) : Integer.parseInt(manualMcwillDetectPeriod);
-            LinkConfig.getInstance().setMcwillSpeedDetectPeriod(mcwillDetectPeriod);
-            FlyLog.d("manual mcwill detect period = " + LinkConfig.getInstance().getMcwillSpeedDetectPeriod());
-
-            //wifi丢包率阀值
-            String wifiRatePassValue = mEtWifiRatePassValue.getText().toString().trim();
-            int wifiPingPassRate = "".equals(wifiRatePassValue) ? -1 : Integer.parseInt(wifiRatePassValue);
-            LinkConfig.getInstance().setWifiPingDelayPassValue(wifiPingPassRate);
-            FlyLog.d("wifi ping pass rate = " + LinkConfig.getInstance().getWifiPingDelayPassValue());
-            //手动设置wifi丢包率
-            String manualWifiPacketLoss = mEtManualWifiPacketLoss.getText().toString().trim();
-            int wifiPacketLoss = "".equals(manualWifiPacketLoss) ? -1 : Integer.parseInt(manualWifiPacketLoss);
-            LinkConfig.getInstance().setManualWifiPingDelay(wifiPacketLoss);
-            FlyLog.d("manual wifi ping packet loss = " + LinkConfig.getInstance().getManualWifiPingDelay());
-
-            //G网丢包率阀值
-            String simRatePassValue = mEtSimRatePassValue.getText().toString().trim();
-            int simPingPassRate = "".equals(simRatePassValue) ? -1 : Integer.parseInt(simRatePassValue);
-            LinkConfig.getInstance().setSimRatePassValue(simPingPassRate);
-            FlyLog.d("sim ping pass rate = " + LinkConfig.getInstance().getSimPingDelayPassValue());
-            //手动设置G网丢包率
-            String manualSimPacketLoss = mEtManualSimPacketLoss.getText().toString().trim();
-            int simPacketLoss = "".equals(manualSimPacketLoss) ? -1 : Integer.parseInt(manualSimPacketLoss);
-            LinkConfig.getInstance().setManualSimPing(simPacketLoss);
-            FlyLog.d("manual sim ping packet loss = " + LinkConfig.getInstance().getManualSimPingDelay());*/
-
-            //多流环境Mag配置
-//            String magIp = mEtMpMagIp.getText().toString().trim();
-//            magIp = "".equals(magIp) ? (LinkConfig.getInstance().getMagIp()) : magIp;
-//            String magDns = mEtMpMagDns.getText().toString().trim();
-//            magDns = "".equals(magDns) ? (LinkConfig.getInstance().getMagDns()) : magDns;
-//            String magDns2 = mEtMpMagDns2.getText().toString().trim();
-//            magDns2 = "".equals(magDns2) ? (LinkConfig.getInstance().getMagDns2()) : magDns2;
-//
-//
-//            if((!magIp.equals(LinkConfig.getInstance().getMagIp())) || (!magDns.equals(LinkConfig.getInstance().getMagDns())) || (!magDns2.equals(LinkConfig.getInstance().getMagDns2()))){
-//                SysPropUtils.set("persist.sys.mag.ip",magIp);
-//                SysPropUtils.set("persist.sys.mag.dns",magDns);
-//                SysPropUtils.set("persist.sys.mag.dns2",magDns2);
-//                LinkConfig.getInstance().setMagIp(magIp);
-//                FlyLog.d("mp mag ip = " + LinkConfig.getInstance().getMagIp());
-//                LinkConfig.getInstance().setMagDns(magDns);
-//                LinkConfig.getInstance().setMagDns2(magDns2);
-//                FlyLog.d("mp mag dns = " + LinkConfig.getInstance().getMagDns()+",dns2:"+LinkConfig.getInstance().getMagDns2());
-//            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            InetAddress ia=InetAddress.getByName("arg0");
+        } catch (UnknownHostException e) {
+            is=false;
         }
+        return is;
     }
+
 }
