@@ -157,102 +157,66 @@ public class LinkWatcherFragment extends Fragment {
     }
 
     public void refresh() {
+//        链路名称
+        mLinkInfoList.set(0, "Wifi");
+        //wifi信号质量
+        mLinkInfoList.set(1, 4 + "");
+        //丢包率
+        mLinkInfoList.set(2, "wifi未连接");
+        //ping延时
+        mLinkInfoList.set(3, "--");
+        //当前是否连接
+        mLinkInfoList.set(4, "--");
+        //权重
+        mLinkInfoList.set(5, "--");
+        //是否手动连接
+        mLinkInfoList.set(6, "自动连接");
+        //拼的次数
+        mLinkInfoList.set(7, "--");
+        //最近一次ping的时间
+        mLinkInfoList.set(8, "--");
         //链路名称
-//        mLinkInfoList.set(0, "Wifi" + (event.wifiConnected() ? (wifiNetInfo != null ? "：" + wifiNetInfo.getSsid() : "") : ""));
-//        //wifi信号质量
-//        mLinkInfoList.set(1, event.getRssiLevel() + "");
-//        //丢包率
-//        mLinkInfoList.set(2, !event.wifiConnected() ? "wifi未连接" : event.isWifiAutoConnect() ?
-//                (event.getPingPacketLoss() == 101 ? "未测速" : event.getPingPacketLoss() + "") :
-//                (event.getManualWifiPacketLoss() == 101 ? "未测速" : event.getManualWifiPacketLoss() + ""));
-//        //ping延时
-//        String pingDelay = event.isWifiAutoConnect() ? (event.getPingDelayTime() != -1 ? event.getPingDelayTime() + "ms" : "--") :
-//                (event.getManualWifiPingDelay() != -1 ? event.getManualWifiPingDelay() + "ms" : "--");
-//        mLinkInfoList.set(3, SysPropUtils.isDetectingWifi() ? "--" : pingDelay);
-//        //当前是否连接
-//        mLinkInfoList.set(4, SysPropUtils.isDetectingWifi() ? "false" : event.wifiConnected() + "");
-//        //权重
-//        mLinkInfoList.set(5, LinkConfig.getInstance().getWifiCostWeight() + "");
-//        //是否手动连接
-//        mLinkInfoList.set(6, event.wifiConnected() ? event.isWifiAutoConnect() ? "自动连接" : "手动连接" : "wifi未连接");
-//        //拼的次数
-//        mLinkInfoList.set(7, event.getPingCount() + "");
-//        //最近一次ping的时间
-//        mLinkInfoList.set(8, event.getPingTimeMillis() != 0 ? mDateFormat.format(event.getPingTimeMillis()) : "--");
-//        mLinkInfoAdapter.setPropertyValues(mLinkInfoList);
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLinkInfoAdapter.notifyItemRangeChanged(0, 9);
-//            }
-//        });
-//        //链路名称
-//        mLinkInfoList.set(10, "M网");
-//        //M网信号质量
-//        mLinkInfoList.set(11, mcwillNetworkInfo.getSignalLevel() + "");
-//        //丢包率
-//        mLinkInfoList.set(12, mcwillNetworkInfo.getMcwillState() == NetworkInfo.State.DISCONNECTED ? "M网数据被关闭" :
-//                (mcwillNetworkInfo.getPacketLoss() == 101 ? "未测速" : mcwillNetworkInfo.getPacketLoss() + ""));
-//        //ping延时
-//        mLinkInfoList.set(13, mcwillNetworkInfo.getMcwillPingDelay() == -1 ? "--" : mcwillNetworkInfo.getMcwillPingDelay() + "ms");
-//        //当前是否连接
-//        mLinkInfoList.set(14, mcwillNetworkInfo.getMcwillState() + "");
-//        //权重
-//        mLinkInfoList.set(15, LinkConfig.getInstance().getMcwillCostWeight() + "");
-//        //惩罚时间
-//        mLinkInfoList.set(16, mcwillNetworkInfo.getPenaltyTimeStamp() == 0 ? "--" : mDateFormat.format(mcwillNetworkInfo.getPenaltyTimeStamp()).substring(11, 19) + "开始惩罚，180秒后解除");
-//        //拼的次数
-//        mLinkInfoList.set(17, event.getPingCount() + "");
-//        //最近一次ping的时间
-//        mLinkInfoList.set(18, event.getLastPingTimeMillis() != 0L ?
-//                mDateFormat.format(event.getLastPingTimeMillis()) : "--");
-//        mLinkInfoAdapter.setPropertyValues(mLinkInfoList);
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLinkInfoAdapter.notifyItemRangeChanged(10, 9);
-//            }
-//        });
-//        //链路名称
-//        mLinkInfoList.set(20, "G网");
-//        //G网信号质量
-//        mLinkInfoList.set(21, simNetworkInfo.getSignalLevel() + "");
-//        //丢包率
-//        mLinkInfoList.set(22, simNetworkInfo.getSimNetState() == NetworkInfo.State.DISCONNECTED ? "G网数据被关闭" :
-//                (simNetworkInfo.getPacketLoss() == 101 ? "未测速" : simNetworkInfo.getPacketLoss() + ""));
-//        //ping延时
-//        mLinkInfoList.set(23, simNetworkInfo.getSimPingDelay() == -1 ? "--" : simNetworkInfo.getSimPingDelay() + "ms");
-//        //当前是否连接
-//        mLinkInfoList.set(24, simNetworkInfo.getSimNetState() + "");
-//        //权重
-//        mLinkInfoList.set(25, LinkConfig.getInstance().getSimCostWeight() + "");
-//        //惩罚时间
-//        mLinkInfoList.set(26, simNetworkInfo.getPenaltyTimeStamp() == 0 ? "--" : mDateFormat.format(simNetworkInfo.getPenaltyTimeStamp()).substring(11, 19) + "开始惩罚，180秒后解除");
-//        //拼的次数
-//        mLinkInfoList.set(27, event.getPingCount() + "");
-//        //最近一次ping的时间
-//        mLinkInfoList.set(28, event.getLastPingTimeMillis() != 0L ?
-//                mDateFormat.format(event.getLastPingTimeMillis()) : "--");
-//        mLinkInfoAdapter.setPropertyValues(mLinkInfoList);
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLinkInfoAdapter.notifyItemRangeChanged(20, 9);
-//            }
-//        });
-//        //add start by wangyongya 20190417 for MP : add MP状态
-//        mLinkInfoList.set(9, event.getWifi_statu() == 1 ? "连接" : "断开");
-//        mLinkInfoList.set(19, event.getMcwill_statu() == 1 ? "连接" : "断开");
-//        mLinkInfoList.set(29, event.getMpG_statu() == 1 ? "连接" : "断开");
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLinkInfoAdapter.notifyItemChanged(9);
-//                mLinkInfoAdapter.notifyItemChanged(19);
-//                mLinkInfoAdapter.notifyItemChanged(29);
-//            }
-//        });
+        mLinkInfoList.set(10, "M网");
+        //M网信号质量
+        mLinkInfoList.set(11, "--");
+        //丢包率
+        mLinkInfoList.set(12, "");
+        //ping延时
+        mLinkInfoList.set(13, "--");
+        //当前是否连接
+        mLinkInfoList.set(14, "");
+        //权重
+        mLinkInfoList.set(15, "");
+        //惩罚时间
+        mLinkInfoList.set(16, "--");
+        //拼的次数
+        mLinkInfoList.set(17, "");
+        //最近一次ping的时间
+        mLinkInfoList.set(18, "--");
+        //链路名称
+        mLinkInfoList.set(20, "G网");
+        //G网信号质量
+        mLinkInfoList.set(21, "");
+        //丢包率
+        mLinkInfoList.set(22, "未测速");
+        //ping延时
+        mLinkInfoList.set(23, "--");
+        //当前是否连接
+        mLinkInfoList.set(24, "");
+        //权重
+        mLinkInfoList.set(25, "");
+        //惩罚时间
+        mLinkInfoList.set(26, "--");
+        //拼的次数
+        mLinkInfoList.set(27, "");
+        //最近一次ping的时间
+        mLinkInfoList.set(28, "--");
+        mLinkInfoList.set(9, "--");
+        mLinkInfoList.set(19, "--");
+        mLinkInfoList.set(29, "--");
         mTvCurrentLink.setText("当前：" + mCurrentLink);
+        mLinkInfoAdapter.setPropertyValues(mLinkInfoList);
+        mLinkInfoAdapter.notifyItemRangeChanged(0, 30);
     }
 
 

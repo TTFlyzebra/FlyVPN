@@ -69,7 +69,7 @@ public class FlyTableView extends FrameLayout implements View.OnClickListener {
             textViews[i].setText(titles[i]);
             textViews[i].setTextColor(colorStateList);
             textViews[i].setTag(i);
-            textViews[i].setTextSize(TypedValue.COMPLEX_UNIT_PX,40);
+            textViews[i].setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
             textViews[i].setOnClickListener(FlyTableView.this);
             addView(textViews[i], lp);
         }
