@@ -32,15 +32,11 @@
             android:name="xinwei.com.mpapp.MainService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter android:priority="-700">
-                <action android:name="xinwei.com.mpapp.service.MpcService" />
-            </intent-filter>
-
         </service>
 
         <receiver android:name="xinwei.com.mpapp.BootBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
 
             <intent-filter>
