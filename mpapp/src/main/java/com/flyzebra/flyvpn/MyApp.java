@@ -3,6 +3,8 @@ package com.flyzebra.flyvpn;
 import android.app.Application;
 import android.content.Intent;
 
+import com.flyzebra.utils.FlyLog;
+
 import xinwei.com.mpapp.MainService;
 
 /**
@@ -17,6 +19,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FlyLog.setTAG("MPCLOG");
         //启动服务
         Intent mainintent = new Intent();
         mainintent.setClass(this, MainService.class);

@@ -1,2 +1,2 @@
-include ':mpapp', ':linkmanager', ':commandlib'
+include ':mpapp', ':linkmanager', ':commandlib', ':wifimanager'
 rootProject.name='FlyVPN'

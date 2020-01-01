@@ -16,6 +16,6 @@ import com.flyzebra.utils.FlyLog;
 public class MainReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        FlyLog.d();
+        FlyLog.d("on Receive intent: "+ intent.toUri(0));
     }
 }

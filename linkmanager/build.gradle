@@ -1,5 +1,20 @@
 apply plugin: 'com.android.application'
 
+def getCreateTime() {
+    def createTime = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00")).trim()
+    return createTime
+}
+
+def getGitSHA() {
+    def gitSHA = 'git rev-parse --short HEAD'.execute().text.trim()
+    return gitSHA
+}
+
+def getGitCommitCount() {
+    def gitCommitCount = 'git rev-list --count HEAD'.execute().text.trim();
+    return gitCommitCount;
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -15,17 +30,51 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'platform'
+            keyPassword 'platformCootf'
+            storeFile file('../cootelsign/platform.jks')
+            storePassword 'platformCootf'
+        }
+
+        debug {
+            keyAlias 'platform'
+            keyPassword 'platformCootf'
+            storeFile file('../cootelsign/platform.jks')
+            storePassword 'platformCootf'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            minifyEnabled true //混淆
+//            zipAlignEnabled true//Zipalign优化
+//            shrinkResources true// 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName
+            if (variant.buildType.name.equals('release')) {
+                fileName = "${applicationId}_release_${versionName}_${gitCommitCount}.apk"
+            } else if (variant.buildType.name.equals('debug')) {
+                fileName = "${applicationId}_debug_${versionName}_${gitCommitCount}.apk"
+            }
+            outputFileName = fileName;
         }
     }
 
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -33,5 +82,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    compile project(path: ':commandlib')
+    implementation project(path: ':commandlib')
 }

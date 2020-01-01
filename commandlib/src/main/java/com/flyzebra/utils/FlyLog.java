@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static final String TAG = "LinkManager";
+    public static String TAG = "MPCLOG";
     public static String[] filter = {
     };
 
@@ -92,4 +92,7 @@ public class FlyLog {
         return stringBuilder.toString();
     }
 
+    public static void setTAG(String mpclog) {
+        TAG = mpclog;
+    }
 }
