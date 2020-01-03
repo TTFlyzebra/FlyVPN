@@ -12,6 +12,7 @@ import android.view.View;
 import com.flyzebra.linkmanager.fragment.FaultDiagnosisFragment;
 import com.flyzebra.linkmanager.fragment.LinkWatcherFragment;
 import com.flyzebra.linkmanager.fragment.ParamSheetFragment;
+import com.flyzebra.linkmanager.receiver.MainReceiver;
 import com.flyzebra.linkmanager.view.FlyTableView;
 import com.flyzebra.utils.FlyLog;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements FlyTableView.OnIt
 
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,4 +154,11 @@ public class MainActivity extends AppCompatActivity implements FlyTableView.OnIt
             FlyLog.d("closeMultipleStreams failed , cause : " + e.getMessage());
         }
     }
+
+    private MainReceiver myReceiver = new MainReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            FlyLog.d("onReceive");
+        }
+    };
 }
