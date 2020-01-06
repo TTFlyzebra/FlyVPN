@@ -14,15 +14,15 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String DB_NAME = "octopu_wifi.db";
     private static final String WIFI_TABLE = "wifidevice";
-    private static final String CREATE_WIFI_TABLE = "create table pople(" +
+    private static final String CREATE_WIFI_TABLE = "create table wifidevice(" +
             "id integer primary key," +
             "wifiDeviceId varchar(255) default ''," +
             "wifiPassword varchar(255) default ''," +
             "wifiAuthType varchar(255) default ''," +
             "wifiName varchar(255) default ''," +
             "wifiStatus integer default 0," +
-            "wifiCreateTime integer default 0," +
-            "wifiUpdateTime integer default 0," +
+            "wifiCreateTime varchar(20) default ''," +
+            "wifiUpdateTime varchar(20) default ''," +
             "userId varchar(255)," +
             "longitude real default '0'," +
             "latitude real default '0'," +
@@ -80,8 +80,8 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             wifiDeviceBean.wifiAuthType =(c.getString(c.getColumnIndex("wifiAuthType")));
             wifiDeviceBean.wifiName =(c.getString(c.getColumnIndex("wifiName")));
             wifiDeviceBean.wifiStatus =(c.getInt(c.getColumnIndex("wifiStatus")));
-            wifiDeviceBean.wifiCreateTime =(c.getLong(c.getColumnIndex("wifiCreateTime")));
-            wifiDeviceBean.wifiUpdateTime =(c.getLong(c.getColumnIndex("wifiUpdateTime")));
+            wifiDeviceBean.wifiCreateTime =(c.getString(c.getColumnIndex("wifiCreateTime")));
+            wifiDeviceBean.wifiUpdateTime =(c.getString(c.getColumnIndex("wifiUpdateTime")));
             wifiDeviceBean.userId =(c.getString(c.getColumnIndex("userId")));
             wifiDeviceBean.longitude =(c.getDouble(c.getColumnIndex("longitude")));
             wifiDeviceBean.latitude =(c.getDouble(c.getColumnIndex("latitude")));
@@ -109,8 +109,8 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             wifiDeviceBean.wifiAuthType =(c.getString(c.getColumnIndex("wifiAuthType")));
             wifiDeviceBean.wifiName =(c.getString(c.getColumnIndex("wifiName")));
             wifiDeviceBean.wifiStatus =(c.getInt(c.getColumnIndex("wifiStatus")));
-            wifiDeviceBean.wifiCreateTime =(c.getLong(c.getColumnIndex("wifiCreateTime")));
-            wifiDeviceBean.wifiUpdateTime =(c.getLong(c.getColumnIndex("wifiUpdateTime")));
+            wifiDeviceBean.wifiCreateTime =(c.getString(c.getColumnIndex("wifiCreateTime")));
+            wifiDeviceBean.wifiUpdateTime =(c.getString(c.getColumnIndex("wifiUpdateTime")));
             wifiDeviceBean.userId =(c.getString(c.getColumnIndex("userId")));
             wifiDeviceBean.longitude =(c.getDouble(c.getColumnIndex("longitude")));
             wifiDeviceBean.latitude =(c.getDouble(c.getColumnIndex("latitude")));

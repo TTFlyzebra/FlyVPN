@@ -22,8 +22,8 @@ public class WifiDeviceBean {
     public String wifiAuthType;
     public String wifiName;
     public int wifiStatus;
-    public long wifiCreateTime;
-    public long wifiUpdateTime;
+    public String wifiCreateTime;
+    public String wifiUpdateTime;
     public String userId;
     public double longitude;
     public double latitude;
