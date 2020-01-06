@@ -26,5 +26,5 @@ android {
 
 dependencies {
     implementation files('libs/gson-2.8.5.jar')
-    implementation files('libs/okhttp.jar')
+//    implementation files('libs/okhttp.jar')
 }

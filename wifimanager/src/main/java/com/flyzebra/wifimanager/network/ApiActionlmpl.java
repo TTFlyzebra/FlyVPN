@@ -3,7 +3,7 @@ package com.flyzebra.wifimanager.network;
 
 
 
-import com.flyzebra.wifimanager.bean.ResultWifiList;
+import android.octopu.wifi.bean.ResultWifiDevice;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,7 +21,7 @@ public class ApiActionlmpl implements ApiAction {
 
 
     @Override
-    public void downloadAllPublic(Observer<ResultWifiList> observer) {
+    public void downloadAllPublic(Observer<ResultWifiDevice> observer) {
         mNetService.downloadAllPublic()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -30,7 +30,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void downloadAllPrivate(Observer<ResultWifiList> observer) {
+    public void downloadAllPrivate(Observer<ResultWifiDevice> observer) {
         mNetService.downloadAllPrivate()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

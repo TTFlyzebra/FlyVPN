@@ -1,7 +1,7 @@
 package com.flyzebra.wifimanager.network;
 
 
-import com.flyzebra.wifimanager.bean.ResultWifiList;
+import android.octopu.wifi.bean.ResultWifiDevice;
 
 import io.reactivex.Observer;
 
@@ -9,8 +9,8 @@ import io.reactivex.Observer;
 public interface ApiAction {
 
 
-    void downloadAllPrivate(Observer<ResultWifiList> observer);
+    void downloadAllPrivate(Observer<ResultWifiDevice> observer);
 
-    void downloadAllPublic(Observer<ResultWifiList> observer);
+    void downloadAllPublic(Observer<ResultWifiDevice> observer);
 
 }

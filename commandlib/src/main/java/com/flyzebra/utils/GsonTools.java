@@ -43,7 +43,7 @@ public class GsonTools {
         }
     }
 
-    public static <T> List<T> json2ListObject(String jsonStr, Class<T> cls){
+    public static <T> List<T> json2ListObj(String jsonStr, Class<T> cls){
         if(TextUtils.isEmpty(jsonStr)){
             return null;
         }
@@ -82,9 +82,18 @@ public class GsonTools {
         return json2Object(json,HashMap.class);
     }
 
-    public static <T> String mapToJson(Map<String, T> map) {
+    public static <T> String map2Json(Map<String, T> map) {
         try{
             return gson.toJson(map);
+        }catch (JsonSyntaxException e){
+            FlyLog.d(e.toString());
+            return null;
+        }
+    }
+
+    public static String obj2Json(Object obj) {
+        try{
+            return gson.toJson(obj);
         }catch (JsonSyntaxException e){
             FlyLog.d(e.toString());
             return null;

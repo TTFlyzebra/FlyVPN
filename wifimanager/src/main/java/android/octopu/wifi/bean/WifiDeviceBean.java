@@ -1,6 +1,6 @@
-package com.flyzebra.wifimanager.bean;
+package android.octopu.wifi.bean;
 
-public class WifiInfo {
+public class WifiDeviceBean {
 
     /**
      * wifiDeviceId : 00:0a:f5:02:d0:64
@@ -16,13 +16,14 @@ public class WifiInfo {
      * remarks : thisisaxinweiWIFI
      */
 
+    public int id;
     public String wifiDeviceId;
     public String wifiPassword;
     public String wifiAuthType;
     public String wifiName;
     public int wifiStatus;
-    public String wifiCreateTime;
-    public String wifiUpdateTime;
+    public long wifiCreateTime;
+    public long wifiUpdateTime;
     public String userId;
     public double longitude;
     public double latitude;
@@ -30,7 +31,7 @@ public class WifiInfo {
 
     @Override
     public String toString() {
-        return "WifiInfo{" +
+        return "WifiDeviceBean{" +
                 "wifiDeviceId='" + wifiDeviceId + '\'' +
                 ", wifiPassword='" + wifiPassword + '\'' +
                 ", wifiAuthType='" + wifiAuthType + '\'' +

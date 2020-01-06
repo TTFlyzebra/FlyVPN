@@ -1,8 +1,8 @@
-package com.flyzebra.wifimanager.bean;
+package android.octopu.wifi.bean;
 
 import java.util.List;
 
-public class ResultWifiList {
+public class ResultWifiDevice {
     /**
      * retCode : 0
      * retMsg : download all public wifiInfo success
@@ -11,11 +11,11 @@ public class ResultWifiList {
 
     public int retCode;
     public String retMsg;
-    public List<WifiInfo> retInfo;
+    public List<WifiDeviceBean> retInfo;
 
     @Override
     public String toString() {
-        return "ResultWifiList{" +
+        return "ResultWifiDevice{" +
                 "retCode=" + retCode +
                 ", retMsg='" + retMsg + '\'' +
                 ", retInfo=" + retInfo +

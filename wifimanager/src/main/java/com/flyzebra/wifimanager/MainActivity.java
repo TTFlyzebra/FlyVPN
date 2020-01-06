@@ -1,13 +1,14 @@
 package com.flyzebra.wifimanager;
 
+import android.octopu.wifi.bean.ResultWifiDevice;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.flyzebra.utils.FlyLog;
-import com.flyzebra.wifimanager.bean.ResultWifiList;
 import com.flyzebra.wifimanager.network.ApiAction;
 import com.flyzebra.wifimanager.network.ApiActionlmpl;
 
-import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -19,14 +20,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        httpApi.downloadAllPublic(new Observer<ResultWifiList>() {
+        httpApi.downloadAllPublic(new Observer<ResultWifiDevice>() {
             @Override
             public void onSubscribe(Disposable d) {
                 FlyLog.d("Disposable"+d);
             }
 
             @Override
-            public void onNext(ResultWifiList resultWifiList) {
+            public void onNext(ResultWifiDevice resultWifiList) {
                 FlyLog.d("result size:"+resultWifiList.retInfo.size());
             }
 
@@ -41,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        httpApi.downloadAllPrivate(new Observer<ResultWifiList>() {
+        httpApi.downloadAllPrivate(new Observer<ResultWifiDevice>() {
             @Override
             public void onSubscribe(Disposable d) {
                 FlyLog.d("Disposable: "+d);
             }
 
             @Override
-            public void onNext(ResultWifiList resultWifiList) {
+            public void onNext(ResultWifiDevice resultWifiList) {
                 FlyLog.d("result size: "+resultWifiList.retInfo.size());
             }
 
