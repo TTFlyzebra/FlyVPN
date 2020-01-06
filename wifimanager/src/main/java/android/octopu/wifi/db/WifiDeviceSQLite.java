@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WifiDeviceSQLite extends SQLiteOpenHelper {
+    private static final int VERSION = 1;
     private static final String DB_NAME = "octopu_wifi.db";
     private static final String WIFI_TABLE = "wifidevice";
     private static final String CREATE_WIFI_TABLE = "create table pople(" +
@@ -29,7 +30,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
     public WifiDeviceSQLite(Context context) {
-        super(context, DB_NAME, null, 1);
+        super(context, DB_NAME, null, VERSION);
     }
 
     @Override
@@ -40,9 +41,15 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        this.db = db;
     }
 
-    public boolean insertPople(WifiDeviceBean wifiDeviceBean) {
+    @Override
+    public synchronized void close() {
+        super.close();
+    }
+
+    public boolean insertWifiDevice(WifiDeviceBean wifiDeviceBean) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
         value.put("wifiDeviceId", wifiDeviceBean.wifiDeviceId);
@@ -57,11 +64,10 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         value.put("latitude", wifiDeviceBean.latitude);
         value.put("remarks", wifiDeviceBean.remarks);
         db.insert(WIFI_TABLE, null, value);
-        db.close();
         return true;
     }
 
-    public List<WifiDeviceBean> getAllWifiDevice(String userToken) {
+    public List<WifiDeviceBean> getWifiDevices(String userToken) {
         List<WifiDeviceBean> list = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String sql = "select * from pople where userToken=?";
@@ -83,11 +89,11 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             list.add(wifiDeviceBean);
         }
         c.close();
-        db.close();
         return list;
     }
 
-    public int findWifiDevice(WifiDeviceBean WifiDeviceBean) {
+    public WifiDeviceBean findWifiDevice(WifiDeviceBean WifiDeviceBean) {
+        WifiDeviceBean wifiDeviceBean = null;
         SQLiteDatabase db = getWritableDatabase();
         Cursor c = db.query(WIFI_TABLE,
                 null,
@@ -96,17 +102,26 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
                 null,
                 null, null);
         if (c.moveToNext()) {
-            return c.getCount();
-        }else {
-            return 0;
+            wifiDeviceBean = new WifiDeviceBean();
+            wifiDeviceBean.id =(c.getInt(c.getColumnIndex("id")));
+            wifiDeviceBean.wifiDeviceId =(c.getString(c.getColumnIndex("wifiDeviceId")));
+            wifiDeviceBean.wifiPassword =(c.getString(c.getColumnIndex("wifiPassword")));
+            wifiDeviceBean.wifiAuthType =(c.getString(c.getColumnIndex("wifiAuthType")));
+            wifiDeviceBean.wifiName =(c.getString(c.getColumnIndex("wifiName")));
+            wifiDeviceBean.wifiStatus =(c.getInt(c.getColumnIndex("wifiStatus")));
+            wifiDeviceBean.wifiCreateTime =(c.getLong(c.getColumnIndex("wifiCreateTime")));
+            wifiDeviceBean.wifiUpdateTime =(c.getLong(c.getColumnIndex("wifiUpdateTime")));
+            wifiDeviceBean.userId =(c.getString(c.getColumnIndex("userId")));
+            wifiDeviceBean.longitude =(c.getDouble(c.getColumnIndex("longitude")));
+            wifiDeviceBean.latitude =(c.getDouble(c.getColumnIndex("latitude")));
+            wifiDeviceBean.remarks =(c.getString(c.getColumnIndex("remarks")));
         }
+        return wifiDeviceBean;
     }
 
-    public int delWifiDevice(WifiDeviceBean wifiDeviceBean) {
+    public int deleteWifiDevice(WifiDeviceBean wifiDeviceBean) {
         SQLiteDatabase db = getWritableDatabase();
-        int res = db.delete(WIFI_TABLE, "wifiDeviceId=?", new String[]{wifiDeviceBean.wifiDeviceId});
-        db.close();
-        return res;
+        return db.delete(WIFI_TABLE, "wifiDeviceId=?", new String[]{wifiDeviceBean.wifiDeviceId});
     }
 
     public int updateWifiDevice(WifiDeviceBean wifiDeviceBean, String Clause, String[] s) {
@@ -114,16 +129,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         value.put("wifiDeviceId",wifiDeviceBean.wifiDeviceId);
         value.put("wifiPassword",wifiDeviceBean.wifiPassword);
         SQLiteDatabase db = getWritableDatabase();
-        int res = db.update(WIFI_TABLE, value, Clause, s);
-        db.close();
-        return res;
+        return db.update(WIFI_TABLE, value, Clause, s);
     }
-
-    public void close() {
-        if (db != null) {
-            db.close();
-        }
-    }
-
 
 }
