@@ -26,7 +26,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import xinwei.com.mpapp.aidl.IServiceAidl;
 
-public class MainActivity extends AppCompatActivity implements FlyTableView.OnItemClickListener, ViewPager.OnPageChangeListener {
+public class LinkActivity extends AppCompatActivity implements FlyTableView.OnItemClickListener, ViewPager.OnPageChangeListener {
     private String titles[] = new String[]{"链路监控状态", "参数表", "错误诊断"};
     private List<Fragment> mFMlist = new ArrayList<>();
     private MyPagerAdpter myPagerAdpter;

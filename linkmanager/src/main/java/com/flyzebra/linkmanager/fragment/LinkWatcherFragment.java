@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.flyzebra.linkmanager.MainActivity;
+import com.flyzebra.linkmanager.LinkActivity;
 import com.flyzebra.linkmanager.R;
 import com.flyzebra.utils.FlyLog;
 import com.flyzebra.utils.SystemPropTools;
@@ -148,9 +148,9 @@ public class LinkWatcherFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    ((MainActivity)getActivity()).openMultipleStreams();
+                    ((LinkActivity)getActivity()).openMultipleStreams();
                 }else{
-                    ((MainActivity)getActivity()).closeMultipleStreams();
+                    ((LinkActivity)getActivity()).closeMultipleStreams();
                 }
             }
         });
