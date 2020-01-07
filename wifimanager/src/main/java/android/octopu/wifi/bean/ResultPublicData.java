@@ -2,7 +2,7 @@ package android.octopu.wifi.bean;
 
 import java.util.List;
 
-public class ResultWifiDevice {
+public class ResultPublicData {
     /**
      * retCode : 0
      * retMsg : download all public wifiInfo success
@@ -15,7 +15,7 @@ public class ResultWifiDevice {
 
     @Override
     public String toString() {
-        return "ResultWifiDevice{" +
+        return "ResultPublicData{" +
                 "retCode=" + retCode +
                 ", retMsg='" + retMsg + '\'' +
                 ", retInfo=" + retInfo +

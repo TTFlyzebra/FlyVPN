@@ -56,7 +56,7 @@ public class RatdSocketTask implements ITask, Runnable {
             @Override
             public void run() {
                 for (IRatdRecvMessage onRecvMessage : onRecvMessageList) {
-                    List<MpcMessage> mpcMessages = GsonTools.json2ListObject(message, MpcMessage.class);
+                    List<MpcMessage> mpcMessages = GsonTools.json2ListObj(message, MpcMessage.class);
                     if (mpcMessages != null && !mpcMessages.isEmpty()) {
                         onRecvMessage.recvRatdMessage(mpcMessages.get(0));
                     }
