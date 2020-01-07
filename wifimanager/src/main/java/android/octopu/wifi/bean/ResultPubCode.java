@@ -1,18 +1,18 @@
 package android.octopu.wifi.bean;
 
 /**
- * ClassName: ResultPri
+ * ClassName: ResultPubCode
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
- * Date: 20-1-7 下午3:34
+ * Date: 20-1-7 下午3:35
  */
-public class ResultPri {
+public class ResultPubCode {
 
     /**
      * retCode : 0
      * retMsg :
-     * retInfo : {"version":"20180228152520"}
+     * retInfo : {}
      */
 
     public int retCode;
@@ -20,10 +20,5 @@ public class ResultPri {
     public RetInfoBean retInfo;
 
     public static class RetInfoBean {
-        /**
-         * version : 20180228152520
-         */
-
-        public String version;
     }
 }

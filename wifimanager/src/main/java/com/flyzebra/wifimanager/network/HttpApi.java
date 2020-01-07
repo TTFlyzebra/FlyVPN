@@ -7,9 +7,9 @@ import android.octopu.wifi.bean.PriUpParam;
 import android.octopu.wifi.bean.PubDelParam;
 import android.octopu.wifi.bean.PubDownParam;
 import android.octopu.wifi.bean.PubUpParam;
-import android.octopu.wifi.bean.ResultPri;
+import android.octopu.wifi.bean.ResultPriCode;
 import android.octopu.wifi.bean.ResultPriData;
-import android.octopu.wifi.bean.ResultPub;
+import android.octopu.wifi.bean.ResultPubCode;
 import android.octopu.wifi.bean.ResultPubData;
 
 import io.reactivex.Observable;
@@ -34,11 +34,11 @@ public interface HttpApi {
 
     @POST("/wifi/private/wifiInfoManage/shareWifiInfo")
     @Headers({"Content-Type:application/json","charset:utf-8"})
-    Observable<ResultPri> uploadPriWifioInfo(@Body PriUpParam body);
+    Observable<ResultPriCode> uploadPriWifioInfo(@Body PriUpParam body);
 
     @POST("/wifi/private/wifiInfoManage/removeWifiInfo")
     @Headers({"Content-Type:application/json","charset:utf-8"})
-    Observable<ResultPri> deletePriWifiInfo(@Body PriDelParam body);
+    Observable<ResultPriCode> deletePriWifiInfo(@Body PriDelParam body);
 
     @POST("/wifi/public/wifiInfoManage/downloadWifiInfo")
     @Headers({"Content-Type:application/json"})
@@ -46,10 +46,10 @@ public interface HttpApi {
 
     @POST("/wifi/public/wifiInfoManage/shareWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPub> uploadPubWifiInfo(@Body PubUpParam body);
+    Observable<ResultPubCode> uploadPubWifiInfo(@Body PubUpParam body);
 
     @POST("/wifi/public/wifiInfoManage/removeWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPub> deletePubWifiInfo(@Body PubDelParam body);
+    Observable<ResultPubCode> deletePubWifiInfo(@Body PubDelParam body);
 
 }

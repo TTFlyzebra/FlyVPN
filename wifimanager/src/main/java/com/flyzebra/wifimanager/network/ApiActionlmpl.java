@@ -9,9 +9,9 @@ import android.octopu.wifi.bean.PriUpParam;
 import android.octopu.wifi.bean.PubDelParam;
 import android.octopu.wifi.bean.PubDownParam;
 import android.octopu.wifi.bean.PubUpParam;
-import android.octopu.wifi.bean.ResultPri;
+import android.octopu.wifi.bean.ResultPriCode;
 import android.octopu.wifi.bean.ResultPriData;
-import android.octopu.wifi.bean.ResultPub;
+import android.octopu.wifi.bean.ResultPubCode;
 import android.octopu.wifi.bean.ResultPubData;
 
 import io.reactivex.Observer;
@@ -57,7 +57,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void uploadPriWifioInfo(PriUpParam param, Observer<ResultPri> observer) {
+    public void uploadPriWifioInfo(PriUpParam param, Observer<ResultPriCode> observer) {
         mNetService.uploadPriWifioInfo(param)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -66,7 +66,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void deletePriWifiInfo(PriDelParam param, Observer<ResultPri> observer) {
+    public void deletePriWifiInfo(PriDelParam param, Observer<ResultPriCode> observer) {
         mNetService.deletePriWifiInfo(param)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -84,7 +84,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void uploadPubWifiInfo(PubUpParam param, Observer<ResultPub> observer) {
+    public void uploadPubWifiInfo(PubUpParam param, Observer<ResultPubCode> observer) {
         mNetService.uploadPubWifiInfo(param)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -93,7 +93,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void deletePubWifiInfo(PubDelParam param, Observer<ResultPub> observer) {
+    public void deletePubWifiInfo(PubDelParam param, Observer<ResultPubCode> observer) {
         mNetService.deletePubWifiInfo(param)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
