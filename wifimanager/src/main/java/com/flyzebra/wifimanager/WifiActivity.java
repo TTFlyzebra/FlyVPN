@@ -1,9 +1,9 @@
 package com.flyzebra.wifimanager;
 
-import android.octopu.wifi.bean.RequestPrivateParam;
-import android.octopu.wifi.bean.RequestPublicParam;
-import android.octopu.wifi.bean.ResultPrivateData;
-import android.octopu.wifi.bean.ResultPublicData;
+import android.octopu.wifi.bean.PriDownParam;
+import android.octopu.wifi.bean.PubDownParam;
+import android.octopu.wifi.bean.ResultPriData;
+import android.octopu.wifi.bean.ResultPubData;
 import android.octopu.wifi.db.WifiDeviceSQLite;
 import android.os.Bundle;
 
@@ -25,15 +25,15 @@ public class WifiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbHelper = new WifiDeviceSQLite(getApplicationContext());
 
-        RequestPublicParam param1 = new RequestPublicParam(this);
+        PubDownParam param1 = new PubDownParam(this);
 
-        httpApi.requestPublicWifiInfo(param1, new Observer<ResultPublicData>() {
+        httpApi.requestPubWifiInfoList(param1, new Observer<ResultPubData>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onNext(ResultPublicData resultWifiList) {
+            public void onNext(ResultPubData resultWifiList) {
                 if (resultWifiList != null) {
                     if (resultWifiList.retInfo != null) {
                         dbHelper.updataPubWifiDevices(resultWifiList.retInfo);
@@ -52,15 +52,15 @@ public class WifiActivity extends AppCompatActivity {
             }
         });
 
-        RequestPrivateParam param2 = new RequestPrivateParam(this);
+        PriDownParam param2 = new PriDownParam(this);
 
-        httpApi.requestPrivateWifiInfo(param2, new Observer<ResultPrivateData>() {
+        httpApi.requestPriWifiInfoList(param2, new Observer<ResultPriData>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onNext(ResultPrivateData resultWifiList) {
+            public void onNext(ResultPriData resultWifiList) {
                 if (resultWifiList != null) {
                     if (resultWifiList.retInfo != null&&resultWifiList.retInfo.wifiList!=null) {
                         dbHelper.updataPriWifiDevices(resultWifiList.retInfo.wifiList);

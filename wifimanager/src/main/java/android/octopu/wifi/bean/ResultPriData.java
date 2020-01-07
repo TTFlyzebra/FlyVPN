@@ -2,7 +2,7 @@ package android.octopu.wifi.bean;
 
 import java.util.List;
 
-public class ResultPrivateData {
+public class ResultPriData {
 
 
     /**
@@ -30,7 +30,7 @@ public class ResultPrivateData {
 
     @Override
     public String toString() {
-        return "ResultPrivateData{" +
+        return "ResultPriData{" +
                 "retCode='" + retCode + '\'' +
                 ", retMsg='" + retMsg + '\'' +
                 ", retInfo=" + retInfo +

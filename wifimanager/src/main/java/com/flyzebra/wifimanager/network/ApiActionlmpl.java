@@ -3,10 +3,16 @@ package com.flyzebra.wifimanager.network;
 
 
 
-import android.octopu.wifi.bean.RequestPrivateParam;
-import android.octopu.wifi.bean.RequestPublicParam;
-import android.octopu.wifi.bean.ResultPrivateData;
-import android.octopu.wifi.bean.ResultPublicData;
+import android.octopu.wifi.bean.PriDelParam;
+import android.octopu.wifi.bean.PriDownParam;
+import android.octopu.wifi.bean.PriUpParam;
+import android.octopu.wifi.bean.PubDelParam;
+import android.octopu.wifi.bean.PubDownParam;
+import android.octopu.wifi.bean.PubUpParam;
+import android.octopu.wifi.bean.ResultPri;
+import android.octopu.wifi.bean.ResultPriData;
+import android.octopu.wifi.bean.ResultPub;
+import android.octopu.wifi.bean.ResultPubData;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,7 +30,7 @@ public class ApiActionlmpl implements ApiAction {
 
 
     @Override
-    public void downloadAllPublic(Observer<ResultPublicData> observer) {
+    public void downloadAllPublic(Observer<ResultPubData> observer) {
         mNetService.downloadAllPublic()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -33,16 +39,7 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void requestPublicWifiInfo(RequestPublicParam param, Observer<ResultPublicData> observer) {
-        mNetService.requestPublicWifiInfo(param)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-    }
-
-    @Override
-    public void downloadAllPrivate(Observer<ResultPublicData> observer) {
+    public void downloadAllPrivate(Observer<ResultPubData> observer) {
         mNetService.downloadAllPrivate()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -51,8 +48,53 @@ public class ApiActionlmpl implements ApiAction {
     }
 
     @Override
-    public void requestPrivateWifiInfo(RequestPrivateParam param, Observer<ResultPrivateData> observer) {
-        mNetService.requestPrivateWifiInfo(param)
+    public void requestPubWifiInfoList(PubDownParam param, Observer<ResultPubData> observer) {
+        mNetService.requestPubWifiInfoList(param)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void uploadPriWifioInfo(PriUpParam param, Observer<ResultPri> observer) {
+        mNetService.uploadPriWifioInfo(param)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void deletePriWifiInfo(PriDelParam param, Observer<ResultPri> observer) {
+        mNetService.deletePriWifiInfo(param)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void requestPriWifiInfoList(PriDownParam param, Observer<ResultPriData> observer) {
+        mNetService.requestPriWifiInfoList(param)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void uploadPubWifiInfo(PubUpParam param, Observer<ResultPub> observer) {
+        mNetService.uploadPubWifiInfo(param)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void deletePubWifiInfo(PubDelParam param, Observer<ResultPub> observer) {
+        mNetService.deletePubWifiInfo(param)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

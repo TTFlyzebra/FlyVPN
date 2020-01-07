@@ -1,10 +1,16 @@
 package com.flyzebra.wifimanager.network;
 
 
-import android.octopu.wifi.bean.RequestPrivateParam;
-import android.octopu.wifi.bean.RequestPublicParam;
-import android.octopu.wifi.bean.ResultPrivateData;
-import android.octopu.wifi.bean.ResultPublicData;
+import android.octopu.wifi.bean.PriDelParam;
+import android.octopu.wifi.bean.PriDownParam;
+import android.octopu.wifi.bean.PriUpParam;
+import android.octopu.wifi.bean.PubDelParam;
+import android.octopu.wifi.bean.PubDownParam;
+import android.octopu.wifi.bean.PubUpParam;
+import android.octopu.wifi.bean.ResultPri;
+import android.octopu.wifi.bean.ResultPriData;
+import android.octopu.wifi.bean.ResultPub;
+import android.octopu.wifi.bean.ResultPubData;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -14,34 +20,36 @@ import retrofit2.http.POST;
 
 public interface HttpApi {
 
+    //TEST
     @GET("wifi/public/wifiInfoManage/downloadAll")
-    Observable<ResultPublicData> downloadAllPublic();
+    Observable<ResultPubData> downloadAllPublic();
 
+    //TEST
     @GET("wifi/private/wifiInfoManage/downloadAll")
-    Observable<ResultPublicData> downloadAllPrivate();
+    Observable<ResultPubData> downloadAllPrivate();
 
     @POST("/wifi/private/wifiInfoManage/downloadWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPrivateData> requestPrivateWifiInfo(@Body RequestPrivateParam body);
+    Observable<ResultPriData> requestPriWifiInfoList(@Body PriDownParam body);
 
     @POST("/wifi/private/wifiInfoManage/shareWifiInfo")
     @Headers({"Content-Type:application/json","charset:utf-8"})
-    Observable<ResultPrivateData> uploadPrivateWifioInfo(@Body ResultPublicData body);
+    Observable<ResultPri> uploadPriWifioInfo(@Body PriUpParam body);
 
     @POST("/wifi/private/wifiInfoManage/removeWifiInfo")
     @Headers({"Content-Type:application/json","charset:utf-8"})
-    Observable<ResultPrivateData> deletePrivateInfo(@Body ResultPublicData body);
+    Observable<ResultPri> deletePriWifiInfo(@Body PriDelParam body);
 
     @POST("/wifi/public/wifiInfoManage/downloadWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPublicData> requestPublicWifiInfo(@Body RequestPublicParam body);
+    Observable<ResultPubData> requestPubWifiInfoList(@Body PubDownParam body);
 
     @POST("/wifi/public/wifiInfoManage/shareWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPublicData> uploadPublicWifiInfo(@Body ResultPublicData body);
+    Observable<ResultPub> uploadPubWifiInfo(@Body PubUpParam body);
 
     @POST("/wifi/public/wifiInfoManage/removeWifiInfo")
     @Headers({"Content-Type:application/json"})
-    Observable<ResultPublicData> deletePublicWifiInfo(@Body ResultPublicData body);
+    Observable<ResultPub> deletePubWifiInfo(@Body PubDelParam body);
 
 }
