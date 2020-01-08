@@ -137,14 +137,14 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             if (ret <= 0) {
                 FlyLog.w("don't update [%s]", wifiDeviceBean);
             }else{
-                FlyLog.v("update num=[%d]", ret);
+                FlyLog.v("update table=%s,num=[%d]",table, ret);
             }
         } else {
             long ret = db.insert(table, null, value);
             if (ret == -1) {
                 FlyLog.w("insert failed [%s]", wifiDeviceBean);
             }else{
-                FlyLog.v("insert id=[%d]", ret);
+                FlyLog.v("insert table=%s,id=[%d]", table,ret);
             }
         }
     }
