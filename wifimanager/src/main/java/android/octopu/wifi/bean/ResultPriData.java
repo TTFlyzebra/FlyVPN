@@ -33,50 +33,50 @@ public class ResultPriData {
             }
             if(jsonObject.has("retInfo")) {
                 JSONObject subJsonObject = jsonObject.getJSONObject("retInfo");
-                RetInfoBean retInfoBean = new RetInfoBean();
-                if(jsonObject.has("version")) {
-                    retInfoBean.version = subJsonObject.getString("version");
+                resultPriData.retInfo = new RetInfoBean();
+                if(subJsonObject.has("version")) {
+                    resultPriData.retInfo.version = subJsonObject.getString("version");
                 }
-                if(jsonObject.has("wifiList")) {
+                if(subJsonObject.has("wifiList")) {
                     JSONArray subJsonArray = subJsonObject.getJSONArray("wifiList");
-                    retInfoBean.wifiList = new ArrayList<>();
+                    resultPriData.retInfo.wifiList = new ArrayList<>();
                     for (int i = 0; i < subJsonArray.length(); i++) {
                         JSONObject partDaily = subJsonArray.getJSONObject(i);
                         WifiDeviceBean wifiDeviceBean = new WifiDeviceBean();
-                        if (jsonObject.has("wifiDeviceId")) {
+                        if (partDaily.has("wifiDeviceId")) {
                             wifiDeviceBean.wifiDeviceId = partDaily.getString("wifiDeviceId");
                         }
-                        if (jsonObject.has("wifiPassword")) {
+                        if (partDaily.has("wifiPassword")) {
                             wifiDeviceBean.wifiPassword = partDaily.getString("wifiPassword");
                         }
-                        if (jsonObject.has("wifiAuthType")) {
+                        if (partDaily.has("wifiAuthType")) {
                             wifiDeviceBean.wifiAuthType = partDaily.getString("wifiAuthType");
                         }
-                        if (jsonObject.has("wifiName")) {
+                        if (partDaily.has("wifiName")) {
                             wifiDeviceBean.wifiName = partDaily.getString("wifiName");
                         }
-                        if (jsonObject.has("wifiStatus")) {
+                        if (partDaily.has("wifiStatus")) {
                             wifiDeviceBean.wifiStatus = partDaily.getInt("wifiStatus");
                         }
-                        if (jsonObject.has("wifiCreateTime")) {
+                        if (partDaily.has("wifiCreateTime")) {
                             wifiDeviceBean.wifiCreateTime = partDaily.getString("wifiCreateTime");
                         }
-                        if (jsonObject.has("wifiUpdateTime")) {
+                        if (partDaily.has("wifiUpdateTime")) {
                             wifiDeviceBean.wifiUpdateTime = partDaily.getString("wifiUpdateTime");
                         }
-                        if (jsonObject.has("userId")) {
+                        if (partDaily.has("userId")) {
                             wifiDeviceBean.userId = partDaily.getString("userId");
                         }
-                        if (jsonObject.has("longitude")) {
+                        if (partDaily.has("longitude")) {
                             wifiDeviceBean.longitude = partDaily.getDouble("longitude");
                         }
-                        if (jsonObject.has("latitude")) {
+                        if (partDaily.has("latitude")) {
                             wifiDeviceBean.latitude = partDaily.getDouble("latitude");
                         }
-                        if (jsonObject.has("remarks")) {
+                        if (partDaily.has("remarks")) {
                             wifiDeviceBean.remarks = partDaily.getString("remarks");
                         }
-                        retInfoBean.wifiList.add(wifiDeviceBean);
+                        resultPriData.retInfo.wifiList.add(wifiDeviceBean);
                     }
                 }
             }
