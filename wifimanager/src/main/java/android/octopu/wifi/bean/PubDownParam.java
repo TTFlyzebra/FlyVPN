@@ -22,6 +22,7 @@ public class PubDownParam {
     public String subsId = "620b0512";
     public Double lat = 22.543849;
     public Double lon = 113.95081;
+//    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"wifiDeviceIds\":%s,\"subsId\":\"%s\",\"lat\":%f,\"lon\":%f}";
 
     public PubDownParam(Context context) {
         deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -34,7 +35,7 @@ public class PubDownParam {
 
     /**
      * 转换成Json
-     * {"deviceType":"1","deviceId":"bc58dc871080e39f","deviceInfo":"C8","remarks":"thisisaxinweiWIFI","wifiDeviceIds":[],"subsId":"620b0512","lat":22.543849,"lon":113.95081}
+     * {"deviceType":"%s","deviceId":"%s","deviceInfo":"%s","remarks":"%s","wifiDeviceIds":%s,"subsId":"%s","lat":%f,"lon":%f}
      *
      * @return
      */
@@ -51,6 +52,7 @@ public class PubDownParam {
             }
         }
         str.append("]");
+//        return String.format(jsonFromat,deviceType,deviceId,deviceInfo,remarks,str,subsId,lat,lon);
         return "{" +
                 "\"deviceType\":\"" + deviceType + "\"," +
                 "\"deviceId\":\"" + deviceId + "\"," +

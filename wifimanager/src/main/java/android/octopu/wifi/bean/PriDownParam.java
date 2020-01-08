@@ -16,7 +16,7 @@ public class PriDownParam {
     public String deviceInfo = android.os.Build.MODEL;
     public String remarks = "thisisaxinweiWIFI";
     public String subsId = "620b0512";
-    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"subsId\":\"%s\"}";
+//    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"subsId\":\"%s\"}";
 
     public PriDownParam(Context context) {
         deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -28,13 +28,13 @@ public class PriDownParam {
      * @return
      */
     public String toJson() {
-        return String.format(jsonFromat,deviceType,deviceId,deviceInfo,remarks,subsId);
-//        return "{" +
-//                "\"deviceType\":\"" + deviceType +"\","+
-//                "\"deviceId\":\"" + deviceId +"\","+
-//                "\"deviceInfo\":\"" + deviceInfo +"\","+
-//                "\"remarks\":\"" + remarks +"\","+
-//                "\"subsId\":\"" + subsId +"\""+
-//                "}";
+//        return String.format(jsonFromat,deviceType,deviceId,deviceInfo,remarks,subsId);
+        return "{" +
+                "\"deviceType\":\"" + deviceType +"\","+
+                "\"deviceId\":\"" + deviceId +"\","+
+                "\"deviceInfo\":\"" + deviceInfo +"\","+
+                "\"remarks\":\"" + remarks +"\","+
+                "\"subsId\":\"" + subsId +"\""+
+                "}";
     }
 }
