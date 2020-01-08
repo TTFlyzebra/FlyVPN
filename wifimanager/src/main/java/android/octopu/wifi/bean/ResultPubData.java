@@ -1,5 +1,10 @@
 package android.octopu.wifi.bean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResultPubData {
@@ -12,6 +17,66 @@ public class ResultPubData {
     public int retCode;
     public String retMsg;
     public List<WifiDeviceBean> retInfo;
+
+
+    public static ResultPubData createByJson(String json){
+        ResultPubData resultPubData = null;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            resultPubData = new ResultPubData();
+            if(jsonObject.has("retCode")){
+                resultPubData.retCode =jsonObject.getInt("retCode");
+            }
+            if(jsonObject.has("retMsg")){
+                resultPubData.retMsg = jsonObject.getString("retMsg");
+            }
+            if(jsonObject.has("retInfo")) {
+                JSONArray subJsonArray = jsonObject.getJSONArray("retInfo");
+                resultPubData.retInfo = new ArrayList<>();
+                for (int i = 0; i < subJsonArray.length(); i++) {
+                    JSONObject partDaily = subJsonArray.getJSONObject(i);
+                    WifiDeviceBean wifiDeviceBean = new WifiDeviceBean();
+                    if(jsonObject.has("wifiDeviceId")){
+                        wifiDeviceBean.wifiDeviceId = partDaily.getString("wifiDeviceId");
+                    }
+                    if(jsonObject.has("wifiPassword")){
+                        wifiDeviceBean.wifiPassword = partDaily.getString("wifiPassword");
+                    }
+                    if(jsonObject.has("wifiAuthType")){
+                        wifiDeviceBean.wifiAuthType = partDaily.getString("wifiAuthType");
+                    }
+                    if(jsonObject.has("wifiName")){
+                        wifiDeviceBean.wifiName = partDaily.getString("wifiName");
+                    }
+                    if(jsonObject.has("wifiStatus")){
+                        wifiDeviceBean.wifiStatus = partDaily.getInt("wifiStatus");
+                    }
+                    if(jsonObject.has("wifiCreateTime")){
+                        wifiDeviceBean.wifiCreateTime = partDaily.getString("wifiCreateTime");
+                    }
+                    if(jsonObject.has("wifiUpdateTime")){
+                        wifiDeviceBean.wifiUpdateTime = partDaily.getString("wifiUpdateTime");
+                    }
+                    if(jsonObject.has("userId")){
+                        wifiDeviceBean.userId = partDaily.getString("userId");
+                    }
+                    if(jsonObject.has("longitude")){
+                        wifiDeviceBean.longitude = partDaily.getDouble("longitude");
+                    }
+                    if(jsonObject.has("latitude")){
+                        wifiDeviceBean.latitude = partDaily.getDouble("latitude");
+                    }
+                    if(jsonObject.has("remarks")){
+                        wifiDeviceBean.remarks = partDaily.getString("remarks");
+                    }
+                    resultPubData.retInfo.add(wifiDeviceBean);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultPubData;
+    }
 
     @Override
     public String toString() {

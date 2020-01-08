@@ -13,8 +13,6 @@ import com.flyzebra.wifimanager.network.ApiAction;
 import com.flyzebra.wifimanager.network.ApiActionlmpl;
 
 import androidx.appcompat.app.AppCompatActivity;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 public class WifiActivity extends AppCompatActivity {
     private ApiAction httpApi = new ApiActionlmpl();
@@ -34,7 +32,12 @@ public class WifiActivity extends AppCompatActivity {
                 String ret = HttpTools.doPostJson(
                         "http://wifi.cootel.com/wifi/public/wifiInfoManage/downloadWifiInfo",
                         param1.toJson());
-                FlyLog.d("ret = %s",ret);
+                FlyLog.d("pub ret = %s", ret);
+                ResultPubData resultPubData = ResultPubData.createByJson(ret);
+                FlyLog.d("resultPubData = %s", resultPubData);
+                if (resultPubData != null && resultPubData.retInfo != null) {
+                    dbHelper.updataPubWifiDevices(resultPubData.retInfo);
+                }
             }
         }).start();
         new Thread(new Runnable() {
@@ -43,61 +46,64 @@ public class WifiActivity extends AppCompatActivity {
                 String ret = HttpTools.doPostJson(
                         "http://wifi.cootel.com/wifi/private/wifiInfoManage/downloadWifiInfo",
                         param2.toJson());
-                FlyLog.d("ret = %s",ret);
+                FlyLog.d("pri ret = %s", ret);
+                ResultPriData resultPriData = ResultPriData.createByJson(ret);
+                FlyLog.d("resultPriData = %s", resultPriData);
+                if (resultPriData != null && resultPriData.retInfo != null && resultPriData.retInfo.wifiList != null) {
+                    dbHelper.updataPriWifiDevices(resultPriData.retInfo.wifiList);
+                }
             }
         }).start();
 
 
+//        httpApi.requestPubWifiInfoList(param1, new Observer<ResultPubData>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//            }
+//
+//            @Override
+//            public void onNext(ResultPubData resultWifiList) {
+//                if (resultWifiList != null) {
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                FlyLog.e("onError" + e);
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//            }
+//        });
+//
+//        httpApi.requestPriWifiInfoList(param2, new Observer<ResultPriData>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//            }
+//
+//            @Override
+//            public void onNext(ResultPriData resultWifiList) {
+//                if (resultWifiList != null) {
+//                    if (resultWifiList.retInfo != null&&resultWifiList.retInfo.wifiList!=null) {
+//                        dbHelper.updataPriWifiDevices(resultWifiList.retInfo.wifiList);
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                FlyLog.e("onError" + e);
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//            }
+//        });
 
-        httpApi.requestPubWifiInfoList(param1, new Observer<ResultPubData>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onNext(ResultPubData resultWifiList) {
-                if (resultWifiList != null) {
-                    if (resultWifiList.retInfo != null) {
-                        dbHelper.updataPubWifiDevices(resultWifiList.retInfo);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                FlyLog.e("onError" + e);
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        });
-
-        httpApi.requestPriWifiInfoList(param2, new Observer<ResultPriData>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onNext(ResultPriData resultWifiList) {
-                if (resultWifiList != null) {
-                    if (resultWifiList.retInfo != null&&resultWifiList.retInfo.wifiList!=null) {
-                        dbHelper.updataPriWifiDevices(resultWifiList.retInfo.wifiList);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                FlyLog.e("onError" + e);
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        });
 
     }
 
