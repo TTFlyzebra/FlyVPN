@@ -5,7 +5,7 @@ import android.octopu.wifi.bean.PubDownParam;
 import android.octopu.wifi.bean.ResultPriData;
 import android.octopu.wifi.bean.ResultPubData;
 import android.octopu.wifi.db.WifiDeviceSQLite;
-import android.octopu.wifi.utils.HttpTools;
+import android.octopu.wifi.http.HttpTools;
 import android.os.Bundle;
 
 import com.flyzebra.utils.FlyLog;
@@ -103,8 +103,6 @@ public class WifiActivity extends AppCompatActivity {
 //            public void onComplete() {
 //            }
 //        });
-
-
     }
 
     @Override

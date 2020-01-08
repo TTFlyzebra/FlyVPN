@@ -1,4 +1,4 @@
-package android.octopu.wifi.utils;
+package android.octopu.wifi.http;
 
 import com.flyzebra.utils.FlyLog;
 
