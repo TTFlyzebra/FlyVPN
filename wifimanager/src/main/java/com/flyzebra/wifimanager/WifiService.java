@@ -2,10 +2,9 @@ package com.flyzebra.wifimanager;
 
 import android.app.Service;
 import android.content.Intent;
-import android.octopu.IOctopuService;
 import android.os.IBinder;
 
-import com.android.services.octopu.OctopuService;
+import com.android.services.octopu.OctopuServiceTest;
 
 
 /**
@@ -16,15 +15,15 @@ import com.android.services.octopu.OctopuService;
  * Date: 20-1-8 下午5:50
  */
 public class WifiService extends Service {
-    private IOctopuService service;
+    private OctopuServiceTest service;
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return service;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        service = new OctopuService(this);
+        service = new OctopuServiceTest(this);
     }
 }

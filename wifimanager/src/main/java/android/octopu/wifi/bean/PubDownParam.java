@@ -28,6 +28,10 @@ public class PubDownParam {
         deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
+    public PubDownParam(String deviceId) {
+        deviceId = deviceId;
+    }
+
 
     public void addWifiDeviceIds(String wifiDeviceId){
         wifiDeviceIds.add(wifiDeviceId);

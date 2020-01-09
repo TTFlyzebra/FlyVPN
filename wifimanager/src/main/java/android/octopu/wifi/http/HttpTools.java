@@ -22,8 +22,8 @@ import java.util.Map;
  * Date: 20-1-8 下午2:27
  */
 public class HttpTools {
-    public static int CONNECT_TIME_OUT = 12000;
-    public static int READ_TIME_OUT = 12000;
+    public static int CONNECT_TIME_OUT = 5000;
+    public static int READ_TIME_OUT = 5000;
     /**
      * 向指定URL发送GET方法的请求
      *
