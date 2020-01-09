@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
-def getCreateTime() {
+static def getCreateTime() {
     def createTime = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00")).trim()
     return createTime
 }
 
-def getGitSHA() {
+static def getGitSHA() {
     def gitSHA = 'git rev-parse --short HEAD'.execute().text.trim()
     return gitSHA
 }
 
-def getGitCommitCount() {
+static def getGitCommitCount() {
     def gitCommitCount = 'git rev-list --count HEAD'.execute().text.trim();
     return gitCommitCount;
 }
@@ -24,7 +24,6 @@ android {
         targetSdkVersion 29
         versionCode gitCommitCount.toInteger()
         versionName "v1.0."+gitSHA+"."+createTime
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags ""
@@ -83,6 +82,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation project(path: ':commandlib')
 }

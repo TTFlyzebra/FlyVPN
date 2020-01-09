@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
-def getCreateTime() {
+static def getCreateTime() {
     def createTime = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00")).trim()
     return createTime
 }
 
-def getGitSHA() {
+static def getGitSHA() {
     def gitSHA = 'git rev-parse --short HEAD'.execute().text.trim()
     return gitSHA
 }
 
-def getGitCommitCount() {
+static def getGitCommitCount() {
     def gitCommitCount = 'git rev-list --count HEAD'.execute().text.trim();
     return gitCommitCount;
 }
@@ -22,12 +22,10 @@ android {
 
     defaultConfig {
         applicationId "com.flyzebra.wifimanager"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode gitCommitCount.toInteger()
+        versionName "v1.0."+gitSHA+"."+createTime
     }
 
     signingConfigs {

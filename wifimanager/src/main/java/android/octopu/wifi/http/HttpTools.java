@@ -58,8 +58,7 @@ public class HttpTools {
                 StringBuffer sbf = new StringBuffer();
                 String temp = null;
                 while ((temp = br.readLine()) != null) {
-                    sbf.append(temp);
-                    sbf.append("\r\n");
+                    sbf.append(temp).append("\r\n");
                 }
                 result = sbf.toString();
             }
@@ -83,7 +82,9 @@ public class HttpTools {
                     e.printStackTrace();
                 }
             }
-            connection.disconnect();// 关闭远程连接
+            if(connection!=null){
+                connection.disconnect();// 关闭远程连接
+            }
         }
         return result;
     }
@@ -136,8 +137,7 @@ public class HttpTools {
                 String temp = null;
                 // 循环遍历一行一行读取数据
                 while ((temp = br.readLine()) != null) {
-                    sbf.append(temp);
-                    sbf.append("\r\n");
+                    sbf.append(temp).append("\r\n");
                 }
                 result = sbf.toString();
             }
@@ -169,7 +169,9 @@ public class HttpTools {
                 }
             }
             // 断开与远程地址url的连接
-            connection.disconnect();
+            if(connection!=null){
+                connection.disconnect();
+            }
         }
         return result;
     }
@@ -218,8 +220,7 @@ public class HttpTools {
                 String temp = null;
                 // 循环遍历一行一行读取数据
                 while ((temp = br.readLine()) != null) {
-                    sbf.append(temp);
-                    sbf.append("\r\n");
+                    sbf.append(temp).append("\r\n");
                 }
                 result = sbf.toString();
             }
@@ -251,7 +252,9 @@ public class HttpTools {
                 }
             }
             // 断开与远程地址url的连接
-            connection.disconnect();
+            if(connection!=null){
+                connection.disconnect();
+            }
         }
         return result;
     }
@@ -260,7 +263,7 @@ public class HttpTools {
      * @param params 需要排序并参与字符拼接的参数组
      * @return 拼接后字符串
      */
-    public static String createLinkString(Map<String, String> params) {
+    private static String createLinkString(Map<String, String> params) {
 
         List<String> keys = new ArrayList<String>(params.keySet());
         Collections.sort(keys);
