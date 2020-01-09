@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.android.services.octopu.OctopuServiceTest;
+import com.android.server.octopu.OctopuServiceTest;
 
 
 /**
