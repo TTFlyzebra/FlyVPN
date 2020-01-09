@@ -1,8 +1,7 @@
 package com.flyzebra.wifimanager;
 
 import android.app.Application;
-
-import com.flyzebra.utils.FlyLog;
+import android.octopu.FlyLog;
 
 /**
  * ClassName: MyApp

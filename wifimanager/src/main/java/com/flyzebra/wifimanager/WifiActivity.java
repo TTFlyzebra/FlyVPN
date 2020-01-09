@@ -4,13 +4,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.octopu.FlyLog;
 import android.octopu.IOctopuServiceTest;
 import android.octopu.OctopuManagerTest;
 import android.octopu.wifi.bean.WifiDeviceBean;
 import android.os.Bundle;
 import android.os.IBinder;
-
-import com.flyzebra.utils.FlyLog;
 
 import java.util.List;
 

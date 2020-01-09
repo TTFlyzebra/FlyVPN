@@ -1,6 +1,7 @@
 package com.android.services.octopu;
 
 import android.content.Context;
+import android.octopu.FlyLog;
 import android.octopu.IOctopuServiceTest;
 import android.octopu.OctopuListener;
 import android.octopu.wifi.bean.PubDownParam;
@@ -12,8 +13,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
 import android.provider.Settings;
-
-import com.flyzebra.utils.FlyLog;
 
 import java.util.List;
 

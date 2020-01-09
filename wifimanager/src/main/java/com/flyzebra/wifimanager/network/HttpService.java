@@ -1,6 +1,6 @@
 package com.flyzebra.wifimanager.network;
 
-import com.flyzebra.utils.FlyLog;
+import android.octopu.FlyLog;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,6 +1,6 @@
 package android.octopu.wifi.http;
 
-import com.flyzebra.utils.FlyLog;
+import android.octopu.FlyLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
