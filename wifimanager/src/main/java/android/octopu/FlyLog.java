@@ -3,11 +3,11 @@ package android.octopu;
 import android.util.Log;
 
 /**
- *
+ * @hide
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static String TAG = "FLYLOG";
+    public static String TAG = "Octopu-Sys";
     public static String[] filter = {
     };
 
