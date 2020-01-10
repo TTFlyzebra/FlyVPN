@@ -82,8 +82,8 @@ public class OctopuService extends IOctopuService.Stub {
     }
 
     private void mergeWifiDevices(List<WifiDeviceBean> wifiDevices) {
-        FlyLog.d("merge list szie="+wifiDevices.size());
-        FlyLog.d("merge list="+wifiDevices);
+        FlyLog.d("merge list szie=" + wifiDevices.size());
+        FlyLog.d("merge list=" + wifiDevices);
         //TODO:算法可以根据顺序需要修改
         synchronized (mWifiDevicesLock) {
             final int size = mWifiDevices.size();
@@ -162,16 +162,16 @@ public class OctopuService extends IOctopuService.Stub {
             //网络获取失败从本地公有库获取密钥
             else {
                 List<WifiDeviceBean> pubList = dbHelper.getPubWifiDevices();
-                if(pubList!=null&&!pubList.isEmpty()) {
+                if (pubList != null && !pubList.isEmpty() && wifiBssids != null) {
                     for (int i = pubList.size() - 1; i >= 0; i--) {
                         boolean isFind = false;
-                        for(String wifiBssid:wifiBssids) {
+                        for (String wifiBssid : wifiBssids) {
                             if (pubList.get(i).wifiDeviceId.equals(wifiBssid)) {
                                 isFind = true;
                                 break;
                             }
                         }
-                        if(!isFind){
+                        if (!isFind) {
                             pubList.remove(i);
                         }
                     }
@@ -180,17 +180,17 @@ public class OctopuService extends IOctopuService.Stub {
             }
 
             //从本地私有库获取密钥
-            List<WifiDeviceBean> priList = dbHelper.getPubWifiDevices();
-            if(priList!=null&&!priList.isEmpty()) {
+            List<WifiDeviceBean> priList = dbHelper.getPriWifiDevice();
+            if (priList != null && !priList.isEmpty() && wifiBssids != null) {
                 for (int i = priList.size() - 1; i >= 0; i--) {
                     boolean isFind = false;
-                    for(String wifiBssid:wifiBssids) {
+                    for (String wifiBssid : wifiBssids) {
                         if (priList.get(i).wifiDeviceId.equals(wifiBssid)) {
                             isFind = true;
                             break;
                         }
                     }
-                    if(!isFind){
+                    if (!isFind) {
                         priList.remove(i);
                     }
                 }
