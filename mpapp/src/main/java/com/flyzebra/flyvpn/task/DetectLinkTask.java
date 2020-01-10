@@ -174,7 +174,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
             //对已经加入链接但是没有查找到的网络进行删除链路操作
             if (mpcStatus.wifiLink.isLink && !findWifi) {
-                FlyLog.e("find wifi network lost, delete it");
+                FlyLog.e("find extendWifi network lost, delete it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
             if (mpcStatus.mobileLink.isLink && !findMobile) {
@@ -230,7 +230,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
             }
             //对没有加入链接但是已经查找到的网络进行探测操作
             if (!mpcStatus.wifiLink.isLink && findWifi) {
-                FlyLog.e("find wifi network add, detect it");
+                FlyLog.e("find extendWifi network add, detect it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
             }
             if (!mpcStatus.mobileLink.isLink && findMobile) {
@@ -244,7 +244,7 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
 
             //对已经加入链接但是没有查找到的网络进行删除链路操作
             if (mpcStatus.wifiLink.isLink && !findWifi) {
-                FlyLog.e("find wifi network lost, delete it");
+                FlyLog.e("find extendWifi network lost, delete it");
                 ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
             }
             if (mpcStatus.mobileLink.isLink && !findMobile) {

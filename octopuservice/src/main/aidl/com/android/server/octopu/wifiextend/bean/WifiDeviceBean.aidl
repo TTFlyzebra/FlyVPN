@@ -1,5 +1,5 @@
 // WifiDeviceBeans.aidl
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
 
 // Declare any non-default types here with import statements
 

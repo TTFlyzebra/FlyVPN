@@ -1,17 +1,15 @@
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
 
 /**
- * ClassName: PriDelParam
+ * ClassName: PubDelParam
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
- * Date: 20-1-7 下午3:20
+ * Date: 20-1-7 下午3:28
  */
-public class PriDelParam {
-
+public class PubDelParam {
     /**
      * signature : MDU3YzFmODJiY2RmNTIwNzdkMmNlZjB=
-     * version : 0
      * deviceType : 1
      * deviceId : 88903071
      * deviceInfo : M31
@@ -22,7 +20,6 @@ public class PriDelParam {
      */
 
     public String signature;
-    public String version;
     public String deviceType;
     public String deviceId;
     public String deviceInfo;

@@ -82,7 +82,7 @@ public class LinkWatcherFragment extends Fragment {
         mCbIsShowFloatWindow.setEnabled(false);
         mCbRcMode.setEnabled(false);
 
-        mLinkInfoList.add(0, "wifi");
+        mLinkInfoList.add(0, "extendWifi");
         for (int i = 1; i < LINK_INFO_LENGTH; i++) {
             mLinkInfoList.add("");
         }

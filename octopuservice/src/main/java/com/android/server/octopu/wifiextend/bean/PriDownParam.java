@@ -1,7 +1,4 @@
-package com.android.server.octopu.wifi.bean;
-
-import android.content.Context;
-import android.provider.Settings;
+package com.android.server.octopu.wifiextend.bean;
 
 /**
  * ClassName: PubDownParam
@@ -18,8 +15,8 @@ public class PriDownParam {
     public String subsId = "620b0512";
 //    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"subsId\":\"%s\"}";
 
-    public PriDownParam(Context context) {
-        deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    public PriDownParam(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     /**

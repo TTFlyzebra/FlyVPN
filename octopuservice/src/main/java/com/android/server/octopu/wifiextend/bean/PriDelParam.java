@@ -1,13 +1,13 @@
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
 
 /**
- * ClassName: PriUpParam
+ * ClassName: PriDelParam
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
- * Date: 20-1-7 下午3:15
+ * Date: 20-1-7 下午3:20
  */
-public class PriUpParam {
+public class PriDelParam {
 
     /**
      * signature : MDU3YzFmODJiY2RmNTIwNzdkMmNlZjB=
@@ -16,13 +16,8 @@ public class PriUpParam {
      * deviceId : 88903071
      * deviceInfo : M31
      * wifiDeviceId : cc:11:22:33:f8:d8
-     * wifiAuthType : 1
      * wifiPwd : bjxinwei
-     * wifiName : wifi123
-     * wifiStatus : 0
      * subsId : 1644559456
-     * lat : 120.3
-     * lon : 80.5
      * remarks : thisisaxinweiWIFI
      */
 
@@ -32,12 +27,7 @@ public class PriUpParam {
     public String deviceId;
     public String deviceInfo;
     public String wifiDeviceId;
-    public String wifiAuthType;
     public String wifiPwd;
-    public String wifiName;
-    public String wifiStatus;
     public String subsId;
-    public String lat;
-    public String lon;
     public String remarks;
 }

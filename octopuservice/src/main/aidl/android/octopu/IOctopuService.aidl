@@ -2,15 +2,19 @@
 package android.octopu;
 
 import android.octopu.OctopuListener;
-import com.android.server.octopu.wifi.bean.WifiDeviceBean;
+import com.android.server.octopu.wifiextend.bean.WifiDeviceBean;
 
 // Declare any non-default types here with import statements
 
 interface IOctopuService {
 
-    void upWifiDeviceData(in List<WifiDeviceBean> wifiDeviceBeans);
+    void flyWifiDevices(in List<String> wifiBssids);
 
-    void addOctopuListener(OctopuListener octopuListener);
+    void delWifiDevices(in WifiDeviceBean wifiDeviceBean);
 
-    void removeOctopuListener(OctopuListener octopuListener);
+    void upWifiDevices(in WifiDeviceBean wifiDeviceBean);
+
+    void registerListener(OctopuListener octopuListener);
+
+    void unregisterListener(OctopuListener octopuListener);
 }

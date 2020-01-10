@@ -1,4 +1,4 @@
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
 
 /**
  * ClassName: ResultPubCode

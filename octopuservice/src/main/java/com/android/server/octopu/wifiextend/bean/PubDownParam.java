@@ -1,4 +1,4 @@
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
 
 import android.content.Context;
 import android.provider.Settings;
@@ -20,8 +20,8 @@ public class PubDownParam {
     public String remarks = "thisisaxinweiWIFI";
     public List<String> wifiDeviceIds = new ArrayList<>();
     public String subsId = "620b0512";
-    public Double lat = 22.543849;
-    public Double lon = 113.95081;
+    public Double lat = 0.0;
+    public Double lon = 0.0;
 //    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"wifiDeviceIds\":%s,\"subsId\":\"%s\",\"lat\":%f,\"lon\":%f}";
 
     public PubDownParam(Context context) {

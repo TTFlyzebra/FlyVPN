@@ -1,4 +1,6 @@
-package com.android.server.octopu.wifi.bean;
+package com.android.server.octopu.wifiextend.bean;
+
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +23,7 @@ public class ResultPriData {
     public RetInfoBean retInfo;
 
     public static ResultPriData createByJson(String json){
+        if(TextUtils.isEmpty(json)) return null;
         ResultPriData resultPriData = null;
         try {
             JSONObject jsonObject = new JSONObject(json);

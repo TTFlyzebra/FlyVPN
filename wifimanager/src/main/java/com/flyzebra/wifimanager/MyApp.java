@@ -1,7 +1,6 @@
 package com.flyzebra.wifimanager;
 
 import android.app.Application;
-import android.octopu.FlyLog;
 
 /**
  * ClassName: MyApp
@@ -15,6 +14,5 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FlyLog.setTAG("WIFILOG");
     }
 }

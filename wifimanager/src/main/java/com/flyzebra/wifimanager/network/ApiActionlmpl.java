@@ -3,16 +3,16 @@ package com.flyzebra.wifimanager.network;
 
 
 
-import com.android.server.octopu.wifi.bean.PriDelParam;
-import com.android.server.octopu.wifi.bean.PriDownParam;
-import com.android.server.octopu.wifi.bean.PriUpParam;
-import com.android.server.octopu.wifi.bean.PubDelParam;
-import com.android.server.octopu.wifi.bean.PubDownParam;
-import com.android.server.octopu.wifi.bean.PubUpParam;
-import com.android.server.octopu.wifi.bean.ResultPriCode;
-import com.android.server.octopu.wifi.bean.ResultPriData;
-import com.android.server.octopu.wifi.bean.ResultPubCode;
-import com.android.server.octopu.wifi.bean.ResultPubData;
+import com.android.server.octopu.wifiextend.bean.PriDelParam;
+import com.android.server.octopu.wifiextend.bean.PriDownParam;
+import com.android.server.octopu.wifiextend.bean.PriUpParam;
+import com.android.server.octopu.wifiextend.bean.PubDelParam;
+import com.android.server.octopu.wifiextend.bean.PubDownParam;
+import com.android.server.octopu.wifiextend.bean.PubUpParam;
+import com.android.server.octopu.wifiextend.bean.ResultPriCode;
+import com.android.server.octopu.wifiextend.bean.ResultPriData;
+import com.android.server.octopu.wifiextend.bean.ResultPubCode;
+import com.android.server.octopu.wifiextend.bean.ResultPubData;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

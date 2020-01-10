@@ -1,4 +1,4 @@
-package com.android.server.octopu.wifi.http;
+package com.android.server.octopu.wifiextend.http;
 
 import android.octopu.FlyLog;
 
@@ -32,11 +32,11 @@ public class HttpTools {
      *            请求参数用?拼接在url后边，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return result 所代表远程资源的响应结果
      */
-    public static String doGet(String httpurl) {
+    public static HttpResult doGet(String httpurl) {
         HttpURLConnection connection = null;
         InputStream is = null;
         BufferedReader br = null;
-        String result = null;// 返回结果字符串
+        HttpResult result = new HttpResult();// 返回结果字符串
         try {
             // 创建远程url连接对象
             URL url = new URL(httpurl);
@@ -51,7 +51,7 @@ public class HttpTools {
             // 发送请求
             connection.connect();
             // 通过connection连接，获取输入流
-            if (connection.getResponseCode() == 200) {
+            if (200 == (result.code = connection.getResponseCode())) {
                 is = connection.getInputStream();
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -61,7 +61,7 @@ public class HttpTools {
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp).append("\r\n");
                 }
-                result = sbf.toString();
+                result.data = sbf.toString();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -99,14 +99,14 @@ public class HttpTools {
      *            请求参数应该是{"key":"==g43sEvsUcbcunFv3mHkIzlHO4iiUIT R7WwXuSVKTK0yugJnZSlr6qNbxsL8OqCUAFyCDCoRKQ882m6cTTi0q9uCJsq JJvxS+8mZVRP/7lWfEVt8/N9mKplUA68SWJEPSXyz4MDeFam766KEyvqZ99d"}的形式。
      * @return 所代表远程资源的响应结果
      */
-    public static String doPostJson(String httpUrl, String param) {
+    public static HttpResult doPostJson(String httpUrl, String param) {
         FlyLog.d("post url=%s",httpUrl);
         FlyLog.d("post param=%s",param);
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
         BufferedReader br = null;
-        String result = null;
+        HttpResult result = new HttpResult();
         try {
             URL url = new URL(httpUrl);
             // 通过远程url连接对象打开连接
@@ -130,7 +130,8 @@ public class HttpTools {
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的
             os.write(param.getBytes());
             // 通过连接对象获取一个输入流，向远程读取
-            if (connection.getResponseCode() == 200) {
+            result.code = connection.getResponseCode();
+            if (200 == (result.code = connection.getResponseCode())) {
                 is = connection.getInputStream();
                 // 对输入流对象进行包装:charset根据工作项目组的要求来设置
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -140,7 +141,7 @@ public class HttpTools {
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp).append("\r\n");
                 }
-                result = sbf.toString();
+                result.data = sbf.toString();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -183,13 +184,13 @@ public class HttpTools {
      * @param param  form表单的参数（key,value形式）
      * @return
      */
-    public static String doPostForm(String httpUrl, Map param) {
+    public static HttpResult doPostForm(String httpUrl, Map param) {
 
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
         BufferedReader br = null;
-        String result = null;
+        HttpResult result = new HttpResult();
         try {
             URL url = new URL(httpUrl);
             // 通过远程url连接对象打开连接
@@ -213,7 +214,7 @@ public class HttpTools {
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的(form表单形式的参数实质也是key,value值的拼接，类似于get请求参数的拼接)
             os.write(createLinkString(param).getBytes());
             // 通过连接对象获取一个输入流，向远程读取
-            if (connection.getResponseCode() == 200) {
+            if (200 == (result.code = connection.getResponseCode())) {
                 is = connection.getInputStream();
                 // 对输入流对象进行包装:charset根据工作项目组的要求来设置
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -223,7 +224,7 @@ public class HttpTools {
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp).append("\r\n");
                 }
-                result = sbf.toString();
+                result.data = sbf.toString();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
