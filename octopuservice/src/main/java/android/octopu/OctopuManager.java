@@ -23,16 +23,16 @@ public class OctopuManager {
 
     private List<WifiDeviceListener> mWifiDeviceListeners = new ArrayList<>();
     private final Object mListenerLock = new Object();
-    private List<WifiDeviceBean> mWifiDeviceBeans = new ArrayList<>() ;
+    private List<WifiDeviceBean> mwifiDevices = new ArrayList<>() ;
     private final Object mWifiListLock = new Object();
     private IOctopuService mService;
     private Handler mHandler = new MainHandler(Looper.getMainLooper());
     private OctopuListener mOctopuListener = new OctopuListener.Stub() {
         @Override
-        public void notifyWifiDevices(final List<WifiDeviceBean> wifiDeviceBeans) throws RemoteException {
+        public void notifyWifiDevices(final List<WifiDeviceBean> wifiDevices) throws RemoteException {
             synchronized (mWifiListLock) {
-                mWifiDeviceBeans.clear();
-                mWifiDeviceBeans.addAll(wifiDeviceBeans);
+                mwifiDevices.clear();
+                mwifiDevices.addAll(wifiDevices);
             }
             mHandler.sendEmptyMessage(NOTIFY_WIFIDEVICES);
         }
@@ -56,7 +56,7 @@ public class OctopuManager {
     }
 
     public interface WifiDeviceListener {
-        void notifyWifiDevices(List<WifiDeviceBean> wifiDeviceBeans);
+        void notifyWifiDevices(List<WifiDeviceBean> wifiDevices);
     }
 
     public void addWifiDeviceListener(WifiDeviceListener wifiDeviceListener) {
@@ -84,7 +84,7 @@ public class OctopuManager {
                     synchronized (mListenerLock) {
                         for (WifiDeviceListener wifiDeviceListener: mWifiDeviceListeners) {
                             synchronized (mWifiListLock){
-                                wifiDeviceListener.notifyWifiDevices(mWifiDeviceBeans);
+                                wifiDeviceListener.notifyWifiDevices(mwifiDevices);
                             }
                         }
                     }

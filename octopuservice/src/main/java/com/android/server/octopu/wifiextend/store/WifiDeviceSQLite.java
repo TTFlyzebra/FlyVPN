@@ -76,17 +76,25 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         updataWifiDevice(WIFI_TABLE_PRI, wifiDeviceBean);
     }
 
-    public void updataPubWifiDevices(final List<WifiDeviceBean> wifiDeviceBeans) {
-        for (WifiDeviceBean wifiDeviceBean : wifiDeviceBeans) {
+    public void updataPubWifiDevices(final List<WifiDeviceBean> wifiDevices) {
+        for (WifiDeviceBean wifiDeviceBean : wifiDevices) {
             updataWifiDevice(WIFI_TABLE_PUB, wifiDeviceBean);
         }
 
     }
 
-    public void updataPriWifiDevices(final List<WifiDeviceBean> wifiDeviceBeans) {
-        for (WifiDeviceBean wifiDeviceBean : wifiDeviceBeans) {
+    public void updataPriWifiDevices(final List<WifiDeviceBean> wifiDevices) {
+        for (WifiDeviceBean wifiDeviceBean : wifiDevices) {
             updataWifiDevice(WIFI_TABLE_PRI, wifiDeviceBean);
         }
+    }
+
+    public List<WifiDeviceBean> getPubWifiDevices() {
+        return getWifiDevices(WIFI_TABLE_PUB);
+    }
+
+    public List<WifiDeviceBean> getPriWifiDevice() {
+        return getWifiDevices(WIFI_TABLE_PRI);
     }
 
     private void updataWifiDevice(String table, WifiDeviceBean wifiDeviceBean) {
@@ -126,7 +134,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         }
     }
 
-    public List<WifiDeviceBean> getWifiDevices(String table) {
+    private List<WifiDeviceBean> getWifiDevices(String table) {
         List<WifiDeviceBean> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(table, null, null, null, null, null, null);

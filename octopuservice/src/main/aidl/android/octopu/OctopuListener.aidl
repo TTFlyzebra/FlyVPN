@@ -6,5 +6,5 @@ import com.android.server.octopu.wifiextend.bean.WifiDeviceBean;
 
 interface OctopuListener {
 
-    void notifyWifiDevices(in List<WifiDeviceBean> wifiDeviceBeans);
+    void notifyWifiDevices(in List<WifiDeviceBean> wifiDevices);
 }

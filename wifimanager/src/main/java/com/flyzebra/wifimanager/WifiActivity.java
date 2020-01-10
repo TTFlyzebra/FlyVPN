@@ -85,9 +85,9 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
     }
 
     @Override
-    public void notifyWifiDevices(List<WifiDeviceBean> wifiDeviceBeans) {
-        FlyLog.d("wifiDeviceBeans size = %d." , wifiDeviceBeans.size());
-        FlyLog.d("wifiDeviceBeans:" + wifiDeviceBeans);
+    public void notifyWifiDevices(List<WifiDeviceBean> wifiDevices) {
+        FlyLog.d("wifiDevices size = %d." , wifiDevices.size());
+        FlyLog.d("wifiDevices:" + wifiDevices);
     }
 
     class MyReciver extends BroadcastReceiver {
@@ -103,7 +103,7 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
                         list.add(scanResult.BSSID);
                     }
                     if(octopuManager!=null){
-                        octopuManager.refreshWifiDevices(list);
+                        octopuManager.flyWifiDevices(list);
                     }
                     break;
             }
