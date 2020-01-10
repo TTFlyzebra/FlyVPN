@@ -43,6 +43,15 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
             tryBindService();
         }
     };
+    private void tryBindService() {
+        try {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.flyzebra.wifimanager", "com.flyzebra.wifimanager.WifiService"));
+            bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        } catch (Exception e) {
+            FlyLog.e(e.toString());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +81,6 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
         unbindService(conn);
         unregisterReceiver(myReciver);
         super.onDestroy();
-    }
-
-
-    private void tryBindService() {
-        try {
-            Intent intent = new Intent(this, WifiService.class);
-            bindService(intent, conn, Context.BIND_AUTO_CREATE);
-        } catch (Exception e) {
-            FlyLog.e(e.toString());
-        }
     }
 
     @Override
