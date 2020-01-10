@@ -2,7 +2,7 @@ package com.android.server.octopu;
 
 import android.content.Context;
 import android.octopu.FlyLog;
-import android.octopu.IOctopuServiceTest;
+import android.octopu.IOctopuService;
 import android.octopu.OctopuListener;
 import android.octopu.wifi.bean.PubDownParam;
 import android.octopu.wifi.bean.ResultPubData;
@@ -17,13 +17,13 @@ import android.provider.Settings;
 import java.util.List;
 
 /**
- * ClassName: OctopuServiceTest
+ * ClassName: OctopuService
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
  * Date: 20-1-8 下午5:42
  */
-public class OctopuServiceTest extends IOctopuServiceTest.Stub {
+public class OctopuService extends IOctopuService.Stub {
     private static String deviceId;
     private static final HandlerThread mThreadTask = new HandlerThread("OctopuService");
 
@@ -36,7 +36,7 @@ public class OctopuServiceTest extends IOctopuServiceTest.Stub {
     private Context mContext;
     private OctopuListener octopuListener;
 
-    public OctopuServiceTest(Context context) {
+    public OctopuService(Context context) {
         mContext = context;
         dbHelper = new WifiDeviceSQLite(context);
         deviceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);

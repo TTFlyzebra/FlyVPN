@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.android.server.octopu.OctopuServiceTest;
+import com.android.server.octopu.OctopuService;
 
 
 /**
@@ -15,7 +15,7 @@ import com.android.server.octopu.OctopuServiceTest;
  * Date: 20-1-8 下午5:50
  */
 public class WifiService extends Service {
-    private OctopuServiceTest service;
+    private OctopuService service;
     @Override
     public IBinder onBind(Intent intent) {
         return service;
@@ -24,6 +24,6 @@ public class WifiService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        service = new OctopuServiceTest(this);
+        service = new OctopuService(this);
     }
 }

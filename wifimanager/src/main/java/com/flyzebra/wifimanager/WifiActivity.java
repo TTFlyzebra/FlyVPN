@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.octopu.FlyLog;
-import android.octopu.IOctopuServiceTest;
-import android.octopu.OctopuManagerTest;
+import android.octopu.IOctopuService;
+import android.octopu.OctopuManager;
 import android.octopu.wifi.bean.WifiDeviceBean;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,15 +15,15 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class WifiActivity extends AppCompatActivity implements OctopuManagerTest.WifiDeviceListener {
-    private IOctopuServiceTest mService;
-    private OctopuManagerTest octopuManager;
+public class WifiActivity extends AppCompatActivity implements OctopuManager.WifiDeviceListener {
+    private IOctopuService mService;
+    private OctopuManager octopuManager;
 
     ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = IOctopuServiceTest.Stub.asInterface(service);
-            octopuManager = new OctopuManagerTest(WifiActivity.this, mService);
+            mService = IOctopuService.Stub.asInterface(service);
+            octopuManager = new OctopuManager(WifiActivity.this, mService);
             octopuManager.addWifiDeviceListener(WifiActivity.this);
             octopuManager.upWifiDeviceData(null);
         }

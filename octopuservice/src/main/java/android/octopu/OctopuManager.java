@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClassName: OctopuManagerTest
+ * ClassName: OctopuManager
  * Description:
  * Author: FlyZebra
  * Email:flycnzebra@gmail.com
  * Date: 20-1-8 下午5:44
  */
-public class OctopuManagerTest {
-    private IOctopuServiceTest mService;
+public class OctopuManager {
+    private IOctopuService mService;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private OctopuListener octopuListener = new OctopuListener.Stub() {
         @Override
@@ -36,7 +36,7 @@ public class OctopuManagerTest {
         }
     };
 
-    public OctopuManagerTest(Context context, IOctopuServiceTest octopuService) {
+    public OctopuManager(Context context, IOctopuService octopuService) {
         mService = octopuService;
         try {
             mService.addOctopuListener(octopuListener);

@@ -1,4 +1,4 @@
-// IOctopuServiceTest.aidl
+// IOctopuService.aidl
 package android.octopu;
 
 import android.octopu.OctopuListener;
@@ -6,7 +6,7 @@ import android.octopu.wifi.bean.WifiDeviceBean;
 
 // Declare any non-default types here with import statements
 
-interface IOctopuServiceTest {
+interface IOctopuService {
 
     void upWifiDeviceData(in List<WifiDeviceBean> wifiDeviceBeans);
 
