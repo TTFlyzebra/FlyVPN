@@ -1,5 +1,6 @@
 package com.android.server.octopu.wifiextend.bean;
 
+import android.octopu.WifiDeviceBean;
 import android.text.TextUtils;
 
 import org.json.JSONArray;

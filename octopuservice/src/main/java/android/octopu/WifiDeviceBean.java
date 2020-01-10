@@ -1,4 +1,4 @@
-package com.android.server.octopu.wifiextend.bean;
+package android.octopu;
 
 import android.os.Parcel;
 import android.os.Parcelable;

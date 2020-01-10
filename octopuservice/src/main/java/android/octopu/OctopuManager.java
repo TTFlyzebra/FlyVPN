@@ -6,8 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 
-import com.android.server.octopu.wifiextend.bean.WifiDeviceBean;
-
 import java.util.ArrayList;
 import java.util.List;
 

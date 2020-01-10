@@ -12,11 +12,10 @@ import android.net.wifi.WifiManager;
 import android.octopu.FlyLog;
 import android.octopu.IOctopuService;
 import android.octopu.OctopuManager;
+import android.octopu.WifiDeviceBean;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
-
-import com.android.server.octopu.wifiextend.bean.WifiDeviceBean;
 
 import java.util.ArrayList;
 import java.util.List;
