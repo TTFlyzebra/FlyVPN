@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".WifiService"/>
+        <service android:name=".WifiService"
+            android:exported="true"/>
     </application>
 
 </manifest>

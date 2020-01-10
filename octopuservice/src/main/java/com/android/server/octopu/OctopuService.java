@@ -43,6 +43,9 @@ public class OctopuService extends IOctopuService.Stub {
     private List<WifiDeviceBean> mWifiDevices = new ArrayList<>();
     private final Object mWifiDevicesLock = new Object();
 
+    private int retryTime = 2500;
+    private static final int MAX_RETRY_TIME = 3600000;
+
     public OctopuService(Context context) {
         deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         mContext = context;
@@ -124,7 +127,6 @@ public class OctopuService extends IOctopuService.Stub {
         static final int WIFIEXTEND_HTTP_UP = 4;
         static final String PubDownURL = "http://wifi.cootel.com/wifi/public/wifiInfoManage/downloadWifiInfo";
         static final String PriDownURL = "http://wifi.cootel.com/wifi/private/wifiInfoManage/downloadWifiInfo";
-        int retryTime = 2500;
 
         WifiextendHandler(Looper looper) {
             super(looper);
@@ -214,7 +216,7 @@ public class OctopuService extends IOctopuService.Stub {
 //                sendEmptyMessageDelayed(WIFIEXTEND_HTTP_DWONPRI, 7200000);
             } else {
                 //私有密钥库发送网络请求失败,重试,首次5s,最长间隔时间1小时
-                retryTime = Math.min(retryTime * 2, 3600000);
+                retryTime = Math.min(retryTime * 2, MAX_RETRY_TIME);
                 sendEmptyMessageDelayed(WIFIEXTEND_HTTP_DWONPRI, retryTime);
             }
         }
