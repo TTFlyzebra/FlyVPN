@@ -1,4 +1,4 @@
-package android.octopu.wifi.bean;
+package com.android.server.octopu.wifi.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

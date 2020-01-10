@@ -4,19 +4,21 @@ import android.content.Context;
 import android.octopu.FlyLog;
 import android.octopu.IOctopuService;
 import android.octopu.OctopuListener;
-import android.octopu.wifi.bean.PubDownParam;
-import android.octopu.wifi.bean.ResultPubData;
-import android.octopu.wifi.bean.WifiDeviceBean;
-import android.octopu.wifi.db.WifiDeviceSQLite;
-import android.octopu.wifi.http.HttpTools;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
 import android.provider.Settings;
 
+import com.android.server.octopu.wifi.bean.PubDownParam;
+import com.android.server.octopu.wifi.bean.ResultPubData;
+import com.android.server.octopu.wifi.bean.WifiDeviceBean;
+import com.android.server.octopu.wifi.db.WifiDeviceSQLite;
+import com.android.server.octopu.wifi.http.HttpTools;
+
 import java.util.List;
 
 /**
+ * @hide
  * ClassName: OctopuService
  * Description:
  * Author: FlyZebra

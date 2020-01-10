@@ -1,4 +1,4 @@
-package android.octopu.wifi.db;
+package com.android.server.octopu.wifi.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,13 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.octopu.FlyLog;
-import android.octopu.wifi.bean.WifiDeviceBean;
 import android.os.Handler;
 import android.os.HandlerThread;
+
+import com.android.server.octopu.wifi.bean.WifiDeviceBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @hide
+ */
 public class WifiDeviceSQLite extends SQLiteOpenHelper {
     private static final HandlerThread mWriteTask = new HandlerThread("sqlite-write");
 

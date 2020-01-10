@@ -7,9 +7,10 @@ import android.content.ServiceConnection;
 import android.octopu.FlyLog;
 import android.octopu.IOctopuService;
 import android.octopu.OctopuManager;
-import android.octopu.wifi.bean.WifiDeviceBean;
 import android.os.Bundle;
 import android.os.IBinder;
+
+import com.android.server.octopu.wifi.bean.WifiDeviceBean;
 
 import java.util.List;
 

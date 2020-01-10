@@ -1,4 +1,4 @@
-package android.octopu.wifi.bean;
+package com.android.server.octopu.wifi.bean;
 
 import org.json.JSONArray;
 import org.json.JSONException;

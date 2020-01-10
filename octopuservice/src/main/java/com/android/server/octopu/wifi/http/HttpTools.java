@@ -1,4 +1,4 @@
-package android.octopu.wifi.http;
+package com.android.server.octopu.wifi.http;
 
 import android.octopu.FlyLog;
 
@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 /**
+ * @hide
  * ClassName: HttpTools
  * Description:
  * Author: FlyZebra

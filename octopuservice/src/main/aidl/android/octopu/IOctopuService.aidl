@@ -2,7 +2,7 @@
 package android.octopu;
 
 import android.octopu.OctopuListener;
-import android.octopu.wifi.bean.WifiDeviceBean;
+import com.android.server.octopu.wifi.bean.WifiDeviceBean;
 
 // Declare any non-default types here with import statements
 

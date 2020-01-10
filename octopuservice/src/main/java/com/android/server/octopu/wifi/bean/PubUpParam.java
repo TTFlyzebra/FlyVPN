@@ -1,4 +1,4 @@
-package android.octopu.wifi.bean;
+package com.android.server.octopu.wifi.bean;
 
 /**
  * ClassName: PubUpParam

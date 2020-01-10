@@ -1,10 +1,11 @@
 package android.octopu;
 
 import android.content.Context;
-import android.octopu.wifi.bean.WifiDeviceBean;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
+
+import com.android.server.octopu.wifi.bean.WifiDeviceBean;
 
 import java.util.ArrayList;
 import java.util.List;
