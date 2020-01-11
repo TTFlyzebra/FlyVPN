@@ -3,8 +3,8 @@ package com.android.server.octopu.wifiextend.utils;
 import java.io.ByteArrayOutputStream;
 
 /**
+ * @hide
  * BASE 64 加密解密 工具类
- *
  * @author Administrator
  *
  */
