@@ -20,6 +20,8 @@ import com.android.server.octopu.wifiextend.bean.ResultPubData;
 import com.android.server.octopu.wifiextend.http.HttpResult;
 import com.android.server.octopu.wifiextend.http.HttpTools;
 import com.android.server.octopu.wifiextend.store.WifiDeviceSQLite;
+import com.android.server.octopu.wifiextend.utils.BASE64Util;
+import com.android.server.octopu.wifiextend.utils.CheckUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +112,23 @@ public class OctopuService extends IOctopuService.Stub {
         final int N = mOctopuListeners.beginBroadcast();
         for (int i = 0; i < N; i++) {
             try {
+                //解密官码
+                for (WifiDeviceBean wifiDeviceBean : mWifiDevices) {
+                    if ("1".equals(wifiDeviceBean.wifiAuthType)) {
+                        //加密类型
+                        String desPassword = CheckUtils.MD5_16bit(wifiDeviceBean.userId + "XINWEI!@#$");
+                        if (desPassword != null) {
+                            byte[] decodeBase64Pwd = BASE64Util.decode(wifiDeviceBean.wifiPassword);
+                            byte[] detBytes;
+                            try {
+                                detBytes = CheckUtils.decrypt(decodeBase64Pwd, desPassword);
+                                wifiDeviceBean.wifiPassword = new String(detBytes);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
                 mOctopuListeners.getBroadcastItem(i).notifyWifiDevices(mWifiDevices);
             } catch (RemoteException e) {
                 FlyLog.e(e.toString());

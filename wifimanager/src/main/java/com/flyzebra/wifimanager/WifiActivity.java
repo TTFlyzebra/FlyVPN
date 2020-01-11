@@ -17,6 +17,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.flyzebra.wifimanager.utils.BASE64Util;
+import com.flyzebra.wifimanager.utils.CheckUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +45,7 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
             tryBindService();
         }
     };
+
     private void tryBindService() {
         try {
             Intent intent = new Intent();
@@ -84,8 +88,25 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
 
     @Override
     public void notifyWifiDevices(List<WifiDeviceBean> wifiDevices) {
-        FlyLog.d("wifiDevices size = %d." , wifiDevices.size());
+        FlyLog.d("wifiDevices size = %d.", wifiDevices.size());
         FlyLog.d("wifiDevices:" + wifiDevices);
+        for (WifiDeviceBean wifiDeviceBean : wifiDevices) {
+            if ("1".equals(wifiDeviceBean.wifiAuthType)) {
+                //加密类型
+                String desPassword = CheckUtils.MD5_16bit(wifiDeviceBean.userId + "XINWEI!@#$");
+                if (desPassword != null) {
+                    byte[] decodeBase64Pwd = BASE64Util.decode(wifiDeviceBean.wifiPassword);
+                    byte[] detBytes;
+                    try {
+                        detBytes = CheckUtils.decrypt(decodeBase64Pwd, desPassword);
+                        wifiDeviceBean.wifiPassword = new String(detBytes);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
 
     class MyReciver extends BroadcastReceiver {
@@ -95,12 +116,12 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
                 case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
                     WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                     List<ScanResult> listResults = wifiManager.getScanResults();
-                    FlyLog.d("listResults:"+listResults);
+                    FlyLog.d("listResults:" + listResults);
                     List<String> list = new ArrayList<>();
-                    for(ScanResult scanResult:listResults){
+                    for (ScanResult scanResult : listResults) {
                         list.add(scanResult.BSSID);
                     }
-                    if(octopuManager!=null){
+                    if (octopuManager != null) {
                         octopuManager.flyWifiDevices(list);
                     }
                     break;
