@@ -146,6 +146,10 @@ public class OctopuService extends IOctopuService.Stub {
         static final int WIFIEXTEND_HTTP_UP = 4;
         static final String PubDownURL = "http://wifi.cootel.com/wifi/public/wifiInfoManage/downloadWifiInfo";
         static final String PriDownURL = "http://wifi.cootel.com/wifi/private/wifiInfoManage/downloadWifiInfo";
+        static final String PubDelURL = "http://wifi.cootel.com/wifi/public/wifiInfoManage/removeWifiInfo";
+        static final String PriDelURL = "http://wifi.cootel.com/wifi/private/wifiInfoManage/removeWifiInfo";
+        static final String PubUpURL = "http://wifi.cootel.com/wifi/public/wifiInfoManage/shareWifiInfo";
+        static final String PriUpURL = "http://wifi.cootel.com/wifi/private/wifiInfoManage/shareWifiInfo";
 
         WifiextendHandler(Looper looper) {
             super(looper);
@@ -164,7 +168,7 @@ public class OctopuService extends IOctopuService.Stub {
         }
 
         private void handleHttpPubDown(final List<String> wifiBssids) {
-            final PubDownParam param1 = new PubDownParam(deviceId);
+            final PubDownParam param1 = new PubDownParam(mContext);
             if (wifiBssids != null) {
                 for (String bssid : wifiBssids) {
                     param1.addWifiDeviceIds(bssid);

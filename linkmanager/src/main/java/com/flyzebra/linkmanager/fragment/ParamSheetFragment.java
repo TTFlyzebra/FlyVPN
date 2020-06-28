@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.flyzebra.linkmanager.R;
 import com.flyzebra.utils.SystemPropTools;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * @Author: __ Weiyi.Lee  liweiyi@cootf.com

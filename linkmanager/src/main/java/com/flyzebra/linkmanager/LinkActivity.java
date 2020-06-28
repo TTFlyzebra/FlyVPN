@@ -9,6 +9,12 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.flyzebra.linkmanager.fragment.FaultDiagnosisFragment;
 import com.flyzebra.linkmanager.fragment.LinkWatcherFragment;
 import com.flyzebra.linkmanager.fragment.ParamSheetFragment;
@@ -19,11 +25,6 @@ import com.flyzebra.utils.FlyLog;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import xinwei.com.mpapp.aidl.IServiceAidl;
 
 public class LinkActivity extends AppCompatActivity implements FlyTableView.OnItemClickListener, ViewPager.OnPageChangeListener {

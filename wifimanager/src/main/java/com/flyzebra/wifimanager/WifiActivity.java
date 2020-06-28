@@ -17,13 +17,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.flyzebra.wifimanager.utils.BASE64Util;
 import com.flyzebra.wifimanager.utils.CheckUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 
 public class WifiActivity extends AppCompatActivity implements OctopuManager.WifiDeviceListener {

@@ -10,6 +10,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.flyzebra.linkmanager.LinkActivity;
 import com.flyzebra.linkmanager.R;
 import com.flyzebra.utils.FlyLog;
@@ -18,10 +22,6 @@ import com.flyzebra.utils.SystemPropTools;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 /**

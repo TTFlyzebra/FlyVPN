@@ -30,6 +30,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             "userId varchar(20)," +
             "longitude real default '0'," +
             "latitude real default '0'," +
+            "pswdStatu integer default 0," +
             "remarks varchar(1024) default '');";
     private static final String WIFI_TABLE_PRI = "wifidevice_pri";
     private static final String CREATE_WIFI_TABLE_PRI = "create table wifidevice_pri(" +
@@ -44,6 +45,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             "userId varchar(20)," +
             "longitude real default '0'," +
             "latitude real default '0'," +
+            "pswdStatu integer default 0," +
             "remarks varchar(1024) default '');";
 
     public WifiDeviceSQLite(Context context) {
@@ -110,6 +112,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         value.put("longitude", wifiDeviceBean.longitude);
         value.put("latitude", wifiDeviceBean.latitude);
         value.put("remarks", wifiDeviceBean.remarks);
+        value.put("pswdStatu", wifiDeviceBean.pswdStatu);
         WifiDeviceBean findwifiDeviceBean = getWifiDevice(table, wifiDeviceBean);
         if (findwifiDeviceBean != null) {
             if (!findwifiDeviceBean.wifiPassword.equals(wifiDeviceBean.wifiPassword)
@@ -151,6 +154,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             wifiDeviceBean.longitude = (c.getDouble(c.getColumnIndex("longitude")));
             wifiDeviceBean.latitude = (c.getDouble(c.getColumnIndex("latitude")));
             wifiDeviceBean.remarks = (c.getString(c.getColumnIndex("remarks")));
+            wifiDeviceBean.pswdStatu = (c.getInt(c.getColumnIndex("pswdStatu")));
             list.add(wifiDeviceBean);
         }
         c.close();
@@ -177,6 +181,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
             wifiDeviceBean.longitude = (c.getDouble(c.getColumnIndex("longitude")));
             wifiDeviceBean.latitude = (c.getDouble(c.getColumnIndex("latitude")));
             wifiDeviceBean.remarks = (c.getString(c.getColumnIndex("remarks")));
+            wifiDeviceBean.pswdStatu = (c.getInt(c.getColumnIndex("pswdStatu")));
             return wifiDeviceBean;
         }
         return null;

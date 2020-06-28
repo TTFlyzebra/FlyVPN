@@ -12,10 +12,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.flyzebra.linkmanager.R;
 import com.flyzebra.utils.FlyLog;
-
-import androidx.fragment.app.Fragment;
 
 
 /**

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
@@ -147,11 +148,11 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
      */
     private void detectAllNetwork() {
         lastRunTime = SystemClock.uptimeMillis();
+        boolean findWifi = false;
+        boolean findMobile = false;
+        boolean findMcwill = false;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
-            boolean findWifi = false;
-            boolean findMobile = false;
-            boolean findMcwill = false;
             //对当前存在的网络发起探测链接
             for (Network network : networks) {
                 LinkProperties linkProperties = cm.getLinkProperties(network);
@@ -171,32 +172,52 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                     }
                 }
             }
-
-            //对已经加入链接但是没有查找到的网络进行删除链路操作
-            if (mpcStatus.wifiLink.isLink && !findWifi) {
-                FlyLog.e("find extendWifi network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
-            if (mpcStatus.mobileLink.isLink && !findMobile) {
-                FlyLog.e("find 4G network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
-            if (mpcStatus.mcwillLink.isLink && !findMcwill) {
-                FlyLog.e("find mcwill network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
-
-            //对没有加入链接但是已经查找到的网络进行探测操作
-            if (findWifi) {
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
-            }
-            if (findMobile) {
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
-            }
-            if (findMcwill) {
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
+        } else {
+            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfos[] = cm.getAllNetworkInfo();
+            for (NetworkInfo networkInfo : networkInfos) {
+                if (networkInfo.isConnected()) {
+                    switch (networkInfo.getType()) {
+                        case ConnectivityManager.TYPE_MOBILE:
+                            findMobile = true;
+                            break;
+                        case ConnectivityManager.TYPE_WIFI:
+                            findWifi = true;
+                            break;
+                        //case ConnectivityManager.TYPE_MCWILL:
+                        case 18:
+                            findMcwill = true;
+                            break;
+                    }
+                }
             }
         }
+
+        //对已经加入链接但是没有查找到的网络进行删除链路操作
+        if (mpcStatus.wifiLink.isLink && !findWifi) {
+            FlyLog.e("find extendWifi network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+        }
+        if (mpcStatus.mobileLink.isLink && !findMobile) {
+            FlyLog.e("find 4G network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+        }
+        if (mpcStatus.mcwillLink.isLink && !findMcwill) {
+            FlyLog.e("find mcwill network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+        }
+
+        //对没有加入链接但是已经查找到的网络进行探测操作
+        if (findWifi) {
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
+        }
+        if (findMobile) {
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
+        }
+        if (findMcwill) {
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
+        }
+
     }
 
     /**
@@ -204,11 +225,11 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
      */
     private void detectChangeNetwork() {
         FlyLog.e("network is change");
+        boolean findWifi = false;
+        boolean findMobile = false;
+        boolean findMcwill = false;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = cm.getAllNetworks();
-            boolean findWifi = false;
-            boolean findMobile = false;
-            boolean findMcwill = false;
             //对当前存在的网络发起探测链接
             for (Network network : networks) {
                 LinkProperties linkProperties = cm.getLinkProperties(network);
@@ -228,33 +249,52 @@ public class DetectLinkTask implements ITask, Runnable, IRatdRecvMessage {
                     }
                 }
             }
-            //对没有加入链接但是已经查找到的网络进行探测操作
-            if (!mpcStatus.wifiLink.isLink && findWifi) {
-                FlyLog.e("find extendWifi network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
+        } else {
+            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfos[] = cm.getAllNetworkInfo();
+            for (NetworkInfo networkInfo : networkInfos) {
+                if (networkInfo.isConnected()) {
+                    switch (networkInfo.getType()) {
+                        case ConnectivityManager.TYPE_MOBILE:
+                            findMobile = true;
+                            break;
+                        case ConnectivityManager.TYPE_WIFI:
+                            findWifi = true;
+                            break;
+                        //case ConnectivityManager.TYPE_MCWILL:
+                        case 18:
+                            findMcwill = true;
+                            break;
+                    }
+                }
             }
-            if (!mpcStatus.mobileLink.isLink && findMobile) {
-                FlyLog.e("find 4g network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
-            }
-            if (!mpcStatus.mcwillLink.isLink && findMcwill) {
-                FlyLog.e("find mcwill network add, detect it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
-            }
+        }
+        //对没有加入链接但是已经查找到的网络进行探测操作
+        if (!mpcStatus.wifiLink.isLink && findWifi) {
+            FlyLog.e("find extendWifi network add, detect it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 4, "wlan0", MyTools.createSessionId()));
+        }
+        if (!mpcStatus.mobileLink.isLink && findMobile) {
+            FlyLog.e("find 4g network add, detect it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 2, "rmnet_data0", MyTools.createSessionId()));
+        }
+        if (!mpcStatus.mcwillLink.isLink && findMcwill) {
+            FlyLog.e("find mcwill network add, detect it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.detectLink, 1, "mcwill", MyTools.createSessionId()));
+        }
 
-            //对已经加入链接但是没有查找到的网络进行删除链路操作
-            if (mpcStatus.wifiLink.isLink && !findWifi) {
-                FlyLog.e("find extendWifi network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
-            if (mpcStatus.mobileLink.isLink && !findMobile) {
-                FlyLog.e("find 4G network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
-            if (mpcStatus.mcwillLink.isLink && !findMcwill) {
-                FlyLog.e("find mcwill network lost, delete it");
-                ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
-            }
+        //对已经加入链接但是没有查找到的网络进行删除链路操作
+        if (mpcStatus.wifiLink.isLink && !findWifi) {
+            FlyLog.e("find extendWifi network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 4, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+        }
+        if (mpcStatus.mobileLink.isLink && !findMobile) {
+            FlyLog.e("find 4G network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 2, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
+        }
+        if (mpcStatus.mcwillLink.isLink && !findMcwill) {
+            FlyLog.e("find mcwill network lost, delete it");
+            ratdSocketTask.sendMessage(String.format(MpcMessage.deleteLink, 1, Constant.DELETE_LINK_CAUSE_NORMAL, MyTools.createSessionId()));
         }
     }
 

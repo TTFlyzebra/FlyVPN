@@ -31,6 +31,7 @@ public class WifiDeviceBean implements Parcelable {
     public double longitude;
     public double latitude;
     public String remarks;
+    public int pswdStatu; //-1,passwore error;0,normal;
 
 
     public WifiDeviceBean() {
@@ -49,6 +50,7 @@ public class WifiDeviceBean implements Parcelable {
         longitude = in.readDouble();
         latitude = in.readDouble();
         remarks = in.readString();
+        pswdStatu = in.readInt();
     }
 
     @Override
@@ -65,6 +67,7 @@ public class WifiDeviceBean implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeDouble(latitude);
         dest.writeString(remarks);
+        dest.writeInt(pswdStatu);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class WifiDeviceBean implements Parcelable {
     @Override
     public String toString() {
         return "WifiDeviceBean{" +
-                "wifiDeviceId='" + wifiDeviceId + '\'' +
+                ", wifiDeviceId='" + wifiDeviceId + '\'' +
                 ", wifiPassword='" + wifiPassword + '\'' +
                 ", wifiAuthType='" + wifiAuthType + '\'' +
                 ", wifiName='" + wifiName + '\'' +
@@ -98,6 +101,7 @@ public class WifiDeviceBean implements Parcelable {
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", remarks='" + remarks + '\'' +
+                ", pswdStatu=" + pswdStatu +
                 '}';
     }
 }

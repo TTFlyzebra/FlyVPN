@@ -8,11 +8,11 @@ import android.widget.CheckBox;
 import android.widget.Space;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.flyzebra.linkmanager.R;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 
 /**

@@ -64,23 +64,23 @@ public class HttpTools {
                 result.data = sbf.toString();
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            FlyLog.e(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            FlyLog.e(e.toString());
         } finally {
             // 关闭资源
             if (null != br) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    FlyLog.e(e.toString());
                 }
             }
             if (null != is) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    FlyLog.e(e.toString());
                 }
             }
             if(connection!=null){
