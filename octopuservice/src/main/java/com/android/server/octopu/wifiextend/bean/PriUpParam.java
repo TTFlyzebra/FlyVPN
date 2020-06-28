@@ -37,7 +37,7 @@ public class PriUpParam {
     public String wifiName;
     public String wifiStatus;
     public String subsId;
-    public String lat;
-    public String lon;
+    public double lat;
+    public double lon;
     public String remarks;
 }

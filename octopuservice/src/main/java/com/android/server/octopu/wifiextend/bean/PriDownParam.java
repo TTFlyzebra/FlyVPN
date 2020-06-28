@@ -1,5 +1,11 @@
 package com.android.server.octopu.wifiextend.bean;
 
+import android.content.Context;
+import android.provider.Settings;
+import android.text.TextUtils;
+
+import com.android.server.octopu.wifiextend.utils.SystemPropTools;
+
 /**
  * ClassName: PubDownParam
  * Description:
@@ -12,11 +18,14 @@ public class PriDownParam {
     public String deviceId;
     public String deviceInfo = android.os.Build.MODEL;
     public String remarks = "thisisaxinweiWIFI";
-    public String subsId = "620b0512";
+    public String subsId = "0";
 //    private static final String jsonFromat = "{\"deviceType\":\"%s\",\"deviceId\":\"%s\",\"deviceInfo\":\"%s\",\"remarks\":\"%s\",\"subsId\":\"%s\"}";
 
-    public PriDownParam(String deviceId) {
-        this.deviceId = deviceId;
+    public PriDownParam(Context context) {
+        if(TextUtils.isEmpty(deviceId)){
+            deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        }
+        subsId = (SystemPropTools.get("persist.radio.mcwill.uid","0")).replace(".","").trim();
     }
 
     /**

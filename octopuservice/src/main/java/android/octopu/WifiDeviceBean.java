@@ -31,7 +31,7 @@ public class WifiDeviceBean implements Parcelable {
     public double longitude;
     public double latitude;
     public String remarks;
-    public int pswdStatu; //-1,passwore error;0,normal;
+    public int pswdStatu = 0; //-1,passwore error;0,normal;
 
 
     public WifiDeviceBean() {

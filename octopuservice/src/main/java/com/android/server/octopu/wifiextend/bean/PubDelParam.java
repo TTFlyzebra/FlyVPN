@@ -1,5 +1,11 @@
 package com.android.server.octopu.wifiextend.bean;
 
+import android.content.Context;
+import android.provider.Settings;
+import android.text.TextUtils;
+
+import com.android.server.octopu.wifiextend.utils.SystemPropTools;
+
 /**
  * ClassName: PubDelParam
  * Description:
@@ -24,7 +30,25 @@ public class PubDelParam {
     public String deviceId;
     public String deviceInfo;
     public String wifiDeviceId;
-    public String wifiPwd;
     public String subsId;
-    public String remarks;
+    public String remarks = "thisisaxinweiWIFI";
+
+    public PubDelParam(Context context){
+        if (context != null && TextUtils.isEmpty(deviceId)) {
+            deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        }
+        subsId = (SystemPropTools.get("persist.radio.mcwill.uid", "0")).replace(".", "").trim();
+    }
+
+    public String toJson(){
+        return "{" +
+                "\"signature\":\"" + signature +"\","+
+                "\"deviceType\":\"" + deviceType +"\","+
+                "\"deviceId\":\"" + deviceId +"\","+
+                "\"deviceInfo\":\"" + deviceInfo +"\","+
+                "\"wifiDeviceId\":\"" + wifiDeviceId +"\","+
+                "\"subsId\":\"" + subsId +"\","+
+                "\"remarks\":\"" + remarks +"\""+
+                "}";
+    }
 }

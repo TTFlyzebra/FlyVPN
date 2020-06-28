@@ -53,6 +53,21 @@ public class OctopuManager {
         }
     }
 
+    public void delWifiDevices(WifiDeviceBean delWifiDevices) {
+        try {
+            mService.delWifiDevices(delWifiDevices);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+    public void upWifiDevices(WifiDeviceBean wifiDeviceBean) {
+        try {
+            mService.upWifiDevices(wifiDeviceBean);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     public interface WifiDeviceListener {
         void notifyWifiDevices(List<WifiDeviceBean> wifiDevices);
     }
@@ -82,7 +97,7 @@ public class OctopuManager {
                     synchronized (mListenerLock) {
                         for (WifiDeviceListener wifiDeviceListener: mWifiDeviceListeners) {
                             synchronized (mWifiListLock){
-                                wifiDeviceListener.notifyWifiDevices(mwifiDevices);
+                                wifiDeviceListener.notifyWifiDevices(new ArrayList<WifiDeviceBean>(mwifiDevices));
                             }
                         }
                     }

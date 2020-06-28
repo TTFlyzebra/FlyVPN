@@ -90,41 +90,84 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         }
     }
 
+    public WifiDeviceBean getPubWifiDevice(WifiDeviceBean mWifiDeviceBean) {
+        return getWifiDevice(WIFI_TABLE_PUB, mWifiDeviceBean);
+    }
+
+    public WifiDeviceBean getPriWifiDevice(WifiDeviceBean mWifiDeviceBean) {
+        return getWifiDevice(WIFI_TABLE_PRI, mWifiDeviceBean);
+    }
+
     public List<WifiDeviceBean> getPubWifiDevices() {
         return getWifiDevices(WIFI_TABLE_PUB);
     }
 
-    public List<WifiDeviceBean> getPriWifiDevice() {
+    public List<WifiDeviceBean> getPriWifiDevices() {
         return getWifiDevices(WIFI_TABLE_PRI);
+    }
+
+    public List<WifiDeviceBean> getDelPubWifiDevices() {
+        return getDelWifiDevices(WIFI_TABLE_PUB);
+    }
+
+    public List<WifiDeviceBean> getDelPriWifiDevices() {
+        return getDelWifiDevices(WIFI_TABLE_PRI);
+    }
+
+    public int delPubWifiDevice(WifiDeviceBean mWifiDeviceBean) {
+        return delWifiDevice(WIFI_TABLE_PUB, mWifiDeviceBean);
+    }
+
+    public int delPriWifiDevice(WifiDeviceBean mWifiDeviceBean) {
+        return delWifiDevice(WIFI_TABLE_PRI, mWifiDeviceBean);
     }
 
     private void updataWifiDevice(String table, WifiDeviceBean wifiDeviceBean) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
-        value.put("wifiDeviceId", wifiDeviceBean.wifiDeviceId);
-        value.put("wifiPassword", wifiDeviceBean.wifiPassword);
-        value.put("wifiAuthType", wifiDeviceBean.wifiAuthType);
-        value.put("wifiName", wifiDeviceBean.wifiName);
-        value.put("wifiStatus", wifiDeviceBean.wifiStatus);
-        value.put("wifiCreateTime", wifiDeviceBean.wifiCreateTime);
-        value.put("wifiUpdateTime", wifiDeviceBean.wifiUpdateTime);
-        value.put("userId", wifiDeviceBean.userId);
-        value.put("longitude", wifiDeviceBean.longitude);
-        value.put("latitude", wifiDeviceBean.latitude);
-        value.put("remarks", wifiDeviceBean.remarks);
-        value.put("pswdStatu", wifiDeviceBean.pswdStatu);
+        if (wifiDeviceBean.pswdStatu == -1) {
+            value.put("pswdStatu", wifiDeviceBean.pswdStatu);
+            value.put("wifiDeviceId", wifiDeviceBean.wifiDeviceId);
+        }else {
+            value.put("wifiDeviceId", wifiDeviceBean.wifiDeviceId);
+            value.put("wifiPassword", wifiDeviceBean.wifiPassword);
+            value.put("wifiAuthType", wifiDeviceBean.wifiAuthType);
+            value.put("wifiName", wifiDeviceBean.wifiName);
+            value.put("wifiStatus", wifiDeviceBean.wifiStatus);
+            value.put("wifiCreateTime", wifiDeviceBean.wifiCreateTime);
+            value.put("wifiUpdateTime", wifiDeviceBean.wifiUpdateTime);
+            value.put("userId", wifiDeviceBean.userId);
+            value.put("longitude", wifiDeviceBean.longitude);
+            value.put("latitude", wifiDeviceBean.latitude);
+            value.put("remarks", wifiDeviceBean.remarks);
+            value.put("pswdStatu", 0);
+        }
         WifiDeviceBean findwifiDeviceBean = getWifiDevice(table, wifiDeviceBean);
         if (findwifiDeviceBean != null) {
-            if (!findwifiDeviceBean.wifiPassword.equals(wifiDeviceBean.wifiPassword)
-                    || !findwifiDeviceBean.wifiName.equals(wifiDeviceBean.wifiName)) {
-                long ret = db.update(table, value, "wifiDeviceId=?", new String[]{wifiDeviceBean.wifiDeviceId});
+            value.put("id",findwifiDeviceBean.id);
+            //设置密码无效位
+            if (wifiDeviceBean.pswdStatu == -1) {
+                long ret = db.update(table, value, "wifiDeviceId=?",
+                        new String[]{wifiDeviceBean.wifiDeviceId});
                 if (ret <= 0) {
                     FlyLog.w("update failed [%s]", wifiDeviceBean);
                 } else {
                     FlyLog.v("update table=%s,result=[%d]", table, ret);
                 }
             } else {
-                FlyLog.v("wifidevice is already insert and no change.");
+                //如果服务器下传数据的密码和名称改变，更新本地数据
+                if (!findwifiDeviceBean.wifiPassword.equals(wifiDeviceBean.wifiPassword)
+                        || !findwifiDeviceBean.wifiName.equals(wifiDeviceBean.wifiName)) {
+                    long ret = db.update(table, value, "wifiDeviceId=?",
+                            new String[]{wifiDeviceBean.wifiDeviceId});
+                    if (ret <= 0) {
+                        FlyLog.w("update failed [%s]", wifiDeviceBean);
+                    } else {
+                        FlyLog.v("update table=%s,result=[%d]", table, ret);
+                    }
+                } else {
+                    FlyLog.v("wifidevice is already insert and no change.");
+                }
             }
         } else {
             long ret = db.insert(table, null, value);
@@ -139,7 +182,7 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
     private List<WifiDeviceBean> getWifiDevices(String table) {
         List<WifiDeviceBean> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.query(table, null, null, null, null, null, null);
+        Cursor c = db.query(table, null, "pswdStatu!=?", new String[]{"-1"}, null, null, null);
         while (c.moveToNext()) {
             WifiDeviceBean wifiDeviceBean = new WifiDeviceBean();
             wifiDeviceBean.id = (c.getInt(c.getColumnIndex("id")));
@@ -187,10 +230,35 @@ public class WifiDeviceSQLite extends SQLiteOpenHelper {
         return null;
     }
 
-    private int deleteWifiDevice(String table, String wifiDeviceId) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(table, "wifiDeviceId=?", new String[]{wifiDeviceId});
+    private List<WifiDeviceBean> getDelWifiDevices(String table) {
+        List<WifiDeviceBean> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(table, null, "pswdStatu=?", new String[]{"-1"}, null, null, null);
+        while (c.moveToNext()) {
+            WifiDeviceBean wifiDeviceBean = new WifiDeviceBean();
+            wifiDeviceBean.id = (c.getInt(c.getColumnIndex("id")));
+            wifiDeviceBean.wifiDeviceId = (c.getString(c.getColumnIndex("wifiDeviceId")));
+            wifiDeviceBean.wifiPassword = (c.getString(c.getColumnIndex("wifiPassword")));
+            wifiDeviceBean.wifiAuthType = (c.getString(c.getColumnIndex("wifiAuthType")));
+            wifiDeviceBean.wifiName = (c.getString(c.getColumnIndex("wifiName")));
+            wifiDeviceBean.wifiStatus = (c.getInt(c.getColumnIndex("wifiStatus")));
+            wifiDeviceBean.wifiCreateTime = (c.getString(c.getColumnIndex("wifiCreateTime")));
+            wifiDeviceBean.wifiUpdateTime = (c.getString(c.getColumnIndex("wifiUpdateTime")));
+            wifiDeviceBean.userId = (c.getString(c.getColumnIndex("userId")));
+            wifiDeviceBean.longitude = (c.getDouble(c.getColumnIndex("longitude")));
+            wifiDeviceBean.latitude = (c.getDouble(c.getColumnIndex("latitude")));
+            wifiDeviceBean.remarks = (c.getString(c.getColumnIndex("remarks")));
+            wifiDeviceBean.pswdStatu = (c.getInt(c.getColumnIndex("pswdStatu")));
+            list.add(wifiDeviceBean);
+        }
+        c.close();
+        return list;
     }
 
+    private int delWifiDevice(String table, WifiDeviceBean mWifiDeviceBean) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(table, "wifiDeviceId=?",
+                new String[]{mWifiDeviceBean.wifiDeviceId});
+    }
 
 }
