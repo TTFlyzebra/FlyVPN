@@ -36,8 +36,7 @@ public class WifiActivity extends AppCompatActivity implements OctopuManager.Wif
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mService = IOctopuService.Stub.asInterface(service);
-            octopuManager = new OctopuManager(WifiActivity.this, mService);
-            octopuManager.addWifiDeviceListener(WifiActivity.this);
+            octopuManager = (OctopuManager) getSystemService("octupu");
         }
 
         @Override

@@ -4,8 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.android.server.octopu.OctopuService;
-
 
 /**
  * ClassName: WifiService
@@ -15,15 +13,18 @@ import com.android.server.octopu.OctopuService;
  * Date: 20-1-8 下午5:50
  */
 public class WifiService extends Service {
-    private OctopuService service;
     @Override
     public IBinder onBind(Intent intent) {
-        return service;
+        return null;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        service = new OctopuService(this);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
     }
 }

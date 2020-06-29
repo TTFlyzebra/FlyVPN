@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">octopuservice</string>
+    <string name="share_now">Ok</string>
+    <string name="note_to_share_wifi">If you are the owner of the WiFi hotspot %1$s and are willing to share it to others, please press OK to submit its password to the cloud so that you can share the WiFi of others.</string>
+    <string name="share_later">Share later</string>
+    <string name="not_remind">don\'t remind</string>
+    <string name="activity_base_permission_dialog_msg">Necessary permission needed for current application.\n\nGo to\"Settings\"-\"Permission\"-Open permission</string>
+    <string name="get_wifi_fail">Sharing failure, Unable to get current WiFi info</string>
+    <string name="wifi_shared">The current WiFi has bean shared</string>
+    <string name="wifi_share_success">WiFi %1$s sharing success</string>
+    <string name="wifi_share_error_by_server">WiFi %1$s sharing failure, the server is error:%2d</string>
+    <string name="wifi_share_error_by_network">WiFi %1$s sharing failure, check the network please</string>
+    <string name="title_activity_login">Sign in</string>
 </resources>
